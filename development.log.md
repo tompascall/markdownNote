@@ -497,7 +497,23 @@ function noteList () {
 </ul>
 ```
 
+####2.5.7. Test for exposing noteData.notes to DOM
 
+```js
+it('should contain the title of the note', function () {
+  expect(element.html()).to.contain(noteData.notes[0].title);
+});
+```
+
+####2.5.8. Expose noteData.notes to DOM
+
+```html
+<ul>
+  <li ng-repeat="note in ctrl.notes">
+    {{note.title}}
+  </li>
+</ul>
+```
 
 
 

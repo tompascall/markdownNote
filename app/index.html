@@ -36,6 +36,8 @@
     <!-- build:js scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/configuration.js"></script>
+    <script src="scripts/list-of-notes/noteData.srv.js" type="text/javascript"></script>
+    <script src="scripts/list-of-notes/noteList.drv.js" type="text/javascript"></script>
     <!-- endbuild -->
   </head>
   <body ng-app="simpleNote">
@@ -45,6 +47,7 @@
         <h1 class="title">simpleNote</h1>
       </ion-header-bar>
       <ion-content>
+        <note-list></note-list>
       </ion-content>
     </ion-pane>
   </body>

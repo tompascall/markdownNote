@@ -348,7 +348,7 @@ module.exports = function (grunt) {
         },
         ngHtml2JsPreprocessor: {
           // strip this from the file path
-          stripPrefix: 'app/scripts/', // to get the correct path after building
+          stripPrefix: 'app/', // to get the correct path after building
 
           // setting this option will create only a single module that contains templates
           // from all the files, so you can load them all with module('templates')

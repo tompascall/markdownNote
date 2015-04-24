@@ -9,6 +9,9 @@ angular.module('simpleNote')
     notes: [
       {
         title: 'noteTitle1'
+      },
+      {
+        title: 'noteTitle2'
       }
     ]
   };
