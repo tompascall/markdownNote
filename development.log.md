@@ -507,6 +507,8 @@ it('should contain the title of the note', function () {
 
 ####2.5.8. Expose noteData.notes to DOM
 
+Let`s update the directive's template:
+
 ```html
 <ul>
   <li ng-repeat="note in ctrl.notes">
@@ -514,6 +516,28 @@ it('should contain the title of the note', function () {
   </li>
 </ul>
 ```
+
+now we also have to update the ```index.html```, in order to include the proper scripts and use the ```noteList``` directive.
+
+```html
+<body ng-app="simpleNote">
+  <ion-pane>
+    <ion-header-bar class="bar-stable">
+      <h1 class="title">simpleNote</h1>
+    </ion-header-bar>
+    <ion-content>
+      <note-list></note-list>
+    </ion-content>
+  </ion-pane>
+</body>
+
+```
+
+####2.5.9. Test for styling
+
+
+####2.5.10. Add styling
+
 
 
 

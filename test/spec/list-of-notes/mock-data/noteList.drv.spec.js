@@ -30,11 +30,17 @@ describe('Directive: noteList', function () {
   });
 
   it('injected the noteData service', function () {
-    console.log(noteData.notes[0]);
     expect(isolated.ctrl.notes).to.deep.equal(noteData.notes);
   });
 
   it('should contain the title of the note', function () {
     expect(element.html()).to.contain(noteData.notes[0].title);
+  });
+
+  it('should be an ion-list', function () {
+    var list =  element.find('ion-list');
+    expect(list.length).to.equal(1);
+    var items = element.find('ion-list ion-item');
+    expect(items.length).to.equal(noteData.notes.length);
   });
 });
