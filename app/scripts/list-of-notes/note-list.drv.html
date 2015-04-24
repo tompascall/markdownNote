@@ -1,6 +1,6 @@
 
-<ul ng-init="notes = [1,2,3]">
-  <p ng-repeat="note in notes">
-
-  </p>
+<ul>
+  <li ng-repeat="note in ctrl.notes">
+    {{note.title}}
+  </li>
 </ul>
