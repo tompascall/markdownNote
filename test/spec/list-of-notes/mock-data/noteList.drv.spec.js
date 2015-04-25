@@ -19,6 +19,7 @@ describe('Directive: noteList', function () {
     element = $compile('<note-list></note-list>')(scope);
     scope.$digest();
     isolated = element.isolateScope();
+    angular.element(document).find('body').append(element); // for rendering css
   }));
 
   beforeEach(inject(function (_noteData_) {
@@ -42,5 +43,17 @@ describe('Directive: noteList', function () {
     expect(list.length).to.equal(1);
     var items = element.find('ion-list ion-item');
     expect(items.length).to.equal(noteData.notes.length);
+  });
+
+  it('ion-item should have note css class', function () {
+    var titleRow = element.find('ion-item div');
+    expect(titleRow).to.have.class('row');
+    var noteTitleContainer = titleRow.eq(0).children('div').eq(0);
+    expect(noteTitleContainer).to.have.class('note-title-container col col-80');
+    expect(noteTitleContainer).to.have.css('display').match(/-webkit-box|-ms-flexbox-webkit-flex|flex/);
+    var noteTitle = noteTitleContainer.children('h2');
+    expect(noteTitle).to.have.class('note-title');
+    expect(noteTitle).to.have.css('color','rgb(255, 0, 0)');
+    expect(noteTitle.children('span')).to.have.class('wordwrap');
   });
 });

@@ -535,6 +535,9 @@ now we also have to update the ```index.html```, in order to include the proper 
 
 ####2.5.9. Test for styling
 
+flexbox not supported by Phantomjs
+
+npm install karma-chrome-launcher --save-dev
 
 ####2.5.10. Add styling
 
