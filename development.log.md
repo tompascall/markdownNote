@@ -644,7 +644,88 @@ THEN I can see the text excerpt again
 
 ###3.4. Add mock data to noteData service
 
+####3.4.1. Test: new data structure in noteData service
+
+Data structure:
+
+```js
+{
+  notes: [
+    {
+      title: string
+      text: string
+      tags: [strings]
+    },
+    ...
+  ]
+}
+```
+```js
+describe('Add more mock data to noteData service', function () {
+  it('should have the correct properties', function () {
+    expect(noteData.notes[0]).to.have.property('text');
+    expect(noteData.notes[0].text).to.be.a('string');
+    expect(noteData.notes[0]).to.have.property('tags');
+    expect(noteData.notes[0].tags).to.be.an('array');
+  });
+});
+```
+
+####3.4.2. Create new data structure in noteData sevice
+
+```js
+notes: [
+  {
+    title: 'Quite extremely long long long long long long title for testing purpose',
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ' +
+      'do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
+      ' Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ' +
+      'nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in ' +
+      'reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla ' +
+      'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in ' +
+      'culpa qui officia deserunt mollit anim id est laborum.',
+    tags: ['first note', 'testing purpose', 'lorem ipsum', 'Cicero', 'de Finibus Bonorum et Malorum',
+      'long title', 'a lot of tags']
+  },
+  ...
+```
+
 ###3.5. Populate data to noteList directive
+
+####3.5.1. Test: data injection to noteList directive
+
+```js
+describe('Show details of notes', function () {
+  it('should contain all property of notes of noteData service', function () {
+    var notes = element.find('ion-list ion-item').eq(0);
+    expect(notes).to.contain(noteData.notes[0].title);
+    expect(notes).to.contain(noteData.notes[0].text);
+    expect(notes.html()).to.contain('ng-repeat="tag in note.tags"');
+    expect(notes).to.contain(noteData.notes[0].tags[0]);
+  })
+});
+```
+
+###3.5.2 Data injection to noteList directive
+
+```html
+<!-- noteList.drv.html -->
+
+<ion-list>
+  <ion-item ng-repeat="note in ctrl.notes">
+    <div class="row">
+      <div class="note-title-container col col-80">
+        <h2 class='note-title'>
+          <span class="wordwrap" ng-bind="note.title"></span>
+        </h2>
+      </div>
+    </div>
+    <p>{{note.text}}</p>
+    <p><span ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span></p>
+  </ion-item>
+</ion-list>
+
+```
 
 ###3.6. Add tap handler to noteList directive
 

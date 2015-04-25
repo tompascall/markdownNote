@@ -1,6 +1,6 @@
 /* app/styles/style.css */
 
-div.note-title-container {  /* OLD - iOS 6-, Safari 3.1-6, BB7 */  /* TWEENER - IE 10 */
+.note-title-container {  /* OLD - iOS 6-, Safari 3.1-6, BB7 */  /* TWEENER - IE 10 */
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
   -webkit-align-items: center;
