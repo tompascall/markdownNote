@@ -5,6 +5,6 @@
 angular.module('simpleNote').directive('sampleDirective', function () {
   return {
     restrict: 'E',
-    templateUrl: 'sample/sample.drv.html'
+    templateUrl: 'scripts/sample/sample.drv.html'
   };
 });

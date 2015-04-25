@@ -1,6 +1,12 @@
 
-<ul ng-init="notes = [1,2,3]">
-  <p ng-repeat="note in notes">
-
-  </p>
-</ul>
+<ion-list>
+  <ion-item ng-repeat="note in ctrl.notes">
+    <div class="row">
+      <div class="note-title-container col col-80">
+        <h2 class='note-title'>
+          <span class="wordwrap" ng-bind="note.title"></span>
+        </h2>
+      </div>
+    </div>
+  </ion-item>
+</ion-list>

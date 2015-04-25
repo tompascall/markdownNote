@@ -421,5 +421,129 @@ We give a temporary ```notes``` array for ng-repeat. Without this we would get a
 </ul>
 ```
 
+####2.5.4. Test for noteData injection
+
+We use the [component pattern](http://teropa.info/blog/2014/10/24/how-ive-improved-my-angular-apps-by-banning-ng-controller.html) while developing directives, i.e. we ban the use of ```ng-controller``` completely, use ```controllerAs```, isolate scopes and ```bindToController``` provided by the Angular 1.3.
+
+```js
+// noteList.drv.spec.js
+
+'use strict';
+
+describe('Directive: noteList', function () {
+  var $compile;
+  var scope;
+  var element;
+  var isolated;
+  var noteData;
+
+  beforeEach(module('simpleNote'));
+
+  beforeEach(module('templates'));
+
+  beforeEach(inject(function (_$compile_, _$rootScope_) {
+    $compile = _$compile_;
+    scope = _$rootScope_.$new();
+    element = $compile('<note-list></note-list>')(scope);
+    scope.$digest();
+    isolated = element.isolateScope();
+  }));
+
+  beforeEach(inject(function (_noteData_) {
+    noteData = _noteData_;
+  }));
+
+  it('contains the appropriate content', function () {
+    expect(element.html()).to.contain('ng-repeat="note in ctrl.notes"');
+  });
+
+  it('injected the noteData service', function () {
+    console.log(noteData.notes[0]);
+    expect(isolated.ctrl.notes).to.deep.equal(noteData.notes);
+  });
+});
+```
+
+####2.5.5. Inject data from noteData service
+
+```js
+// noteList.drv.js
+
+'use strict';
+
+angular.module('simpleNote').directive('noteList', noteList);
+
+function noteList () {
+  return {
+    restrict: 'E',
+    templateUrl: 'list-of-notes/note-list.drv.html',
+    controller: noteListCtrl,
+    controllerAs: 'ctrl',
+    scope: {},
+    bindToController: true
+  };
+
+  function noteListCtrl (noteData) {
+    this.notes = noteData.notes;
+  }
+}
+```
+
+####2.5.6. Update the tepmlate
+
+```html
+<ul>
+  <li ng-repeat="note in ctrl.notes"></li>
+</ul>
+```
+
+####2.5.7. Test for exposing noteData.notes to DOM
+
+```js
+it('should contain the title of the note', function () {
+  expect(element.html()).to.contain(noteData.notes[0].title);
+});
+```
+
+####2.5.8. Expose noteData.notes to DOM
+
+Let`s update the directive's template:
+
+```html
+<ul>
+  <li ng-repeat="note in ctrl.notes">
+    {{note.title}}
+  </li>
+</ul>
+```
+
+now we also have to update the ```index.html```, in order to include the proper scripts and use the ```noteList``` directive.
+
+```html
+<body ng-app="simpleNote">
+  <ion-pane>
+    <ion-header-bar class="bar-stable">
+      <h1 class="title">simpleNote</h1>
+    </ion-header-bar>
+    <ion-content>
+      <note-list></note-list>
+    </ion-content>
+  </ion-pane>
+</body>
+
+```
+
+####2.5.9. Test for styling
+
+flexbox not supported by Phantomjs
+
+npm install karma-chrome-launcher --save-dev
+
+####2.5.10. Add styling
+
+
+
+
+
 
 

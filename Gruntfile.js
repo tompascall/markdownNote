@@ -323,7 +323,7 @@ module.exports = function (grunt) {
     karma: {
       options: {
         basePath: '',
-        frameworks: ['chai-jquery', 'chai', 'jquery-1.8.3', 'mocha'],
+        frameworks: ['jquery-chai', 'chai', 'jquery-1.8.3', 'mocha'],
         files: [
           '<%= yeoman.app %>/bower_components/angular/angular.js',
           '<%= yeoman.app %>/bower_components/angular-mocks/angular-mocks.js',
@@ -335,7 +335,8 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
           '<%= yeoman.test %>/mock/**/*.js',
           '<%= yeoman.test %>/spec/**/*.js',
-          '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.drv.html'
+          '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.drv.html',
+          '<%= yeoman.app %>/styles/**/*.css'
         ],
         autoWatch: false,
         reporters: ['dots', 'coverage'],
@@ -348,7 +349,7 @@ module.exports = function (grunt) {
         },
         ngHtml2JsPreprocessor: {
           // strip this from the file path
-          stripPrefix: 'app/scripts/', // to get the correct path after building
+          stripPrefix: 'app/', // to get the correct path after building
 
           // setting this option will create only a single module that contains templates
           // from all the files, so you can load them all with module('templates')

@@ -8,7 +8,10 @@ angular.module('simpleNote')
   return {
     notes: [
       {
-        title: 'noteTitle1'
+        title: 'noteTitle1 noteTitle1 noteTitle1 noteTitle1 noteTitle1 noteTitle1'
+      },
+      {
+        title: 'noteTitle2'
       }
     ]
   };
