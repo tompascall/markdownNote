@@ -295,9 +295,9 @@ THEN I can see a list of my notes (its title)
 
 ###2.3. Todos
 
-- Create mock data of notes
-- Create directive for note list
-- Deploy and test app on multiple devices
+- **Create mock data of notes**
+- **Create directive for note list**
+- **Deploy and test app on multiple devices**
 
 ###2.4. Create mock data of notes
 
@@ -615,5 +615,39 @@ div.note-title-container {
 </ion-list>
 ```
 
+##3. STORY: Show details of notes (title, text, tags)
+
+###3.1. USER STORY
+
+>AS I customer I WANT to see the detail of my notes SO THAT I can read them
+
+###3.2. ACCEPTANCE CRITERIA
+
+GIVEN I am a user
+WHEN I see the list of notes
+THEN I can see the first 5 words of their text (excerpt)
+
+GIVEN I am a user
+WHEN I tap on the note
+THEN I can see the whole text, and the tags
+
+GIVEN I am a user
+WHEN I tap on a note
+THEN I can see the text excerpt again
+
+###3.3. Todos
+
+- **Add mock data to noteData service**
+- **Populate data to noteList directive**
+- **Add tap handler to noteList directive**
+- **Add styling to noteList as regards text and tags**
+
+###3.4. Add mock data to noteData service
+
+###3.5. Populate data to noteList directive
+
+###3.6. Add tap handler to noteList directive
+
+###3.7. Add styling to noteList as regards text and tags
 
 
