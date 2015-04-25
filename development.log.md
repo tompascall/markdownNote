@@ -535,15 +535,85 @@ now we also have to update the ```index.html```, in order to include the proper 
 
 ####2.5.9. Test for styling
 
-flexbox not supported by Phantomjs
+Ionic layouts based on flexbox technology. We have to use prefixes for flexbox, because it is not fully supported by Phantomjs (it supports ```-webkit-box``` prefix).
 
-npm install karma-chrome-launcher --save-dev
+We use ```<ion-list>``` and ```<ion-item>``` ionic directive for our list.
+
+```js
+it('should be an ion-list', function () {
+  var list =  element.find('ion-list');
+  expect(list.length).to.equal(1);
+  var items = element.find('ion-list ion-item');
+  expect(items.length).to.equal(noteData.notes.length);
+});
+
+```
+
+We heaviliy use ```karma-jquery``` and ```jquery-chai``` for testing css:
+
+```js
+it('ion-item should have note css class', function () {
+    var titleRow = element.find('ion-item div');
+    expect(titleRow).to.have.class('row');
+    var noteTitleContainer = titleRow.eq(0).children('div').eq(0);
+    expect(noteTitleContainer).to.have.class('note-title-container col col-80');
+    expect(noteTitleContainer).to.have.css('display').match(/-webkit-box|-ms-flexbox-webkit-flex|flex/);
+    var noteTitle = noteTitleContainer.children('h2');
+    expect(noteTitle).to.have.class('note-title');
+    expect(noteTitle).to.have.css('color','rgb(255, 0, 0)');
+    expect(noteTitle.children('span')).to.have.class('wordwrap');
+  });
+```
+
+**Note:** For testing css we have to inculde our css file path in karma task, and have to instantiate our element in the browser by the following line in our testfile:
+
+```js
+angular.element(document).find('body').append(element);
+```
+
+This is really important, you won't get the proper css values without this step.
 
 ####2.5.10. Add styling
 
+```css
+/* app/styles/style.css */
 
+div.note-title-container {
+  display: -webkit-box;  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox;  /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
+  align-items: center;
+}
 
+.note-title {
+  color: rgb(255, 0, 0);
+}
 
+.wordwrap {
+  white-space: normal;
+  line-height: 30px;
+}
+
+```
+
+####2.5.11. Update the template
+
+```html
+<!-- noteList.drv.html -->
+
+<ion-list>
+  <ion-item ng-repeat="note in ctrl.notes">
+    <div class="row">
+      <div class="note-title-container col col-80">
+        <h2 class='note-title'>
+          <span class="wordwrap" ng-bind="note.title"></span>
+        </h2>
+      </div>
+    </div>
+  </ion-item>
+</ion-list>
+```
 
 
 
