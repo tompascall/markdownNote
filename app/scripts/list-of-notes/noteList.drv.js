@@ -2,9 +2,18 @@
 
 'use strict';
 
-angular.module('simpleNote').directive('noteList', noteList);
-
 function noteList () {
+
+  function noteListCtrl (noteData) {
+    /*jshint validthis: true */
+    var isolated = this;
+    isolated.notes = noteData.notes;
+    isolated.opened = false;
+    isolated.toggleNoteState = function () {
+      isolated.opened = !isolated.opened;
+    };
+  }
+
   return {
     restrict: 'E',
     templateUrl: 'scripts/list-of-notes/note-list.drv.html',
@@ -13,11 +22,8 @@ function noteList () {
     scope: {},
     bindToController: true
   };
-
-  function noteListCtrl (noteData) {
-    this.notes = noteData.notes;
-    this.opened = false;
-  }
 }
+
+angular.module('simpleNote').directive('noteList', noteList);
 
 

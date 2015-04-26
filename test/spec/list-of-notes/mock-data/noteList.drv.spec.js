@@ -27,6 +27,7 @@ describe('Directive: noteList', function () {
   }));
 
   describe('Create a list of notes', function () {
+
     it('contains the appropriate content', function () {
       expect(element.html()).to.contain('ng-repeat="note in ctrl.notes"');
     });
@@ -62,6 +63,7 @@ describe('Directive: noteList', function () {
   describe('Show details of notes', function () {
 
     describe('Add more mock data to noteData service', function () {
+
       it('should have the correct properties', function () {
         expect(noteData.notes[0]).to.have.property('text');
         expect(noteData.notes[0].text).to.be.a('string');
@@ -71,6 +73,7 @@ describe('Directive: noteList', function () {
     });
 
     describe('Populate data to noteList directive', function () {
+
       it('should contain all property of notes of noteData service', function () {
         var note = element.find('ion-list ion-item').eq(0);
         expect(note).to.contain(noteData.notes[0].title);
@@ -81,8 +84,28 @@ describe('Directive: noteList', function () {
     });
 
     describe('Add tap handler to noteList directive', function () {
+
       describe('Set initial state (closed) in noteList directive', function () {
+
         it('initial state should be closed', function () {
+          expect(isolated.ctrl.opened).to.equal(false);
+        });
+      });
+
+      describe('Tap handler to toggle the state of a note', function () {
+
+        it('should toggle state', function () {
+          isolated.ctrl.toggleNoteState();
+          expect(isolated.ctrl.opened).to.equal(true);
+          isolated.ctrl.toggleNoteState();
+          expect(isolated.ctrl.opened).to.equal(false);
+        });
+
+        it('should toggle state when note element is clicked', function () {
+          var note = element.find('ion-list ion-item').eq(0);
+          note.click();
+          expect(isolated.ctrl.opened).to.equal(true);
+          note.click();
           expect(isolated.ctrl.opened).to.equal(false);
         });
       });

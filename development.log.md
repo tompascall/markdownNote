@@ -750,6 +750,42 @@ function noteListCtrl (noteData) {
 }
 ```
 
+####.3.6.3. Test: tap handler toggle the state
+
+```js
+describe('Tap handler to toggle the state of a note', function () {
+  it('should toggle state', function () {
+    isolated.ctrl.toggleNoteState();
+    expect(isolated.ctrl.opened).to.equal(true);
+    isolated.ctrl.toggleNoteState();
+    expect(isolated.ctrl.opened).to.equal(false);
+  });
+});
+```
+
+####3.6.4. Add tap handler
+
+```js
+function noteListCtrl (noteData) {
+  var isolated = this;
+  isolated.notes = noteData.notes;
+  isolated.opened = false;
+  isolated.toggleNoteState = function () {
+    isolated.opened = !isolated.opened;
+  };
+}
+```
+
+And call the handler with ```ng-click```:
+
+```html
+<!-- noteList.drv.html -->
+
+<ion-list>
+  <ion-item ng-repeat="note in ctrl.notes" ng-click="ctrl.toggleNoteState()">
+  ...
+```
+
 ###3.7. Add styling to noteList as regards text and tags
 
 
