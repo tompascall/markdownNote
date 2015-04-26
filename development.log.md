@@ -729,6 +729,27 @@ describe('Show details of notes', function () {
 
 ###3.6. Add tap handler to noteList directive
 
+####3.6.1. Test: initial state of a note (closed)
+
+```js
+describe('Set initial state (closed) in noteList directive', function () {
+  it('initial state should be closed', function () {
+    expect(isolated.ctrl.opened).to.equal(false);
+  });
+});
+```
+
+####3.6.2. Set initial state (closed) in noteList directive
+
+We just have to set ```closed``` property of the isolate scope:
+
+```js
+function noteListCtrl (noteData) {
+  this.notes = noteData.notes;
+  this.opened = false;
+}
+```
+
 ###3.7. Add styling to noteList as regards text and tags
 
 

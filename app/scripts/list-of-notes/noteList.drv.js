@@ -16,6 +16,7 @@ function noteList () {
 
   function noteListCtrl (noteData) {
     this.notes = noteData.notes;
+    this.opened = false;
   }
 }
 

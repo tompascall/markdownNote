@@ -72,11 +72,19 @@ describe('Directive: noteList', function () {
 
     describe('Populate data to noteList directive', function () {
       it('should contain all property of notes of noteData service', function () {
-        var notes = element.find('ion-list ion-item').eq(0);
-        expect(notes).to.contain(noteData.notes[0].title);
-        expect(notes).to.contain(noteData.notes[0].text);
-        expect(notes.html()).to.contain('ng-repeat="tag in note.tags"');
-        expect(notes).to.contain(noteData.notes[0].tags[0]);
+        var note = element.find('ion-list ion-item').eq(0);
+        expect(note).to.contain(noteData.notes[0].title);
+        expect(note).to.contain(noteData.notes[0].text);
+        expect(note.html()).to.contain('ng-repeat="tag in note.tags"');
+        expect(note).to.contain(noteData.notes[0].tags[0]);
+      });
+    });
+
+    describe('Add tap handler to noteList directive', function () {
+      describe('Set initial state (closed) in noteList directive', function () {
+        it('initial state should be closed', function () {
+          expect(isolated.ctrl.opened).to.equal(false);
+        });
       });
     });
   });
