@@ -87,27 +87,43 @@ describe('Directive: noteList', function () {
 
       describe('Set initial state (closed) in noteList directive', function () {
 
-        it('initial state should be closed', function () {
-          expect(isolated.ctrl.opened).to.equal(false);
+        it('should set the state of notes in noteData to closed', function () {
+          var firstNote = isolated.ctrl.notes[0];
+          noteData.stateOfNotes[firstNote.id].opened = true;
+          isolated.ctrl.noteData.initStateOfNotes();
+          expect(noteData.stateOfNotes[firstNote.id].opened).to.equal(false);
+        });
+
+        it('initial state of note should be closed', function () {
+          var firstNote = isolated.ctrl.notes[0];
+          expect(isolated.ctrl.stateOfNotes[firstNote.id].opened).to.equal(false);
         });
       });
 
       describe('Tap handler to toggle the state of a note', function () {
 
         it('should toggle state', function () {
-          isolated.ctrl.toggleNoteState();
-          expect(isolated.ctrl.opened).to.equal(true);
-          isolated.ctrl.toggleNoteState();
-          expect(isolated.ctrl.opened).to.equal(false);
+          var note = isolated.ctrl.notes[0];
+          isolated.ctrl.toggleNoteState(note);
+          expect(isolated.ctrl.noteData.stateOfNotes[note.id].opened).to.equal(true);
+          isolated.ctrl.toggleNoteState(note);
+          expect(isolated.ctrl.noteData.stateOfNotes[note.id].opened).to.equal(false);
         });
 
         it('should toggle state when note element is clicked', function () {
-          var note = element.find('ion-list ion-item').eq(0);
-          note.click();
-          expect(isolated.ctrl.opened).to.equal(true);
-          note.click();
-          expect(isolated.ctrl.opened).to.equal(false);
+           var note = element.find('ion-list ion-item').eq(0);
+           note.click();
+           expect(isolated.ctrl.noteData.stateOfNotes[0].opened).to.equal(true);
+           var secondNote = element.find('ion-list ion-item').eq(1);
+           expect(isolated.ctrl.noteData.stateOfNotes[1].opened).to.equal(false);
+           note.click();
+           expect(isolated.ctrl.noteData.stateOfNotes[0].opened).to.equal(false);
         });
+      });
+
+      describe('Helper function to shorten the text of note', function () {
+        //var note = element.find('ion-list ion-item').eq(0);
+        //isolated.ctrl.makeShortText();
       });
     });
   });

@@ -6,11 +6,13 @@ function noteList () {
 
   function noteListCtrl (noteData) {
     /*jshint validthis: true */
-    var isolated = this;
-    isolated.notes = noteData.notes;
-    isolated.opened = false;
-    isolated.toggleNoteState = function () {
-      isolated.opened = !isolated.opened;
+    var controller = this;
+    noteData.initStateOfNotes();
+    controller.noteData = noteData;
+    controller.notes = noteData.notes;
+    controller.stateOfNotes = noteData.stateOfNotes;
+    controller.toggleNoteState = function (note) {
+      noteData.stateOfNotes[note.id].opened = !noteData.stateOfNotes[note.id].opened;
     };
   }
 

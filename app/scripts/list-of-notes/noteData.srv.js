@@ -8,6 +8,7 @@ angular.module('simpleNote')
   return {
     notes: [
       {
+        id: 0,
         title: 'Quite extremely long long long long long long title for testing purpose',
         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ' +
           'do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
@@ -20,6 +21,7 @@ angular.module('simpleNote')
           'long title', 'a lot of tags']
       },
       {
+        id: 1,
         title: 'Second Note',
         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ' +
           'do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
@@ -30,7 +32,17 @@ angular.module('simpleNote')
           'culpa qui officia deserunt mollit anim id est laborum.',
         tags: ['second note']
       }
-    ]
+    ],
+    initStateOfNotes: function () {
+      this.stateOfNotes = [];
+      var self = this;
+      this.notes.forEach(function (note) {
+        self.stateOfNotes.push({
+          id: note.id,
+          opened: false
+        });
+      });
+    }
   };
 });
 
