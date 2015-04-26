@@ -121,9 +121,14 @@ describe('Directive: noteList', function () {
         });
       });
 
-      describe('Helper function to shorten the text of note', function () {
-        //var note = element.find('ion-list ion-item').eq(0);
-        //isolated.ctrl.makeShortText();
+      describe('Connect tap handler with the helper function', function () {
+        it('should add and remove .ng-hide class', function () {
+          var note = element.find('ion-list ion-item').eq(0);
+          var text = element.find('p').eq(0);
+          expect(text).to.have.class('.ng-hide');
+          note.click();
+          expect(text).to.not.have.class('.ng-hide');
+        });
       });
     });
   });

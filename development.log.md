@@ -828,10 +828,10 @@ We have to pass the actual note to the ```toggleNoteState``` method, and call th
 <ion-item ng-repeat="note in ctrl.notes" ng-click="ctrl.toggleNoteState(note)">
 ```
 
+####3.6.5. Test: connect tap handler with the helper function
 
-####3.6.5. Test: helper function to shorten the text of note
 
-####3.6.6. Add helper function to shorten the text of note
+####3.6.6. Connect tap handler with the helper function
 
 
 ###3.7. Add styling to noteList as regards text and tags
