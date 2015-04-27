@@ -12,7 +12,7 @@
     <div id="note-text-and-tags" ng-show="ctrl.stateOfNotes[note.id].opened">
       <textarea rows="10" readonly ng-bind="note.text"></textarea>
       <div id="tags-row" class="row">
-        <p id="tag-container" class="col col-80">
+        <p id="tag-container" class="col col-80"><i class="icon ion-pricetag"></i>&nbsp;
           <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span>
         </p>
       </div>

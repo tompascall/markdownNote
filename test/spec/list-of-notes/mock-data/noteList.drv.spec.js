@@ -180,6 +180,17 @@ describe('Directive: noteList', function () {
           expect(tag).to.have.css('color', 'rgb(255, 255, 255)');
         });
       });
+
+      describe('Add decorator icon to tags', function () {
+
+        beforeEach(function () {
+          tagsRow = textAndTags.find('#tags-row');
+        });
+
+        it('should have tags icon', function () {
+          expect(tagsRow.find('p i')).to.have.class('icon ion-pricetags');
+        });
+      });
     });
   });
 });

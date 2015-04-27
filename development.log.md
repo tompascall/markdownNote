@@ -946,7 +946,26 @@ I haven't tested all the css just a few properties, but here are the whole css c
 
 ####3.7.5. Test: add decorator icon to tags
 
+```js
+describe('Add decorator icon to tags', function () {
+
+  beforeEach(function () {
+    tagsRow = textAndTags.find('#tags-row');
+  });
+
+  it('should have tags icon', function () {
+    expect(tagsRow.find('p i')).to.have.class('icon ion-pricetags');
+  });
+});
+```
+
 ####3.7.6. Add decorator icon to tags
+
+```html
+ <p id="tag-container" class="col col-80"><i class="icon ion-pricetag"></i>&nbsp;
+    <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span>
+  </p>
+```
 
 ####3.7.7. Test: Transition for open and close note
 
