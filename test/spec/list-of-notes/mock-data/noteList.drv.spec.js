@@ -131,5 +131,27 @@ describe('Directive: noteList', function () {
         });
       });
     });
+
+    describe('Add styling to noteList as regards text and tags', function () {
+      var textAndTags;
+      var text;
+      var tags;
+
+      describe('Place text to a readonly textarea', function () {
+        beforeEach(function () {
+          textAndTags = element.find('#note-text-and-tags').eq(0);
+          text = textAndTags.find('textarea');
+        });
+
+        it('text should be in textarea element', function () {
+          expect(text.html()).to.contain(noteData.notes[0].text);
+        });
+
+        it('should be a readonly textarea', function () {
+          expect(text).to.have.attr('readonly');
+        });
+
+      });
+    });
   });
 });

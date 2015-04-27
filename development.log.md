@@ -854,4 +854,14 @@ describe('Connect tap handler with ng-show', function () {
 
 ###3.7. Add styling to noteList as regards text and tags
 
+####3.7.1. Test: place text to a read only textarea
 
+####3.7.2. Place text to a read only textarea
+
+####3.7.3. Test: show tags separately
+
+####3.7.4. Show tags separately
+
+####3.7.5. Test: Transition for open and close note
+
+####3.7.6. Transition for open and close note
