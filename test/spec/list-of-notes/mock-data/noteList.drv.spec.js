@@ -11,7 +11,7 @@ describe('Directive: noteList', function () {
 
   beforeEach(module('simpleNote'));
 
-  beforeEach(module('templates'));
+  beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
 
   beforeEach(inject(function (_$compile_, _$rootScope_) {
     $compile = _$compile_;
@@ -47,7 +47,7 @@ describe('Directive: noteList', function () {
       expect(items.length).to.equal(noteData.notes.length);
     });
 
-    it('ion-item should have note css class', function () {
+    it('should have the proper note css classes', function () {
       var titleRow = element.find('ion-item div');
       expect(titleRow).to.have.class('row');
       var noteTitleContainer = titleRow.eq(0).children('div').eq(0);
@@ -121,13 +121,13 @@ describe('Directive: noteList', function () {
         });
       });
 
-      describe('Connect tap handler with the helper function', function () {
-        it('should add and remove .ng-hide class', function () {
+      describe('Connect tap handler with ng-show', function () {
+        it('should add and remove .ng-hide class when when note element is clicked', function () {
           var note = element.find('ion-list ion-item').eq(0);
-          var text = element.find('p').eq(0);
-          expect(text).to.have.class('.ng-hide');
+          var textAndTags = note.find('#note-text-and-tags');
+          expect(textAndTags).to.have.class('ng-hide');
           note.click();
-          expect(text).to.not.have.class('.ng-hide');
+          expect(textAndTags).to.not.have.class('ng-hide');
         });
       });
     });

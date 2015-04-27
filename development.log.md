@@ -828,10 +828,28 @@ We have to pass the actual note to the ```toggleNoteState``` method, and call th
 <ion-item ng-repeat="note in ctrl.notes" ng-click="ctrl.toggleNoteState(note)">
 ```
 
-####3.6.5. Test: connect tap handler with the helper function
+####3.6.5. Test: connect tap handler with ng-show
 
+```js
+describe('Connect tap handler with ng-show', function () {
+  it('should add and remove ng-hide class', function () {
+    var note = element.find('ion-list ion-item').eq(0);
+    var textAndTags = element.find('#note-text-and-tags').eq(0);
+    expect(textAndTags).to.have.class('ng-hide');
+    note.click();
+    expect(textAndTags).to.not.have.class('ng-hide');
+  });
+});
+```
 
-####3.6.6. Connect tap handler with the helper function
+####3.6.6. Connect tap handler with ng-show
+
+```html
+<div id="note-text-and-tags" ng-show="ctrl.stateOfNotes[note.id].opened">
+  <p>{{note.text}}</p>
+  <p><span ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span></p>
+</div>
+```
 
 
 ###3.7. Add styling to noteList as regards text and tags
