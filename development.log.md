@@ -856,12 +856,98 @@ describe('Connect tap handler with ng-show', function () {
 
 ####3.7.1. Test: place text to a read only textarea
 
+```js
+describe('Place text to a readonly textarea', function () {
+ 
+  beforeEach(function () {
+    textAndTags = element.find('#note-text-and-tags').eq(0);
+    text = textAndTags.find('textarea');
+  });
+
+  it('text should be in textarea element', function () {
+    expect(text.html()).to.contain(noteData.notes[0].text);
+  });
+
+  it('should be a readonly textarea', function () {
+    expect(text).to.have.attr('readonly');
+  });
+
+  it('should have a rows atribute be set to 10', function () {
+    expect(text).to.have.attr('rows', '10');
+  });
+});
+```
+
 ####3.7.2. Place text to a read only textarea
+
+```html
+<div id="note-text-and-tags" ng-show="ctrl.stateOfNotes[note.id].opened">
+  <textarea row="10" readonly ng-bind="note.text"></textarea>
+  <p><span ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span></p>
+</div>
+```
 
 ####3.7.3. Test: show tags separately
 
+```js
+describe('Show tags separately', function () {
+
+  beforeEach(function () {
+    tagsRow = textAndTags.find('#tags-row');
+  });
+
+  it('should be placed in a row', function () {
+    expect(tagsRow).to.have.class('row');
+  });
+
+  it('should have a tag-container, a col and a col-80 class', function () {
+    expect(tagsRow.find('p#tag-container')).to.have.class('col col-80');
+  });
+
+  it('should contain #tag-title with given css', function () {
+    var tag = tagsRow.find('span.tag-title');
+    expect(tag.html()).to.contain(isolated.ctrl.notes[0].tags[0])
+    expect(tag).to.have.css('background-color', 'rgb(153, 153, 153)');
+    expect(tag).to.have.css('color', 'rgb(255, 255, 255)');
+  });
+});
+```
+
 ####3.7.4. Show tags separately
 
-####3.7.5. Test: Transition for open and close note
+```html
+ <div id="tags-row" class="row">
+  <p id="tag-container" class="col col-80">
+    <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span>
+  </p>
+</div>
+```
+I haven't tested all the css just a few properties, but here are the whole css code:
 
-####3.7.6. Transition for open and close note
+```css
+#tag-container {
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex;
+  align-items: center;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.tag-title {
+  background-color: rgb(153, 153, 153);
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  margin: 2px 3px 2px 3px;
+  padding: 0 5px 0 5px;
+  border-radius: 3px;
+  line-height: 25px;
+}
+```
+
+####3.7.5. Test: add decorator icon to tags
+
+####3.7.6. Add decorator icon to tags
+
+####3.7.7. Test: Transition for open and close note
+
+####3.7.8. Transition for open and close note

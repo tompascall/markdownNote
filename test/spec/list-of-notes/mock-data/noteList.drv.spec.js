@@ -135,11 +135,14 @@ describe('Directive: noteList', function () {
     describe('Add styling to noteList as regards text and tags', function () {
       var textAndTags;
       var text;
-      var tags;
+      var tagsRow;
+
+      beforeEach(function () {
+        textAndTags = element.find('#note-text-and-tags').eq(0);
+      });
 
       describe('Place text to a readonly textarea', function () {
         beforeEach(function () {
-          textAndTags = element.find('#note-text-and-tags').eq(0);
           text = textAndTags.find('textarea');
         });
 
@@ -151,6 +154,31 @@ describe('Directive: noteList', function () {
           expect(text).to.have.attr('readonly');
         });
 
+        it('should have a rows atribute be set to 10', function () {
+          expect(text).to.have.attr('rows', '10');
+        });
+      });
+
+      describe('Show tags separately', function () {
+
+        beforeEach(function () {
+          tagsRow = textAndTags.find('#tags-row');
+        });
+
+        it('should be placed in a row', function () {
+          expect(tagsRow).to.have.class('row');
+        });
+
+        it('should have a tag-container, a col and a col-80 class', function () {
+          expect(tagsRow.find('p#tag-container')).to.have.class('col col-80');
+        });
+
+        it('should contain #tag-title with given css', function () {
+          var tag = tagsRow.find('span.tag-title');
+          expect(tag.html()).to.contain(isolated.ctrl.notes[0].tags[0])
+          expect(tag).to.have.css('background-color', 'rgb(153, 153, 153)');
+          expect(tag).to.have.css('color', 'rgb(255, 255, 255)');
+        });
       });
     });
   });

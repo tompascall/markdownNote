@@ -10,8 +10,12 @@
       </div>
     </div>
     <div id="note-text-and-tags" ng-show="ctrl.stateOfNotes[note.id].opened">
-      <textarea readonly>{{note.text}}</textarea>
-      <p><span ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span></p>
+      <textarea rows="10" readonly ng-bind="note.text"></textarea>
+      <div id="tags-row" class="row">
+        <p id="tag-container" class="col col-80">
+          <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span>
+        </p>
+      </div>
     </div>
   </ion-item>
 </ion-list>
