@@ -729,6 +729,129 @@ describe('Show details of notes', function () {
 
 ###3.6. Add tap handler to noteList directive
 
+####3.6.1. Test: initial state of a note (closed)
+
+I decided to extend the noteData service to store the state of the notes. I didn't want to store the state in the ```notes``` array, but created an other array, ```stateOfNotes```. It has to have one to one parallelizm with the ```notes``` array, so I added ids to ```notes``` and ```stateOfNotes``` elements:
+
+```js
+notes: [
+  {
+    id: 0,
+    title: ...,
+    text: ...,
+    tags: [...]
+  },
+  ...
+],
+initStateOfNotes: function () {
+  this.stateOfNotes = [];
+  var self = this;
+  this.notes.forEach(function (note) {
+    self.stateOfNotes.push({
+      id: note.id,
+      opened: false
+    });
+  });
+}
+```
+
+Here comes the tests:
+
+```js
+describe('Set initial state (closed) in noteList directive', function () {
+
+  it('should set the state of notes in noteData to closed', function () {
+    var firstNote = isolated.ctrl.notes[0];
+    noteData.stateOfNotes[firstNote.id].opened = true;
+    isolated.ctrl.noteData.initStateOfNotes();
+    expect(noteData.stateOfNotes[firstNote.id].opened).to.equal(false);
+  });
+
+  it('initial state of note should be closed', function () {
+    var firstNote = isolated.ctrl.notes[0];
+    expect(isolated.ctrl.stateOfNotes[firstNote.id].opened).to.equal(false);
+  });
+});
+```
+
+####3.6.2. Set initial state (closed) in noteList directive
+
+I had to modify ```noteList``` directive:
+
+```js
+function noteListCtrl (noteData) {
+  /*jshint validthis: true */
+  var controller = this;
+  noteData.initStateOfNotes();
+  controller.noteData = noteData;
+  controller.notes = noteData.notes;
+  controller.stateOfNotes = noteData.stateOfNotes;
+}
+```
+
+####.3.6.3. Test: tap handler toggle the state
+
+```js
+describe('Tap handler to toggle the state of a note', function () {
+
+  it('should toggle state', function () {
+    var note = isolated.ctrl.notes[0];
+    isolated.ctrl.toggleNoteState(note);
+    expect(isolated.ctrl.noteData.stateOfNotes[note.id].opened).to.equal(true);
+    isolated.ctrl.toggleNoteState(note);
+    expect(isolated.ctrl.noteData.stateOfNotes[note.id].opened).to.equal(false);
+  });
+
+  it('should toggle state when note element is clicked', function () {
+     var note = element.find('ion-list ion-item').eq(0);
+     note.click();
+     expect(isolated.ctrl.noteData.stateOfNotes[0].opened).to.equal(true);
+     var secondNote = element.find('ion-list ion-item').eq(1);
+     expect(isolated.ctrl.noteData.stateOfNotes[1].opened).to.equal(false);
+     note.click();
+     expect(isolated.ctrl.noteData.stateOfNotes[0].opened).to.equal(false);
+  });
+});
+```
+
+####3.6.4. Add tap handler
+
+```js
+controller.toggleNoteState = function (note) {
+  noteData.stateOfNotes[note.id].opened = !noteData.stateOfNotes[note.id].opened;
+};
+```
+
+We have to pass the actual note to the ```toggleNoteState``` method, and call the handler with ```ng-click```:
+
+```html
+<ion-item ng-repeat="note in ctrl.notes" ng-click="ctrl.toggleNoteState(note)">
+```
+
+####3.6.5. Test: connect tap handler with ng-show
+
+```js
+describe('Connect tap handler with ng-show', function () {
+  it('should add and remove ng-hide class', function () {
+    var note = element.find('ion-list ion-item').eq(0);
+    var textAndTags = element.find('#note-text-and-tags').eq(0);
+    expect(textAndTags).to.have.class('ng-hide');
+    note.click();
+    expect(textAndTags).to.not.have.class('ng-hide');
+  });
+});
+```
+
+####3.6.6. Connect tap handler with ng-show
+
+```html
+<div id="note-text-and-tags" ng-show="ctrl.stateOfNotes[note.id].opened">
+  <p>{{note.text}}</p>
+  <p><span ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span></p>
+</div>
+```
+
+
 ###3.7. Add styling to noteList as regards text and tags
 
 

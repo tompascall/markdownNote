@@ -1,7 +1,7 @@
 <!-- noteList.drv.html -->
 
 <ion-list>
-  <ion-item ng-repeat="note in ctrl.notes">
+  <ion-item ng-repeat="note in ctrl.notes" ng-click="ctrl.toggleNoteState(note)">
     <div class="row">
       <div class="note-title-container col col-80">
         <h2 class='note-title'>
@@ -9,7 +9,9 @@
         </h2>
       </div>
     </div>
-    <p>{{note.text}}</p>
-    <p><span ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span></p>
+    <div id="note-text-and-tags" ng-show="ctrl.stateOfNotes[note.id].opened">
+      <p>{{note.text}}</p>
+      <p><span ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span></p>
+    </div>
   </ion-item>
 </ion-list>

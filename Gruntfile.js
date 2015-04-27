@@ -35,7 +35,7 @@ module.exports = function (grunt) {
     ngconstant: {
       options: {
         space: '  ',
-        wrap: '"use strict";\n\n {%= __ngModule %}',
+        wrap: "'use strict';\n\n {%= __ngModule %}",
         name: 'config',
         dest: '<%= yeoman.app %>/<%= yeoman.scripts %>/configuration.js'
       },
@@ -323,7 +323,7 @@ module.exports = function (grunt) {
     karma: {
       options: {
         basePath: '',
-        frameworks: ['jquery-chai', 'chai', 'jquery-1.8.3', 'mocha'],
+        frameworks: ['chai-jquery', 'chai', 'jquery-1.8.3', 'mocha'],
         files: [
           '<%= yeoman.app %>/bower_components/angular/angular.js',
           '<%= yeoman.app %>/bower_components/angular-mocks/angular-mocks.js',
