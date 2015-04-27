@@ -11,6 +11,13 @@
   color: rgb(255, 0, 0);
 }
 
+.note-item {
+  border-bottom: 5px solid #eee;
+}
+.note-item h2 {
+  font-size: 18px
+}
+
 .wordwrap {
   white-space: normal;
   line-height: 30px;
@@ -52,19 +59,20 @@
   line-height: 25px;
 }
 
-/*
+
 .animate-show {
   opacity: 1;
+  line-height: 1.5;
 }
 
 .animate-show.ng-hide-add.ng-hide-add-active,
 .animate-show.ng-hide-remove.ng-hide-remove-active {
-  -webkit-transition: opacity linear 0.2s;
-  transition: all linear 0.2s;
+  transition: all linear 0.3s;
 }
 
 .animate-show.ng-hide {
   opacity: 0;
+  line-height: 0;
 }
-*/
+
 

@@ -43,12 +43,12 @@ describe('Directive: noteList', function () {
     it('should be an ion-list', function () {
       var list =  element.find('ion-list');
       expect(list.length).to.equal(1);
-      var items = element.find('ion-list ion-item');
+      var items = element.find('ion-list .note-item');
       expect(items.length).to.equal(noteData.notes.length);
     });
 
     it('should have the proper note css classes', function () {
-      var titleRow = element.find('ion-item div');
+      var titleRow = element.find('.note-item div');
       expect(titleRow).to.have.class('row');
       var noteTitleContainer = titleRow.eq(0).children('div').eq(0);
       expect(noteTitleContainer).to.have.class('note-title-container col col-80');
@@ -75,7 +75,7 @@ describe('Directive: noteList', function () {
     describe('Populate data to noteList directive', function () {
 
       it('should contain all property of notes of noteData service', function () {
-        var note = element.find('ion-list ion-item').eq(0);
+        var note = element.find('ion-list .note-item').eq(0);
         expect(note).to.contain(noteData.notes[0].title);
         expect(note).to.contain(noteData.notes[0].text);
         expect(note.html()).to.contain('ng-repeat="tag in note.tags"');
@@ -111,10 +111,10 @@ describe('Directive: noteList', function () {
         });
 
         it('should toggle state when note element is clicked', function () {
-           var note = element.find('ion-list ion-item').eq(0);
+           var note = element.find('ion-list .note-item').eq(0);
            note.click();
            expect(isolated.ctrl.noteData.stateOfNotes[0].opened).to.equal(true);
-           var secondNote = element.find('ion-list ion-item').eq(1);
+           var secondNote = element.find('ion-list .note-item').eq(1);
            expect(isolated.ctrl.noteData.stateOfNotes[1].opened).to.equal(false);
            note.click();
            expect(isolated.ctrl.noteData.stateOfNotes[0].opened).to.equal(false);
@@ -123,7 +123,7 @@ describe('Directive: noteList', function () {
 
       describe('Connect tap handler with ng-show', function () {
         it('should add and remove .ng-hide class when when note element is clicked', function () {
-          var note = element.find('ion-list ion-item').eq(0);
+          var note = element.find('ion-list .note-item').eq(0);
           var textAndTags = note.find('#note-text-and-tags');
           expect(textAndTags).to.have.class('ng-hide');
           note.click();
