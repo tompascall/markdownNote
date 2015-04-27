@@ -9,8 +9,10 @@
         </h2>
       </div>
     </div>
-    <div id="note-text-and-tags" ng-show="ctrl.stateOfNotes[note.id].opened">
-      <textarea rows="10" readonly ng-bind="note.text"></textarea>
+    <div id="note-text-and-tags" class="animate-show" ng-show="ctrl.stateOfNotes[note.id].opened">
+      <div class="text-title-container">
+        <p class="text-title"><span class="text-title-wordwrap" ng-bind="note.text"></span></p>
+      </div>
       <div id="tags-row" class="row">
         <p id="tag-container" class="col col-80"><i class="icon ion-pricetag"></i>&nbsp;
           <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span>

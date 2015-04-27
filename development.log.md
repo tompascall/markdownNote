@@ -854,36 +854,25 @@ describe('Connect tap handler with ng-show', function () {
 
 ###3.7. Add styling to noteList as regards text and tags
 
-####3.7.1. Test: place text to a read only textarea
+####3.7.1. Test: place text to a paragraph
 
 ```js
-describe('Place text to a readonly textarea', function () {
- 
+describe('Place text to a paragraph', function () {
   beforeEach(function () {
-    textAndTags = element.find('#note-text-and-tags').eq(0);
-    text = textAndTags.find('textarea');
+    text = textAndTags.find('.text-title');
   });
 
-  it('text should be in textarea element', function () {
+  it('text should be in a p element', function () {
     expect(text.html()).to.contain(noteData.notes[0].text);
-  });
-
-  it('should be a readonly textarea', function () {
-    expect(text).to.have.attr('readonly');
-  });
-
-  it('should have a rows atribute be set to 10', function () {
-    expect(text).to.have.attr('rows', '10');
   });
 });
 ```
 
-####3.7.2. Place text to a read only textarea
+####3.7.2. Place text to a paragraph
 
 ```html
-<div id="note-text-and-tags" ng-show="ctrl.stateOfNotes[note.id].opened">
-  <textarea row="10" readonly ng-bind="note.text"></textarea>
-  <p><span ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span></p>
+<div class="text-title-container">
+  <p class="text-title"><span class="text-title-wordwrap" ng-bind="note.text"></span></p>
 </div>
 ```
 
@@ -967,6 +956,3 @@ describe('Add decorator icon to tags', function () {
   </p>
 ```
 
-####3.7.7. Test: Transition for open and close note
-
-####3.7.8. Transition for open and close note

@@ -141,21 +141,13 @@ describe('Directive: noteList', function () {
         textAndTags = element.find('#note-text-and-tags').eq(0);
       });
 
-      describe('Place text to a readonly textarea', function () {
+      describe('Place text to a paragraph', function () {
         beforeEach(function () {
-          text = textAndTags.find('textarea');
+          text = textAndTags.find('.text-title');
         });
 
-        it('text should be in textarea element', function () {
+        it('text should be in a p element', function () {
           expect(text.html()).to.contain(noteData.notes[0].text);
-        });
-
-        it('should be a readonly textarea', function () {
-          expect(text).to.have.attr('readonly');
-        });
-
-        it('should have a rows atribute be set to 10', function () {
-          expect(text).to.have.attr('rows', '10');
         });
       });
 
@@ -188,7 +180,13 @@ describe('Directive: noteList', function () {
         });
 
         it('should have tags icon', function () {
-          expect(tagsRow.find('p i')).to.have.class('icon ion-pricetags');
+          expect(tagsRow.find('p i')).to.have.class('icon ion-pricetag');
+        });
+      });
+
+      describe('Add transition for open and close note', function () {
+        it('should have an animate-show class', function () {
+          expect(textAndTags).to.have.class('animate-show');
         });
       });
     });
