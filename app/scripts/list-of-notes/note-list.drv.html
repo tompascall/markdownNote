@@ -9,9 +9,15 @@
         </h2>
       </div>
     </div>
-    <div id="note-text-and-tags" ng-show="ctrl.stateOfNotes[note.id].opened">
-      <p>{{note.text}}</p>
-      <p><span ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span></p>
+    <div id="note-text-and-tags" class="animate-show" ng-show="ctrl.stateOfNotes[note.id].opened">
+      <div class="text-title-container">
+        <p class="text-title"><span class="text-title-wordwrap" ng-bind="note.text"></span></p>
+      </div>
+      <div id="tags-row" class="row">
+        <p id="tag-container" class="col col-80"><i class="icon ion-pricetag"></i>&nbsp;
+          <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span>
+        </p>
+      </div>
     </div>
   </ion-item>
 </ion-list>

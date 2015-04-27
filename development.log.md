@@ -854,4 +854,105 @@ describe('Connect tap handler with ng-show', function () {
 
 ###3.7. Add styling to noteList as regards text and tags
 
+####3.7.1. Test: place text to a paragraph
+
+```js
+describe('Place text to a paragraph', function () {
+  beforeEach(function () {
+    text = textAndTags.find('.text-title');
+  });
+
+  it('text should be in a p element', function () {
+    expect(text.html()).to.contain(noteData.notes[0].text);
+  });
+});
+```
+
+####3.7.2. Place text to a paragraph
+
+```html
+<div class="text-title-container">
+  <p class="text-title"><span class="text-title-wordwrap" ng-bind="note.text"></span></p>
+</div>
+```
+
+####3.7.3. Test: show tags separately
+
+```js
+describe('Show tags separately', function () {
+
+  beforeEach(function () {
+    tagsRow = textAndTags.find('#tags-row');
+  });
+
+  it('should be placed in a row', function () {
+    expect(tagsRow).to.have.class('row');
+  });
+
+  it('should have a tag-container, a col and a col-80 class', function () {
+    expect(tagsRow.find('p#tag-container')).to.have.class('col col-80');
+  });
+
+  it('should contain #tag-title with given css', function () {
+    var tag = tagsRow.find('span.tag-title');
+    expect(tag.html()).to.contain(isolated.ctrl.notes[0].tags[0])
+    expect(tag).to.have.css('background-color', 'rgb(153, 153, 153)');
+    expect(tag).to.have.css('color', 'rgb(255, 255, 255)');
+  });
+});
+```
+
+####3.7.4. Show tags separately
+
+```html
+ <div id="tags-row" class="row">
+  <p id="tag-container" class="col col-80">
+    <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span>
+  </p>
+</div>
+```
+I haven't tested all the css just a few properties, but here are the whole css code:
+
+```css
+#tag-container {
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex;
+  align-items: center;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.tag-title {
+  background-color: rgb(153, 153, 153);
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  margin: 2px 3px 2px 3px;
+  padding: 0 5px 0 5px;
+  border-radius: 3px;
+  line-height: 25px;
+}
+```
+
+####3.7.5. Test: add decorator icon to tags
+
+```js
+describe('Add decorator icon to tags', function () {
+
+  beforeEach(function () {
+    tagsRow = textAndTags.find('#tags-row');
+  });
+
+  it('should have tags icon', function () {
+    expect(tagsRow.find('p i')).to.have.class('icon ion-pricetags');
+  });
+});
+```
+
+####3.7.6. Add decorator icon to tags
+
+```html
+ <p id="tag-container" class="col col-80"><i class="icon ion-pricetag"></i>&nbsp;
+    <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"><span>
+  </p>
+```
 

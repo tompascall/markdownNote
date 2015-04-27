@@ -131,5 +131,64 @@ describe('Directive: noteList', function () {
         });
       });
     });
+
+    describe('Add styling to noteList as regards text and tags', function () {
+      var textAndTags;
+      var text;
+      var tagsRow;
+
+      beforeEach(function () {
+        textAndTags = element.find('#note-text-and-tags').eq(0);
+      });
+
+      describe('Place text to a paragraph', function () {
+        beforeEach(function () {
+          text = textAndTags.find('.text-title');
+        });
+
+        it('text should be in a p element', function () {
+          expect(text.html()).to.contain(noteData.notes[0].text);
+        });
+      });
+
+      describe('Show tags separately', function () {
+
+        beforeEach(function () {
+          tagsRow = textAndTags.find('#tags-row');
+        });
+
+        it('should be placed in a row', function () {
+          expect(tagsRow).to.have.class('row');
+        });
+
+        it('should have a tag-container, a col and a col-80 class', function () {
+          expect(tagsRow.find('p#tag-container')).to.have.class('col col-80');
+        });
+
+        it('should contain #tag-title with given css', function () {
+          var tag = tagsRow.find('span.tag-title');
+          expect(tag.html()).to.contain(isolated.ctrl.notes[0].tags[0])
+          expect(tag).to.have.css('background-color', 'rgb(153, 153, 153)');
+          expect(tag).to.have.css('color', 'rgb(255, 255, 255)');
+        });
+      });
+
+      describe('Add decorator icon to tags', function () {
+
+        beforeEach(function () {
+          tagsRow = textAndTags.find('#tags-row');
+        });
+
+        it('should have tags icon', function () {
+          expect(tagsRow.find('p i')).to.have.class('icon ion-pricetag');
+        });
+      });
+
+      describe('Add transition for open and close note', function () {
+        it('should have an animate-show class', function () {
+          expect(textAndTags).to.have.class('animate-show');
+        });
+      });
+    });
   });
 });

@@ -15,3 +15,56 @@
   white-space: normal;
   line-height: 30px;
 }
+
+.text-title-container {  /* OLD - iOS 6-, Safari 3.1-6, BB7 */  /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.text-title-wordwrap {
+  white-space: normal;
+}
+
+.text-title {
+  background-color: #eee;
+  border-radius: 5px;;
+  padding: 10px;
+}
+
+#tag-container {
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.tag-title {
+  background-color: rgb(153, 153, 153);
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  margin: 2px 3px 2px 3px;
+  padding: 0 5px 0 5px;
+  border-radius: 3px;
+  line-height: 25px;
+}
+
+/*
+.animate-show {
+  opacity: 1;
+}
+
+.animate-show.ng-hide-add.ng-hide-add-active,
+.animate-show.ng-hide-remove.ng-hide-remove-active {
+  -webkit-transition: opacity linear 0.2s;
+  transition: all linear 0.2s;
+}
+
+.animate-show.ng-hide {
+  opacity: 0;
+}
+*/
+
