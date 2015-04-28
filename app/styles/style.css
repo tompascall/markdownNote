@@ -1,4 +1,7 @@
-/* app/styles/style.css */
+#notes-header {
+  font-family: 'Gochi Hand', cursive;
+  font-size: 30px;
+}
 
 .note-title-container {
   display: -webkit-box;  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
@@ -13,10 +16,10 @@
 }
 
 .note-item {
-  border-bottom: 5px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 .note-item h2 {
-  font-size: 18px
+  font-size: 16px
 }
 
 .wordwrap {
@@ -78,5 +81,4 @@
   filter: alpha(opacity=0);
   line-height: 0;
 }
-
 

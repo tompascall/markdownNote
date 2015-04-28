@@ -5,7 +5,7 @@
 function appHeaderDirective () {
   return {
     restrict: 'E',
-    templateUrl: 'scripts/newNote/app-header.drv.html'
+    templateUrl: 'scripts/new-note/app-header.drv.html'
   };
 }
 
