@@ -335,7 +335,7 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
           '<%= yeoman.test %>/mock/**/*.js',
           '<%= yeoman.test %>/spec/**/*.js',
-          '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.drv.html',
+          '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.html',
           '<%= yeoman.app %>/styles/**/*.css'
         ],
         autoWatch: false,

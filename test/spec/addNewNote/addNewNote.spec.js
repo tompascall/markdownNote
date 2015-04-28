@@ -8,6 +8,7 @@ describe('Directive: noteList', function () {
   var element;
   var isolated;
   var noteData;
+  var $ionicModal;
 
   beforeEach(module('simpleNote'));
 
@@ -22,12 +23,18 @@ describe('Directive: noteList', function () {
     angular.element(document).find('body').append(element); // for rendering css
   }));
 
-  beforeEach(inject(function (_noteData_) {
+  beforeEach(inject(function (_noteData_, _$ionicModal_) {
     noteData = _noteData_;
+    $ionicModal = _$ionicModal_;
+    var cloneNewNoteModal = $ionicModal
+      .fromTemplateUrl('scripts/new-note/new-note-modal.html', function (modal) {
+        return modal;
+      }, {scope: isolated.ctrl});
   }));
 
-  describe('Add + button to the header', function () {
-
-
+  describe('Add newNoteModal', function () {
+    it('should be an $ionicModal', function () {
+      expect(isolated.ctrl.newNoteModal).to.deep.equal(cloneNeNoteModal);
+    });
   });
 });

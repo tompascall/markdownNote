@@ -1069,13 +1069,13 @@ function appHeaderDirective () {
 angular.module('simpleNote').directive('appHeader', appHeaderDirective);
 ```
 
-And placae the new directive to the index template:
-
-```html
-
-```
-
 ###4.5. Add new note modal
+
+We use Ionic [```$ionicModal```](http://ionicframework.com/docs/api/service/$ionicModal/) functionalitly for the add new note form.
+
+####4.5.1. Test: create minimal ```newNoteModal``` modal from template and attach it to ```noteList``` directive
+
+####4.5.2. Create minimal ```newNoteModal``` modal from template and attach it to ```noteList``` directive
 
 ###4.6. Create helper service to filter out the useless white spaces and the same tags
 
