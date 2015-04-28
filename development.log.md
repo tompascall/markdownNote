@@ -956,3 +956,127 @@ describe('Add decorator icon to tags', function () {
   </p>
 ```
 
+##4. STORY: Add New Note
+
+###4.1. ###USER STORY
+
+>AS I customer I WANT to see a + button in the header SO THAT I can add new notes
+
+###4.2. ACCEPTANCE CRITERIA
+
+GIVEN I am a user
+WHEN I see the app header
+I can see a + button
+
+GIVEN I am a user
+WHEN I tap the + button
+THEN I can see a popped up new note form with a title, text and tags input fields, a cancel and an add button
+
+GIVEN I am a user
+WHEN I tap on the cancel button
+THEN the form disappears without adding a new note
+
+GIVEN I am a user
+WHEN I don't fill the title field
+THEN I cannot add the new note
+
+GIVEN I am a user
+WHEN I fill title and text and/or tags
+THEN I can add a new note by pushing the add button
+
+GIVEN I am a user
+WHEN I type the same words separated by commas
+THEN the new note will only keep the different tags
+
+###4.3. Todos
+
+- **Add + button to the header**
+- **Add new note modal**
+- **Add tap handler to the + button**
+- **Create helper service to filter out the useless white spaces and the same tags**
+- **Connect modal data to noteData service**
+
+###4.4. Add + button to the header
+
+A + icon button must be placed on the right side of the header.
+
+**NOTE** If you create a directory in the ```scripts``` folder which name is before alphabetically than the ```app.js```, your test will be failed, because it won't be able to find the main module and cannot inject it.
+
+####4.4.1. Test: place a + button to the app-header directive
+
+```js
+// appHeader.drv.js
+
+'use strict';
+
+describe('Directive: appHeader', function () {
+  var $compile;
+  var scope;
+  var element;
+  var noteData;
+
+  beforeEach(module('simpleNote'));
+
+  beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
+
+  beforeEach(inject(function (_$compile_, _$rootScope_) {
+    $compile = _$compile_;
+    scope = _$rootScope_.$new();
+    element = $compile('<app-header></app-header>')(scope);
+    scope.$digest();
+    angular.element(document).find('body').append(element); // for rendering css
+  }));
+
+  describe('Test directive existence ', function () {
+    it('should have an ion-header-bar', function () {
+      expect(element.find('ion-header-bar'))
+        .to.have.attr('align-title', 'center');
+    });
+
+    it('should have a h1 with a notes-header id', function () {
+      expect(element.find('h1#notes-header'))
+        .to.have.class('title');
+    });
+
+    it('should have a button with class button button-icon', function () {
+      expect(element.find('button#add-button'))
+        .to.have.class('button button-icon');
+    });
+
+    it('should have a plus icon', function () {
+      expect(element.find('button#add-button').children('i'))
+        .to.have.class('icon ion-plus-round');
+    });
+  });
+});
+
+```
+
+####4.4.2. Place a + button to the app-header directive
+
+```js
+// appHeader.drv.js
+
+'use strict';
+
+function appHeaderDirective () {
+  return {
+    restrict: 'E',
+    templateUrl: 'scripts/newNote/app-header.drv.html'
+  };
+}
+
+angular.module('simpleNote').directive('appHeader', appHeaderDirective);
+```
+
+And placae the new directive to the index template:
+
+```html
+
+```
+
+###4.5. Add new note modal
+
+###4.6. Create helper service to filter out the useless white spaces and the same tags
+
+###4.7. Connect modal data to noteData service
