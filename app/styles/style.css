@@ -63,6 +63,7 @@
 
 .animate-show {
   opacity: 1;
+  filter: alpha(opacity=100);
   line-height: 1.5;
 }
 
@@ -74,6 +75,7 @@
 
 .animate-show.ng-hide {
   opacity: 0;
+  filter: alpha(opacity=0);
   line-height: 0;
 }
 
