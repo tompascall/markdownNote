@@ -1112,6 +1112,32 @@ And the minimal template is:
 <div class="modal"></div>
 ```
 
+####4.5.3. Test: create ```hideModal()``` and ```showModal()``` method
+
+```js
+describe('Show and hide newNoteModal', function () {
+  it('should sow and hide modal', function () {
+    isolated.ctrl.showModal(newNoteModal);
+    expect(newNoteModal.isShown()).to.equal(true);
+    isolated.ctrl.hideModal(newNoteModal);
+    expect(newNoteModal.isShown()).to.equal(false);
+    newNoteModal.remove();
+  });
+});
+```
+
+####4.5.4. Create ```hideModal()``` and ```showModal()``` method
+
+```js
+controller.showModal = function (modal) {
+  modal.show();
+};
+
+controller.hideModal = function (modal) {
+  modal.hide();
+};
+```
+
 ###4.6. Create helper service to filter out the useless white spaces and the same tags
 
 ###4.7. Connect modal data to noteData service

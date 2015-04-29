@@ -26,12 +26,12 @@ function noteList ($ionicModal) {
       noteData.stateOfNotes[note.id].opened = !noteData.stateOfNotes[note.id].opened;
     };
 
-    controller.showNewNoteModal = function () {
-      controller.newNoteModal.show();
+    controller.showModal = function (modal) {
+      modal.show();
     };
 
-    controller.hideNewNoteModal = function () {
-      controller.newNoteModal.hide();
+    controller.hideModal = function (modal) {
+      modal.hide();
     };
   }
 

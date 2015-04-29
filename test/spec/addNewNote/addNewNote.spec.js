@@ -38,4 +38,14 @@ describe('Directive: noteList', function () {
       newNoteModal.remove();
     });
   });
+
+  describe('Show and hide newNoteModal', function () {
+    it('should sow and hide modal', function () {
+      isolated.ctrl.showModal(newNoteModal);
+      expect(newNoteModal.isShown()).to.equal(true);
+      isolated.ctrl.hideModal(newNoteModal);
+      expect(newNoteModal.isShown()).to.equal(false);
+      newNoteModal.remove();
+    });
+  });
 });
