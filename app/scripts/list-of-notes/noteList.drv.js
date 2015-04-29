@@ -2,9 +2,11 @@
 
 'use strict';
 
-function noteList () {
+function noteList ($ionicModal) {
 
-  function noteListCtrl (noteData) {
+
+  function noteListCtrl (noteData, $scope) {
+
     /*jshint validthis: true */
     var controller = this;
     noteData.initStateOfNotes();
@@ -12,8 +14,24 @@ function noteList () {
     controller.notes = noteData.notes;
     controller.stateOfNotes = noteData.stateOfNotes;
 
+    $ionicModal.fromTemplateUrl('scripts/new-note/new-note-modal.html', {
+        scope: $scope,
+        focusFirstInput: true
+      })
+    .then(function (modal) {
+      controller.newNoteModal = modal;
+    });
+
     controller.toggleNoteState = function (note) {
       noteData.stateOfNotes[note.id].opened = !noteData.stateOfNotes[note.id].opened;
+    };
+
+    controller.showNewNoteModal = function () {
+      controller.newNoteModal.show();
+    };
+
+    controller.hideNewNoteModal = function () {
+      controller.newNoteModal.hide();
     };
   }
 

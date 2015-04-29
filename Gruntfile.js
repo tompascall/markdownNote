@@ -345,7 +345,7 @@ module.exports = function (grunt) {
         preprocessors: {
           // Update this if you change the yeoman config path
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js': ['coverage'],
-          '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.drv.html': ['ng-html2js']
+          '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.html': ['ng-html2js']
         },
         ngHtml2JsPreprocessor: {
           // strip this from the file path

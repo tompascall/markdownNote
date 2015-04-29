@@ -1075,7 +1075,42 @@ We use Ionic [```$ionicModal```](http://ionicframework.com/docs/api/service/$ion
 
 ####4.5.1. Test: create minimal ```newNoteModal``` modal from template and attach it to ```noteList``` directive
 
+```js
+
+// add-in for noteList.drv.spec.js
+
+ describe('Add newNoteModal', function () {
+  it('should be an $ionicModal', function () {
+    var isolated.ctrl.newNoteModal;
+    newNoteModal.show();
+    expect(newNoteModal.isShown()).to.equal(true);
+    newNoteModal.hide();
+    expect(newNoteModal.isShown()).to.equal(false);
+    newNoteModal.remove();
+  });
+});
+```
+
 ####4.5.2. Create minimal ```newNoteModal``` modal from template and attach it to ```noteList``` directive
+
+We have to place it to the controller:
+
+```js
+$ionicModal.fromTemplateUrl('scripts/new-note/new-note-modal.html', {
+    scope: $scope,
+    focusFirstInput: true
+  })
+.then(function (modal) {
+  controller.newNoteModal = modal;
+});
+```
+And the minimal template is:
+
+```html
+<!-- new-note-modal.html -->
+
+<div class="modal"></div>
+```
 
 ###4.6. Create helper service to filter out the useless white spaces and the same tags
 
