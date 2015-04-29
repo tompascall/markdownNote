@@ -16,7 +16,7 @@
 }
 
 .note-item {
-  border-bottom: 1px solid #eee;
+  border-bottom: 2px solid #ccc;
 }
 .note-item h2 {
   font-size: 16px
@@ -41,7 +41,6 @@
 
 .text-title {
   background-color: #eee;
-  border-radius: 5px;;
   padding: 10px;
 }
 

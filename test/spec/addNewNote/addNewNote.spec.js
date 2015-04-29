@@ -8,6 +8,7 @@ describe('Directive: noteList', function () {
   var element;
   var isolated;
   var noteData;
+  var newNoteModal;
 
   beforeEach(module('simpleNote'));
 
@@ -20,14 +21,21 @@ describe('Directive: noteList', function () {
     scope.$digest();
     isolated = element.isolateScope();
     angular.element(document).find('body').append(element); // for rendering css
+
+    newNoteModal = isolated.ctrl.newNoteModal;
   }));
 
   beforeEach(inject(function (_noteData_) {
     noteData = _noteData_;
-  }));
+   }));
 
-  describe('Add + button to the header', function () {
-
-
+  describe('Add newNoteModal', function () {
+    it('should be an $ionicModal', function () {
+      newNoteModal.show();
+      expect(newNoteModal.isShown()).to.equal(true);
+      newNoteModal.hide();
+      expect(newNoteModal.isShown()).to.equal(false);
+      newNoteModal.remove();
+    });
   });
 });
