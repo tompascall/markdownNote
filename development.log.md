@@ -1138,6 +1138,12 @@ controller.hideModal = function (modal) {
 };
 ```
 
+####5.4.5. Test: add input fields to modal
+
+
+####5.4.6. Add input fields to modal
+
+
 ###4.6. Create helper service to filter out the useless white spaces and the same tags
 
 ###4.7. Connect modal data to noteData service
