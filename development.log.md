@@ -1160,12 +1160,83 @@ THen I had to compile the mock element:
 ```js
   testDirective = $compile('<mock-new-note-modal></mock-new-note-modal>')(scope);
   scope.$digest();
+```
 
+And here comes the tests:
+
+```js
+it('should have a title input field', function () {
+  expect(testDirective.find('div')).to.have.class('modal');
+});
+
+it('should contain ion-header-bar', function () {
+  var headerBar = testDirective.find('ion-header-bar');
+  expect(headerBar).to.have.class('secondary');
+  expect(headerBar.children('h1')).to.have.class('title');
+  expect(headerBar.children('h1').text())
+    .to.contain('Your New Note');
+  expect(headerBar.children('button'))
+    .to.have.class('button button-clear button-positive');
+});
+
+it('should have input fields', function () {
+  var inputList = testDirective.find('ion-content form div.list label');
+  expect(inputList.children('input'))
+    .to.have.attr('placeholder', 'Title of your note');
+  expect(inputList.children('textarea'))
+    .to.have.attr('placeholder', 'Enter your note here');
+   expect(inputList.children('input').eq(1))
+    .to.have.attr('placeholder', 'Tags (separated by commas)');
+});
+
+it('should have a padding area', function () {
+  var button = testDirective.find('ion-content form div.padding button');
+  expect(button).to.have.attr('type', 'submit');
+  expect(button.text()).to.contain('Create Note');
+});
 ```
 
 ####5.4.6. Add input fields to modal
 
+```html
+<!-- new-note-modal.html -->
 
-###4.6. Create helper service to filter out the useless white spaces and the same tags
+<div class="modal">
+  <!-- Modal header bar -->
+  <ion-header-bar class="secondary">
+    <h1 class="title">Your New Note</h1>
+    <button class="button button-clear button-positive">Cancel</button>
+  </ion-header-bar>
+  <!-- Modal content area -->
+  <ion-content>
+    <form>
+      <div class="list">
+        <label class="item item-input">
+          <input type="text" placeholder="Title of your note">
+        </label>
 
-###4.7. Connect modal data to noteData service
+        <label class="item item-input">
+          <textarea rows="10" placeholder="Enter your note here"></textarea>
+        </label>
+
+        <label class="item item-input">
+          <input type="text" placeholder="Tags (separated by commas)">
+        </label>
+      </div>
+      <div class="padding">
+        <button type="submit" class="button button-block button-positive">Create Note</button>
+      </div>
+    </form>
+  </ion-content>
+</div>
+```
+
+###4.6. Add tap handler to the + button to show newNote modal
+
+####4.6.1. Test: add handler
+
+####4.6.2. Add handler
+
+###4.7. Create helper service to filter out the useless white spaces and the same tags
+
+###4.8. Connect modal data to noteData service
