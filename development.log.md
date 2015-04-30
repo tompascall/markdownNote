@@ -1233,6 +1233,8 @@ it('should have a padding area', function () {
 
 ###4.6. Add tap handler to the + button to show newNote modal
 
+Now I realized that It was a bad decision to put the modal to the noteList directive. I must move the modal to the appHeader directive. So before adding handler to + button I have to implement this move.
+
 ####4.6.1. Test: add handler
 
 ####4.6.2. Add handler
