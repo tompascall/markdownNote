@@ -6,6 +6,7 @@ describe('Directive: appHeader', function () {
   var $compile;
   var scope;
   var element;
+  var isolated;
   var noteData;
   var newNoteModal;
 
@@ -25,6 +26,7 @@ describe('Directive: appHeader', function () {
     scope = _$rootScope_.$new();
     element = $compile('<app-header></app-header>')(scope);
     scope.$digest();
+    isolated = element.isolateScope();
     angular.element(document).find('body').append(element); // for rendering css
     newNoteModal = isolated.ctrl.newNoteModal;
   }));
