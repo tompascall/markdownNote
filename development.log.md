@@ -1140,6 +1140,28 @@ controller.hideModal = function (modal) {
 
 ####5.4.5. Test: add input fields to modal
 
+**NOTE** There was a hitch when I tried to test the template of the modal. The Ionic [```$ionicModal```](http://ionicframework.com/docs/api/service/$ionicModal/) doesn't have a functionality to get the template. I decided to mak a mock directive with the help of the templete of the modal, and test the template through the directive. It was quite tricky.
+
+First, I have to modify the main module in the fly, just before get the module for testing:
+
+```js
+ angular.module('simpleNote').directive('mockNewNoteModal', function () {
+  return {
+    resrict: 'E',
+    templateUrl: 'scripts/new-note/new-note-modal.html'
+  };
+});
+
+beforeEach(module('simpleNote'));
+```
+
+THen I had to compile the mock element:
+
+```js
+  testDirective = $compile('<mock-new-note-modal></mock-new-note-modal>')(scope);
+  scope.$digest();
+
+```
 
 ####5.4.6. Add input fields to modal
 
