@@ -17,7 +17,7 @@ describe('Directive: appHeader', function () {
   beforeEach(inject(function (_$compile_, _$rootScope_) {
     $compile = _$compile_;
     scope = _$rootScope_.$new();
-    element = $compile('<app-header></app-header>')(scope);
+    element = $compile('<ion-header-bar app-header></ion-header-bar>')(scope);
     scope.$digest();
     isolated = element.isolateScope();
     angular.element(document).find('body').append(element); // for rendering css

@@ -2,9 +2,10 @@
 
 'use strict';
 
-function appHeaderDirective ($ionicModal) {
+function appHeaderDirective () {
 
-  function appHeaderController ($scope) {
+  function appHeaderController ($scope, $ionicModal) {
+    /*jshint validthis: true */
     var controller = this;
 
     $ionicModal.fromTemplateUrl('scripts/new-note/new-note-modal.html', {
@@ -25,7 +26,7 @@ function appHeaderDirective ($ionicModal) {
   }
 
   return {
-    restrict: 'E',
+    restrict: 'A',
     templateUrl: 'scripts/new-note/app-header.drv.html',
     controller: appHeaderController,
     controllerAs: 'ctrl',

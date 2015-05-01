@@ -5,7 +5,7 @@
 function noteList () {
 
 
-  function noteListCtrl (noteData, $scope) {
+  function noteListCtrl (noteData) {
 
     /*jshint validthis: true */
     var controller = this;
