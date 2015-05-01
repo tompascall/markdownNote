@@ -9,6 +9,7 @@
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
   -webkit-align-items: center;
           align-items: center;
+  padding-top: 10px;
 }
 
 .note-title {

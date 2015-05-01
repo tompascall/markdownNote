@@ -1339,7 +1339,74 @@ angular.module('simpleNote').factory('tagsFactory', tagsFactory);
 
 ####4.7.3. Test: create filterTagsString method
 
+```js
+it('should remove white spaces', function () {
+    var inputTags = ['same tag', ' same tag', ' same tag ', 'same tag '];
+    var outputTags = tagsFactory.removeWhiteSpaces(inputTags);
+    var sameTags = outputTags.filter(function (tag) { return tag === 'same tag'; });
+    expect(sameTags.length).to.equal(inputTags.length);
+
+    inputTags = [' ','    '];
+    outputTags = tagsFactory.removeWhiteSpaces(inputTags);
+    expect(outputTags.length).to.equal(0);
+  });
+
+  it('should filter same tags', function () {
+    var  inputTags = ['same tag'];
+    var outputTags = tagsFactory.filterSameTags(inputTags);
+    expect(outputTags.length).to.equal(1);
+    inputTags = ['same tag', 'same tag'];
+    outputTags = tagsFactory.filterSameTags(inputTags);
+    expect(outputTags.length).to.equal(1);
+  });
+
+  it('should filter tags string', function () {
+    var tagsString = 'same tag,' + ' same tag,' + ' same tag ,'
+      + 'same tag ,' + ', ,';
+    var tagsArray = tagsFactory.filterTagsString(tagsString);
+    expect(tagsArray.length).to.equal(1);
+    expect(tagsArray[0]).to.equal('same tag');
+  });
+```
+
 ###4.7.4. Create filterTagsString method
 
+```js
+function tagsFactory () {
+  return {
+    tagsStringToArray: function (tagsString) {
+      var tagArr = [];
+      if (tagsString) {
+        tagArr = tagsString.split(',').filter(function(tag) {
+          return tag !== '';
+        });
+      }
+      return tagArr;
+    },
+
+    removeWhiteSpaces: function (inputTags) {
+      return inputTags.filter(function(tag) {
+        return tag.trim();
+      }).map(function (tag) {
+        return tag.trim();
+      });
+    },
+
+    filterSameTags: function (tags) {
+      var set = [];
+      tags.forEach(function(tag) {
+        if (set.indexOf(tag) === -1) set.push(tag);
+      });
+      return set;
+    },
+
+    filterTagsString: function (tagsString) {
+      var tagsArray = this.tagsStringToArray(tagsString);
+      var trimmedTags = this.removeWhiteSpaces(tagsArray);
+      return this.filterSameTags(trimmedTags);
+    }
+  };
+}
+```
   
 ###4.8. Connect modal data to noteData service
