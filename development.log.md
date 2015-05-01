@@ -1288,4 +1288,52 @@ describe('Add tap handler to Cancel button', function () {
 
 ###4.7. Create helper service to filter out the useless white spaces and the same tags
 
+####4.7.1. Test: create `tagsFactory` service that serves an object
+
+```js
+'use strict';
+
+describe('Service: tags', function () {
+  var tagsFactory;
+
+  beforeEach(function () {
+    module('simpleNote');
+
+    inject(function ($injector) {
+      tagsFactory = $injector.get('tagsFactory');
+    });
+  });
+
+  it('should split a string with commas to an array', function () {
+    var tagsString = 'one,two,three';
+    var tagsArray = [];
+    tagsArray = tagsFactory.tagsStringToArray(tagsString);
+    expect(tagsArray.length).to.equal(3);
+    expect(tagsArray[0]).to.equal('one');
+    expect(tagsArray[2]).to.equal('three');
+  });
+});
+```
+
+####4.7.2. Create `tagsFactory` service that serves an object
+
+```js
+'use strict';
+
+function tagsFactory () {
+  return {
+    tagsStringToArray: function (tagsString) {
+      return tagsString.split(',');
+    }
+  };
+}
+
+angular.module('simpleNote').factory('tagsFactory', tagsFactory);
+```
+
+####4.7.3. Test: create filterTagsString method
+
+###4.7.4. Create filterTagsString method
+
+  
 ###4.8. Connect modal data to noteData service
