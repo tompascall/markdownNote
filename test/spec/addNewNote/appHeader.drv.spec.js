@@ -48,6 +48,12 @@ describe('Directive: appHeader', function () {
 
   describe('testing newNote modal', function () {
 
+    var modalElement;
+
+    beforeEach(function () {
+      modalElement = newNoteModal.$el;
+    });
+
     describe('Add newNoteModal', function () {
       it('should be an $ionicModal', function () {
         newNoteModal.show();
@@ -69,11 +75,6 @@ describe('Directive: appHeader', function () {
     });
 
     describe('Add input fields to newNoteModal', function () {
-      var modalElement;
-
-      beforeEach(function () {
-        modalElement = newNoteModal.$el;
-      });
 
       it('should have a modal class', function () {
         expect(modalElement.find('div')).to.have.class('modal');
@@ -116,7 +117,9 @@ describe('Directive: appHeader', function () {
 
     describe('Add tap handler to Cancel button', function () {
       it('should hide the modal', function () {
-
+        modalElement.find('#new-note-modal-cancel-button').click();
+        expect(newNoteModal.isShown()).to.equal(false);
+        newNoteModal.remove();
       });
     });
   });
