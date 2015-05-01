@@ -1196,6 +1196,19 @@ it('should have a padding area', function () {
 });
 ```
 
+**NOTE**
+
+I realaized that there is a sipler method of testing modal. Here is my solution:
+
+[test modal template](http://stackoverflow.com/questions/29954669/how-to-test-the-template-of-an-ionic-modal/29983186#29983186)
+
+So I refactored the tests followed the new method like this:
+
+```js
+var modalElement = newNoteModal.$el;
+expect(modalElement.find('div')).to.have.class('modal');
+```
+
 ####5.4.6. Add input fields to modal
 
 ```html
@@ -1235,9 +1248,43 @@ it('should have a padding area', function () {
 
 Now I realized that It was a bad decision to put the modal to the noteList directive. I must move the modal to the appHeader directive. So before adding handler to + button I have to implement this move.
 
-####4.6.1. Test: add handler
+####4.6.1. Test: add handler to the + button
 
-####4.6.2. Add handler
+```js
+describe('Add tap handler to + button', function () {
+  it('should show the modal', function () {
+    element.find('button#add-button').click();
+    expect(newNoteModal.isShown()).to.equal(true);
+    newNoteModal.remove();
+  });
+});
+```
+
+####4.6.2. Add handler to the + button
+
+```html
+<button id="add-button" class="button button-icon" ng-click="ctrl.showModal(ctrl.newNoteModal)">
+  <i class="icon ion-plus-round"></i>
+</button>
+```
+
+####4.6.3. Test: add tap handler to the cancel button of the modal
+
+```js
+describe('Add tap handler to Cancel button', function () {
+  it('should hide the modal', function () {
+    modalElement.find('#new-note-modal-cancel-button').click();
+    expect(newNoteModal.isShown()).to.equal(false);
+    newNoteModal.remove();
+  });
+});
+```
+
+####4.6.4. Add tap handler to the cancel button of the modal
+
+```html
+<button id="new-note-modal-cancel-button" class="button button-clear button-positive" ng-click="ctrl.hideModal(ctrl.newNoteModal)">Cancel</button>
+```
 
 ###4.7. Create helper service to filter out the useless white spaces and the same tags
 
