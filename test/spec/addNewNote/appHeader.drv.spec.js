@@ -25,10 +25,6 @@ describe('Directive: appHeader', function () {
   }));
 
   describe('Test directive elements', function () {
-    it('should have an ion-header-bar', function () {
-      expect(element.find('ion-header-bar'))
-        .to.have.attr('align-title', 'center');
-    });
 
     it('should have a h1 with a notes-header id', function () {
       expect(element.find('h1#notes-header'))
