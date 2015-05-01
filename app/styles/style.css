@@ -1,3 +1,4 @@
+
 #notes-header {
   font-family: 'Gochi Hand', cursive;
   font-size: 30px;
@@ -9,14 +10,16 @@
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
   align-items: center;
+  padding-top: 10px;
 }
 
 .note-title {
   color: rgb(255, 0, 0);
+  font-weight: 300;
 }
 
 .note-item {
-  border-bottom: 2px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 .note-item h2 {
   font-size: 16px
@@ -24,7 +27,7 @@
 
 .wordwrap {
   white-space: normal;
-  line-height: 30px;
+  line-height: 20px;
 }
 
 .text-title-container {
@@ -63,7 +66,7 @@
 }
 
 
-.animate-show {
+/*.animate-show {
   opacity: 1;
   filter: alpha(opacity=100);
   line-height: 1.5;
@@ -79,5 +82,5 @@
   opacity: 0;
   filter: alpha(opacity=0);
   line-height: 0;
-}
+}*/
 
