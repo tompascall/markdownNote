@@ -1237,7 +1237,23 @@ Now I realized that It was a bad decision to put the modal to the noteList direc
 
 ####4.6.1. Test: add handler
 
+```js
+describe('Add tap handler to + button', function () {
+  it('should show the modal', function () {
+    element.find('button#add-button').click();
+    expect(newNoteModal.isShown()).to.equal(true);
+    newNoteModal.remove();
+  });
+});
+```
+
 ####4.6.2. Add handler
+
+```html
+<button id="add-button" class="button button-icon" ng-click="ctrl.showModal(ctrl.newNoteModal)">
+  <i class="icon ion-plus-round"></i>
+</button>
+```
 
 ###4.7. Create helper service to filter out the useless white spaces and the same tags
 
