@@ -1323,7 +1323,13 @@ describe('Service: tags', function () {
 function tagsFactory () {
   return {
     tagsStringToArray: function (tagsString) {
-      return tagsString.split(',');
+      var tagArr = [];
+      if (tagsString) {
+        tagArr = tagsString.split(',').filter(function(tag) {
+            return tag !== '';
+        });
+      }
+      return tagArr;
     }
   };
 }
