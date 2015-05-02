@@ -6,49 +6,53 @@ angular.module('simpleNote')
 
 .factory('noteData', function noteDataFactory() {
   return {
-    notes: [
-      {
-        id: 0,
-        title: 'Quite extremely long long long long long long title for testing purpose',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ' +
-          'do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
-          ' Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ' +
-          'nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in ' +
-          'reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla ' +
-          'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in ' +
-          'culpa qui officia deserunt mollit anim id est laborum.' +
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ' +
-          'do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
-          ' Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ' +
-          'nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in ' +
-          'reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla ' +
-          'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in ' +
-          'culpa qui officia deserunt mollit anim id est laborum.',
-        tags: ['first note', 'testing purpose', 'lorem ipsum', 'Cicero', 'de Finibus Bonorum et Malorum',
-          'long title', 'a lot of tags']
-      },
-      {
-        id: 1,
-        title: 'Second Note',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ' +
-          'do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
-          ' Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ' +
-          'nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in ' +
-          'reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla ' +
-          'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in ' +
-          'culpa qui officia deserunt mollit anim id est laborum.',
-        tags: ['second note']
+    notes: [],
+    stateOfNotes: [],
+
+    addNote: function (data) {
+      var id = this.notes.length;
+      if (angular.isArray(data)) {
+        var self = this;
+
+        data.forEach(function (note) {
+          self.notes.push({
+            id: id,
+            title: data.title,
+            text: data.text,
+            tags: data.tags
+          });
+          self.stateOfNotes.push({
+            id: note.id,
+            opened: false
+          });
+          id++;
+        });
       }
-    ],
-    initStateOfNotes: function () {
-      this.stateOfNotes = [];
-      var self = this;
-      this.notes.forEach(function (note) {
-        self.stateOfNotes.push({
-          id: note.id,
+      else if (angular.isObject(data)) {
+        this.notes.push({
+          id: id,
+          title: data.title,
+          text: data.text,
+          tags: data.tags
+        });
+
+        this.stateOfNotes.push({
+          id: id,
           opened: false
         });
-      });
+      }
+    },
+    initStateOfNotes: function (notes) {
+      this.stateOfNotes = [];
+      this.notes = [];
+      this.addNote(notes || this.welcomeNote);
+    },
+    welcomeNote: {
+      title: 'Welcome!',
+      text: 'Welcome to simpleNotes! This is a simple app ' +
+        'to manage your notes.\n\n' +
+        'Enjoy it!',
+      tags: ['Welcome note', 'enjoy']
     }
   };
 });

@@ -114,8 +114,6 @@ describe('Directive: noteList', function () {
            var note = element.find('ion-list .note-item').eq(0);
            note.click();
            expect(isolated.ctrl.noteData.stateOfNotes[0].opened).to.equal(true);
-           var secondNote = element.find('ion-list .note-item').eq(1);
-           expect(isolated.ctrl.noteData.stateOfNotes[1].opened).to.equal(false);
            note.click();
            expect(isolated.ctrl.noteData.stateOfNotes[0].opened).to.equal(false);
         });

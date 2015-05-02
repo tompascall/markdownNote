@@ -162,7 +162,31 @@ describe('Directive: appHeader', function () {
     });
 
     describe('Add newNote method to addHeader directive', function () {
+      var note;
 
+      beforeEach(function () {
+        isolated.ctrl.title = 'test title';
+        isolated.ctrl.text = 'test text';
+        isolated.ctrl.tags = 'test tag1, test tag2';
+        note = isolated.ctrl.prepareNewNote();
+      });
+
+      it('should give back an object with title', function () {
+        expect(note.title).to.equal('test title');
+      });
+
+      it('should give back an object with text', function () {
+        expect(note.text).to.equal('test text');
+      });
+
+      it('should give back tags array', function () {
+        expect(note.tags).to.deep.equal(['test tag1', 'test tag2']);
+      });
+
+      // it('should add new note', function () {
+      //   isolated.ctrl.addNewNote();
+      //   expect(noteData.notes.slice(-1)[0]).to.deep.equal(note);
+      // });
     });
   });
 });
