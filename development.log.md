@@ -1410,3 +1410,67 @@ function tagsFactory () {
 ```
   
 ###4.8. Connect modal data to noteData service
+
+####4.8.1. Test: Connect `noteData` service to `appHeader` directive
+
+```js
+describe('Connect modal data to noteData service', function () {
+  var noteData;
+
+  beforeEach(function () {
+    inject(function ($injector) {
+      noteData = $injector.get('noteData');
+    });
+  });
+
+  describe('Connect noteData service to appHeader directive', function () {
+    it('should get noteData', function () {
+      expect(isolated.ctrl.noteData.notes.length)
+        .to.equal(noteData.notes.length);
+    });
+  });
+});
+```
+
+####4.8.2. Connect `noteData` service to `appHeader` directive
+
+```js
+
+// appHeader.drv.js
+
+...
+
+controller.noteData = noteData;
+```
+
+
+####4.8.3. Test: connect modal fields to appHeader directive
+
+**NOTE** it was really tricky. I've found the solution [here](http://stackoverflow.com/questions/26372729/setting-view-value-an-input-field-in-a-unit-test-of-an-angular-form-directive).
+
+I had to trigger the 'input' event.
+
+```js
+it('should get the text of title field', function () {
+  scope.$apply(function () {
+    newNoteModal.$el.find('#newNoteModalTitle')
+      .val('Test').trigger('input');
+  });
+  expect(isolated.ctrl.title).to.equal('Test');
+});
+```
+
+####4.8.4. Connect modal fields to appHeader directive
+
+I had to insert `ng-model` to the modal's input fields like this:
+
+```html
+ <input id="newNoteModalTitle" type="text" placeholder="Title of your note" ng-model="ctrl.title">
+```
+
+####4.8.5. Test: Add `addNewnote` method to `appHeader` directive
+
+
+
+####4.8.6. Add `addNewnote` method to `appHeader` directive
+

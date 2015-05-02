@@ -7,7 +7,6 @@ describe('Directive: appHeader', function () {
   var scope;
   var element;
   var isolated;
-  var noteData;
   var newNoteModal;
 
   beforeEach(module('simpleNote'));
@@ -117,6 +116,53 @@ describe('Directive: appHeader', function () {
         expect(newNoteModal.isShown()).to.equal(false);
         newNoteModal.remove();
       });
+    });
+  });
+
+  describe('Connect modal data to noteData service', function () {
+    var noteData;
+
+    beforeEach(function () {
+      inject(function ($injector) {
+        noteData = $injector.get('noteData');
+      });
+    });
+
+    describe('Connect noteData service to appHeader directive', function () {
+      it('should get noteData', function () {
+        expect(isolated.ctrl.noteData.notes.length)
+          .to.equal(noteData.notes.length);
+      });
+    });
+
+    describe('Connect modal fields to appHeader directive', function () {
+      it('should get the text of title field', function () {
+        scope.$apply(function () {
+          newNoteModal.$el.find('#newNoteModalTitle')
+            .val('Test').trigger('input');
+        });
+        expect(isolated.ctrl.title).to.equal('Test');
+      });
+
+      it('should get the text of text field', function () {
+        scope.$apply(function () {
+          newNoteModal.$el.find('textarea')
+            .val('Test').trigger('input');
+        });
+        expect(isolated.ctrl.text).to.equal('Test');
+      });
+
+      it('should get the tags of title field', function () {
+        scope.$apply(function () {
+          newNoteModal.$el.find('#newNoteModalTags')
+            .val('Test').trigger('input');
+        });
+        expect(isolated.ctrl.tags).to.equal('Test');
+      });
+    });
+
+    describe('Add newNote method to addHeader directive', function () {
+
     });
   });
 });

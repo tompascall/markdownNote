@@ -4,7 +4,7 @@
 
 function appHeaderDirective () {
 
-  function appHeaderController ($scope, $ionicModal) {
+  function appHeaderController ($scope, $ionicModal, noteData) {
     /*jshint validthis: true */
     var controller = this;
 
@@ -23,6 +23,8 @@ function appHeaderDirective () {
     controller.hideModal = function (modal) {
       modal.hide();
     };
+
+    controller.noteData = noteData;
   }
 
   return {
@@ -30,7 +32,8 @@ function appHeaderDirective () {
     templateUrl: 'scripts/new-note/app-header.drv.html',
     controller: appHeaderController,
     controllerAs: 'ctrl',
-    scope: {},
+    scope: {
+    },
     bindToController: true
   };
 }

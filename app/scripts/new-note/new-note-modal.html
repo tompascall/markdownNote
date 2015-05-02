@@ -11,15 +11,15 @@
     <form>
       <div class="list">
         <label class="item item-input">
-          <input type="text" placeholder="Title of your note">
+          <input id="newNoteModalTitle" type="text" placeholder="Title of your note" ng-model="ctrl.title">
         </label>
 
         <label class="item item-input">
-          <textarea rows="10" placeholder="Enter your note here"></textarea>
+          <textarea rows="10" placeholder="Enter your note here" ng-model="ctrl.text"></textarea>
         </label>
 
         <label class="item item-input">
-          <input type="text" placeholder="Tags (separated by commas)">
+          <input id="newNoteModalTags" type="text" placeholder="Tags (separated by commas)" ng-model="ctrl.tags">
         </label>
       </div>
       <div class="padding">
