@@ -8,10 +8,10 @@
   </ion-header-bar>
   <!-- Modal content area -->
   <ion-content>
-    <form>
+    <form name="newNoteModalForm" novalidate>
       <div class="list">
         <label class="item item-input">
-          <input id="newNoteModalTitle" type="text" placeholder="Title of your note" ng-model="ctrl.title">
+          <input id="newNoteModalTitle" name="title" type="text" placeholder="Title of your note" ng-model="ctrl.title" required>
         </label>
 
         <label class="item item-input">
@@ -23,7 +23,7 @@
         </label>
       </div>
       <div class="padding">
-        <button type="submit" class="button button-block button-positive">Create Note</button>
+        <button id="createNewNoteButton" type="submit" class="button button-block button-positive" ng-click="ctrl.addNewNote()" ng-disabled="newNoteModalForm.title.$invalid">Create Note</button>
       </div>
     </form>
   </ion-content>

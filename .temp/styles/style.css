@@ -43,6 +43,7 @@
 .text-title {
   background-color: #eee;
   padding: 10px;
+  width: 100%;
 }
 
 #tag-container {

@@ -11,7 +11,6 @@ angular.module('simpleNote')
     addNote: function (data) {
       if (angular.isArray(data)) {
         var self = this;
-
         data.forEach(function (note) {
           self.notes.push({
             title: data.title,
@@ -28,6 +27,9 @@ angular.module('simpleNote')
           tags: data.tags,
           opened: false
         });
+      }
+      else {
+        throw new Error('You are about to inject bad data format');
       }
     },
     initStateOfNotes: function (notes) {

@@ -24,6 +24,8 @@ function appHeaderDirective () {
       modal.hide();
     };
 
+    controller.noteData = noteData;
+
     controller.prepareNewNote = function () {
       var note = {};
       note.title = controller.title;
@@ -32,10 +34,13 @@ function appHeaderDirective () {
       return note;
     };
 
-    controller.noteData = noteData;
-
     controller.addNewNote = function () {
       var note = controller.prepareNewNote();
+      controller.noteData.addNote(note);
+      controller.title = '';
+      controller.text = '';
+      controller.tags = '';
+      controller.hideModal(controller.newNoteModal);
     }
   }
 

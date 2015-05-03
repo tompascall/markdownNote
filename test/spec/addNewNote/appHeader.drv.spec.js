@@ -168,25 +168,52 @@ describe('Directive: appHeader', function () {
         isolated.ctrl.title = 'test title';
         isolated.ctrl.text = 'test text';
         isolated.ctrl.tags = 'test tag1, test tag2';
-        note = isolated.ctrl.prepareNewNote();
       });
 
       it('should give back an object with title', function () {
+        note = isolated.ctrl.prepareNewNote();
         expect(note.title).to.equal('test title');
       });
 
       it('should give back an object with text', function () {
+        note = isolated.ctrl.prepareNewNote();
         expect(note.text).to.equal('test text');
       });
 
       it('should give back tags array', function () {
+        note = isolated.ctrl.prepareNewNote();
         expect(note.tags).to.deep.equal(['test tag1', 'test tag2']);
       });
 
-      // it('should add new note', function () {
-      //   isolated.ctrl.addNewNote();
-      //   expect(noteData.notes.slice(-1)[0]).to.deep.equal(note);
-      // });
+      it('should add new note', function () {
+        var preparedNote = {
+          title: 'test title',
+          text: 'test text',
+          tags: ['test tag1', 'test tag2'],
+          opened: false
+        }
+        isolated.ctrl.addNewNote();
+        expect(noteData.notes.slice(-1)[0]).to.deep.equal(preparedNote);
+      });
+    });
+
+    describe('Test: Create tap handler to Create Note button', function () {
+
+      beforeEach(function () {
+        isolated.ctrl.title = 'test title';
+        isolated.ctrl.text = 'test text';
+        isolated.ctrl.tags = 'test tag1, test tag2';
+      });
+
+      it('should add note', function () {
+        var noteNumber = noteData.notes.length;
+        newNoteModal.$el.find('#createNewNoteButton').click();
+        expect(noteData.notes.length).to.equal(noteNumber + 1);
+        expect(isolated.ctrl.title).to.equal('');
+        expect(isolated.ctrl.text).to.equal('');
+        expect(isolated.ctrl.tags).to.equal('');
+        expect(isolated.ctrl.newNoteModal.isShown()).to.equal(false);
+      });
     });
   });
 });
