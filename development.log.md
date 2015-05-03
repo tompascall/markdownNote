@@ -1567,3 +1567,34 @@ controller.addNewNote = function () {
   <button id="createNewNoteButton" type="submit" class="button button-block button-positive" ng-click="ctrl.addNewNote()">Create Note</button>
 </div>
 ```
+
+##5. STORY: Save data to local storage
+
+###5.1. USER STORY
+
+>AS I customer I WANT to save my notes to the local storage SO THAT I can read them later, under an other session
+
+###5.2. ACCEPTANCE CRITERIA
+
+**GIVEN I am a user**
+**WHEN I add a new note**
+**THEN I can see it later in an other session**
+
+###5.3. TODOS
+
+- Save notes to windows.localStorage.notes
+- Load notes from windows.localStorage
+
+###5.4. Save notes to windows.localStorage.notes
+
+####5.4.1. Test: Add saveNotesToStorage method to notesData service
+
+####5.4.2. Add saveNotesToStorage method to notesData service
+
+####5.4.3. Test: Save notes when adding a new note
+
+####5.4.4. Save notes when adding a new note
+
+
+###5.5. Load notes from windows.localStorage
+
