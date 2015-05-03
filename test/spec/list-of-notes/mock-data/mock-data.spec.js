@@ -25,13 +25,12 @@ describe('Service: noteData', function () {
       };
     noteData.addNote(note);
     expect(noteData.notes.length).to.equal(1);
-    expect(noteData.notes[0].id).to.equal(0);
     expect(noteData.notes[0].title).to.equal('Title for testing purpose');
     expect(noteData.notes[0].text).to.equal('Lorem ipsum dolor sit amet...');
     expect(noteData.notes[0].tags).to.deep.equal(['first note', 'testing purpose']);
+    expect(noteData.notes[0].opened).to.equal(false);
 
     noteData.addNote(note);
     expect(noteData.notes.length).to.equal(2);
-    expect(noteData.notes[1].id).to.equal(1);
   });
 });

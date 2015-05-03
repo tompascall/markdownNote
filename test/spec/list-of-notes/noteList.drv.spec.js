@@ -85,37 +85,24 @@ describe('Directive: noteList', function () {
 
     describe('Add tap handler to noteList directive', function () {
 
-      describe('Set initial state (closed) in noteList directive', function () {
-
-        it('should set the state of notes in noteData to closed', function () {
-          var firstNote = isolated.ctrl.notes[0];
-          noteData.stateOfNotes[firstNote.id].opened = true;
-          isolated.ctrl.noteData.initStateOfNotes();
-          expect(noteData.stateOfNotes[firstNote.id].opened).to.equal(false);
-        });
-
-        it('initial state of note should be closed', function () {
-          var firstNote = isolated.ctrl.notes[0];
-          expect(isolated.ctrl.stateOfNotes[firstNote.id].opened).to.equal(false);
-        });
-      });
-
       describe('Tap handler to toggle the state of a note', function () {
 
         it('should toggle state', function () {
-          var note = isolated.ctrl.notes[0];
+          var index = 0;
+          var note = isolated.ctrl.notes[index];
           isolated.ctrl.toggleNoteState(note);
-          expect(isolated.ctrl.noteData.stateOfNotes[note.id].opened).to.equal(true);
+          expect(isolated.ctrl.noteData.notes[index].opened).to.equal(true);
           isolated.ctrl.toggleNoteState(note);
-          expect(isolated.ctrl.noteData.stateOfNotes[note.id].opened).to.equal(false);
+          expect(isolated.ctrl.noteData.notes[index].opened).to.equal(false);
         });
 
         it('should toggle state when note element is clicked', function () {
-           var note = element.find('ion-list .note-item').eq(0);
+           var index = 0;
+           var note = element.find('ion-list .note-item').eq(index);
            note.click();
-           expect(isolated.ctrl.noteData.stateOfNotes[0].opened).to.equal(true);
+           expect(isolated.ctrl.noteData.notes[index].opened).to.equal(true);
            note.click();
-           expect(isolated.ctrl.noteData.stateOfNotes[0].opened).to.equal(false);
+           expect(isolated.ctrl.noteData.notes[index].opened).to.equal(false);
         });
       });
 
