@@ -12,7 +12,7 @@ angular.module('simpleNote')
       if (angular.isArray(data)) {
         var self = this;
         data.forEach(function (note) {
-          self.notes.push({
+          self.notes.unshift({
             title: data.title,
             text: data.text,
             tags: data.tags,
@@ -21,7 +21,7 @@ angular.module('simpleNote')
         });
       }
       else if (angular.isObject(data)) {
-        this.notes.push({
+        this.notes.unshift({
           title: data.title,
           text: data.text,
           tags: data.tags,
