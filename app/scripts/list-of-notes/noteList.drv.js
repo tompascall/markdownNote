@@ -9,7 +9,7 @@ function noteList () {
 
     /*jshint validthis: true */
     var controller = this;
-    noteData.initStateOfNotes();
+    noteData.initNotes();
     controller.noteData = noteData;
     controller.notes = noteData.notes;
 

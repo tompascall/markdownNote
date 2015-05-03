@@ -1589,7 +1589,35 @@ controller.addNewNote = function () {
 
 ####5.4.1. Test: Add saveNotesToStorage method to notesData service
 
+```js
+describe('Save notes to windows.localStorage.notes', function () {
+  var note;
+
+  beforeEach(function () {
+    noteData.notes = [];
+    note = {
+      title: 'Title for testing purpose',
+      text: 'Lorem ipsum dolor sit amet...',
+      tags: ['first note', 'testing purpose']
+    };
+  });
+
+  it('should save notes to storage', function () {
+    noteData.addNote(note);
+    noteData.saveNotesToLocalStorage();
+    var notes = angular.fromJson(window.localStorage.notes);
+    expect(notes[0].title).to.equal(note.title);
+  });
+});
+```
+
 ####5.4.2. Add saveNotesToStorage method to notesData service
+
+```js
+saveNotesToLocalStorage: function () {
+  window.localStorage.notes = angular.toJson(this.notes);
+}
+```
 
 ####5.4.3. Test: Save notes when adding a new note
 
