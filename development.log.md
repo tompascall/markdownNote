@@ -1470,7 +1470,100 @@ I had to insert `ng-model` to the modal's input fields like this:
 
 ####4.8.5. Test: Add `addNewnote` method to `appHeader` directive
 
+I decided to place this functionality to `noteData` service.
 
+```js
+describe('Add newNote method to addHeader directive', function () {
+  var note;
+
+  beforeEach(function () {
+    isolated.ctrl.title = 'test title';
+    isolated.ctrl.text = 'test text';
+    isolated.ctrl.tags = 'test tag1, test tag2';
+  });
+
+  it('should give back an object with title', function () {
+    note = isolated.ctrl.prepareNewNote();
+    expect(note.title).to.equal('test title');
+  });
+
+  it('should give back an object with text', function () {
+    note = isolated.ctrl.prepareNewNote();
+    expect(note.text).to.equal('test text');
+  });
+
+  it('should give back tags array', function () {
+    note = isolated.ctrl.prepareNewNote();
+    expect(note.tags).to.deep.equal(['test tag1', 'test tag2']);
+  });
+
+  it('should add new note', function () {
+    var preparedNote = {
+      title: 'test title',
+      text: 'test text',
+      tags: ['test tag1', 'test tag2'],
+      opened: false
+    }
+    isolated.ctrl.addNewNote();
+    expect(noteData.notes.slice(-1)[0]).to.deep.equal(preparedNote);
+  });
+});
+```
 
 ####4.8.6. Add `addNewnote` method to `appHeader` directive
 
+```js
+controller.prepareNewNote = function () {
+  var note = {};
+  note.title = controller.title;
+  note.text = controller.text;
+  note.tags = tagsFactory.filterTagsString(controller.tags);
+  return note;
+};
+
+controller.addNewNote = function () {
+  var note = controller.prepareNewNote();
+  controller.noteData.addNote(note);
+}
+```
+
+####4.8.7. Test: Create tap handler to Create Note button
+
+```js
+describe('Test: Create tap handler to Create Note button', function () {
+
+  beforeEach(function () {
+    isolated.ctrl.title = 'test title';
+    isolated.ctrl.text = 'test text';
+    isolated.ctrl.tags = 'test tag1, test tag2';
+  });
+
+  it('should add note', function () {
+    var noteNumber = noteData.notes.length;
+    newNoteModal.$el.find('#createNewNoteButton').click();
+    expect(noteData.notes.length).to.equal(noteNumber + 1);
+    expect(isolated.ctrl.title).to.equal('');
+    expect(isolated.ctrl.text).to.equal('');
+    expect(isolated.ctrl.tags).to.equal('');
+    expect(isolated.ctrl.newNoteModal.isShown()).to.equal(false);
+  });
+});
+```
+####4.8.8. Create tap handler to Create Note button
+
+```js
+controller.addNewNote = function () {
+  var note = controller.prepareNewNote();
+  controller.noteData.addNote(note);
+  controller.title = '';
+  controller.text = '';
+  controller.tags = '';
+  controller.hideModal(controller.newNoteModal);
+}
+```
+
+```html
+<div class="padding">
+  <button id="createNewNoteButton" type="submit" class="button button-block button-positive" ng-click="ctrl.addNewNote()">Create Note</button>
+</div>
+```
