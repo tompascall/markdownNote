@@ -178,4 +178,16 @@ describe('Directive: noteList', function () {
       });
     });
   });
+
+  describe('Create a button for deleting note', function () {
+    var button;
+
+    beforeEach(function () {
+      button = element.find('div.note-close-container a');
+    });
+
+    it('should have class button button-icon icon icon-right ion-ios7-close-outline note-close', function () {
+      expect(button).to.have.class('button button-icon icon icon-right ion-ios7-close-outline note-close');
+    });
+  })
 });
