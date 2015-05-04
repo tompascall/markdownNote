@@ -1582,8 +1582,8 @@ controller.addNewNote = function () {
 
 ###5.3. TODOS
 
-- Save notes to windows.localStorage.notes
-- Load notes from windows.localStorage
+- **Save notes to windows.localStorage.notes**
+- **Load notes from windows.localStorage**
 
 ###5.4. Save notes to windows.localStorage.notes
 
@@ -1734,5 +1734,63 @@ it('should init noteData.notes from localStorage', function () {
 ```
 
 ####5.5.4. Load notes during initialize noteList
+
+```js
+initNotes: function () {
+  this.notes = this.loadNotesFromStorage();
+  if (!this.notes) {
+    this.notes = [];
+    this.addNote(this.welcomeNote);
+  }
+},
+loadNotesFromStorage: function () {
+  return angular.fromJson(window.localStorage.simpleNotes);
+}
+```
+
+##6. STORY: Remove note
+
+###6.1. USER STORY
+
+>AS I customer I WANT to be able to delete my notes SO THAT I can get rid of unwanted notes
+
+###6.2. ACCEPTANCE CRITERIA
+
+GIVEN I am a user
+WHEN I push a delete button on the note
+THEN I can see a warning message
+
+GIVEN I am a user
+WHEN I ok on the warning
+THEN the note is deleted
+
+###6.3. TODOS
+
+- **Place delete buttons on the right of notes**
+- **Create a `deleteNote` method in `noteList` directive**
+- **Connect `deleteNote` method with delete button**
+
+###6.4. Place delete buttons on the right of notes
+
+####6.4.1. Test: Add button with `ion-ios7-close-outline` icon to the notes
+
+####6.4.2. Add button with `ion-ios7-close-outline` icon to the notes
+
+###6.5. Create a `deleteNote` method in `noteList` directive
+
+####6.5.1. Test: Add `deleteNote` method to `noteList` directive. The method pop-up a confirm message
+
+####6.5.2. Add `deleteNote` method to `noteList` directive. The method pop-up a confirm message
+
+####6.5.3. Test: If the return value of the confirm is true, delete the note from noteData service and local storage
+
+####6.5.4. If the return value of the confirm is true, delete the note from noteData service and local storage
+
+###6.6. Connect `deleteNote` method with delete button
+
+####6.6.1. Test: Connect `deleteNote` method to delete button with ng-click
+
+####6.6.2. Connect `deleteNote` method to delete button with ng-click
+
 
 
