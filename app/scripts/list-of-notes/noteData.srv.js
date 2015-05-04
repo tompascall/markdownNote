@@ -9,33 +9,44 @@ angular.module('simpleNote')
     notes: [],
 
     addNote: function (data) {
+      var self = this;
       if (angular.isArray(data)) {
-        var self = this;
         data.forEach(function (note) {
-          self.notes.unshift({
-            title: note.title,
-            text: note.text,
-            tags: note.tags,
-            opened: false
-          });
+          self.saveNoteToNoteData(note);
         });
       }
       else if (angular.isObject(data)) {
-        this.notes.unshift({
-          title: data.title,
-          text: data.text,
-          tags: data.tags,
-          opened: false
-        });
+        this.saveNoteToNoteData(data);
       }
       else {
         throw new Error('You are about to inject bad data format');
       }
+      this.saveNotesToLocalStorage();
     },
 
     initNotes: function (notes) {
       this.notes = [];
-      this.addNote(notes || this.welcomeNote);
+      if (!angular.fromJson(window.localStorage.simpleNotes)) {
+        this.addNote(notes || this.welcomeNote);
+      }
+      else {
+        notes = {
+          title: 'title',
+          text: 'text',
+          tags: ['tag'],
+          opened: false
+        };
+        this.addNote(notes);
+      }
+    },
+
+    saveNoteToNoteData: function (note) {
+      this.notes.unshift({
+        title: note.title,
+        text: note.text,
+        tags: note.tags,
+        opened: false
+      });
     },
 
     saveNotesToLocalStorage: function () {

@@ -62,14 +62,27 @@ describe('Service: noteData', function () {
       expect(notes[0].title).to.equal(note.title);
     });
 
-    it('should add Welcome note if simpleNote localstorage data does not exist', function () {
+    it('should save note to localStorage when add a new note', function () {
       window.localStorage.removeItem('simpleNotes');
       noteData.initNotes();
-      expect(noteData.notes[0].title).to.equal('Welcome!');
       noteData.addNote(note);
-      noteData.saveNotesToLocalStorage();
+      var notes = angular.fromJson(window.localStorage.simpleNotes);
+      expect(notes[0].title).to.equal(note.title);
+    });
+
+    it('should initialize localStorage if simleNote field does note exist', function () {
+      window.localStorage.removeItem('simpleNotes');
       noteData.initNotes();
-      expect(noteData.notes[0].title).to.equal('Title for testing purpose');
+      var notes = angular.fromJson(window.localStorage.simpleNotes);
+      expect(notes[0].title).to.equal('Welcome!');
+    });
+
+    it('should not put the Welcome note to the storage,' +
+        ' if the simpleNote field exist', function () {
+      window.localStorage.simpleNotes = angular.toJson([]);
+      noteData.initNotes();
+      var notes = angular.fromJson(window.localStorage.simpleNotes);
+      expect(notes[0].title).to.not.equal('Welcome!');
     });
   });
 });
