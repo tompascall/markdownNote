@@ -1589,12 +1589,117 @@ controller.addNewNote = function () {
 
 ####5.4.1. Test: Add saveNotesToStorage method to notesData service
 
+**NOTE** We save the whole nodaDAta.notes array to localStorage.simpleNotes when add a new note.
+
+```js
+describe('Save notes to windows.localStorage.notes', function () {
+  var note;
+
+  beforeEach(function () {
+    noteData.notes = [];
+    note = {
+      title: 'Title for testing purpose',
+      text: 'Lorem ipsum dolor sit amet...',
+      tags: ['first note', 'testing purpose']
+    };
+  });
+
+  it('should save notes to storage', function () {
+    noteData.addNote(note);
+    noteData.saveNotesToLocalStorage();
+    var notes = angular.fromJson(window.localStorage.simpleNotes);
+    expect(notes[0].title).to.equal(note.title);
+  });
+});
+```
+
 ####5.4.2. Add saveNotesToStorage method to notesData service
+
+```js
+saveNotesToLocalStorage: function () {
+  window.localStorage.simpleNotes = angular.toJson(this.notes);
+}
+```
 
 ####5.4.3. Test: Save notes when adding a new note
 
-####5.4.4. Save notes when adding a new note
+```js
+it('should save note to localStorage when add a new note', function () {
+  window.localStorage.removeItem('simpleNotes');
+  noteData.initNotes();
+  noteData.addNote(note);
+  var notes = angular.fromJson(window.localStorage.simpleNotes);
+  expect(notes[0].title).to.equal(note.title);
+});
 
+it('should initialize localStorage if simleNote field does note exist', function () {
+  window.localStorage.removeItem('simpleNotes');
+  noteData.initNotes();
+  var notes = angular.fromJson(window.localStorage.simpleNotes);
+  expect(notes[0].title).to.equal('Welcome!');
+});
+
+it('should not put the Welcome note to the storage,' +
+    ' if the simpleNote field exist', function () {
+  window.localStorage.simpleNotes = angular.toJson([]);
+  noteData.initNotes();
+  var notes = angular.fromJson(window.localStorage.simpleNotes);
+  expect(notes[0].title).to.not.equal('Welcome!');
+});
+```
+
+####5.4.4. Save notes when adding a new note
+```js
+addNote: function (data) {
+  var self = this;
+  if (angular.isArray(data)) {
+    data.forEach(function (note) {
+      self.saveNoteToNoteData(note);
+    });
+  }
+  else if (angular.isObject(data)) {
+    this.saveNoteToNoteData(data);
+  }
+  else {
+    throw new Error('You are about to inject bad data format');
+  }
+  this.saveNotesToLocalStorage();
+},
+
+initNotes: function (notes) {
+  this.notes = [];
+  if (!angular.fromJson(window.localStorage.simpleNotes)) {
+    this.addNote(notes || this.welcomeNote);
+  }
+  else {
+    notes = {
+      title: 'title',
+      text: 'text',
+      tags: ['tag'],
+      opened: false
+    };
+    this.addNote(notes);
+  }
+},
+
+saveNoteToNoteData: function (note) {
+  this.notes.unshift({
+    title: note.title,
+    text: note.text,
+    tags: note.tags,
+    opened: false
+  });
+}
+```
 
 ###5.5. Load notes from windows.localStorage
+
+####5.5.1. Test: Add loadNotesFromStorage method to notesData service
+
+####5.5.2. Add loadNotesFromStorage method to notesData service
+
+####5.5.3. Test: Load notes during initialize noteList
+
+####5.5.4. Load notes during initialize noteList
+
 

@@ -41,7 +41,7 @@ function appHeaderDirective () {
       controller.text = '';
       controller.tags = '';
       controller.hideModal(controller.newNoteModal);
-    }
+    };
   }
 
   return {

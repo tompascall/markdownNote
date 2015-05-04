@@ -79,7 +79,9 @@ describe('Directive: noteList', function () {
         expect(note).to.contain(noteData.notes[0].title);
         expect(note).to.contain(noteData.notes[0].text);
         expect(note.html()).to.contain('ng-repeat="tag in note.tags"');
-        expect(note).to.contain(noteData.notes[0].tags[0]);
+        if (noteData.notes[0].tags.length > 0) {
+          expect(note).to.contain(noteData.notes[0].tags[0]);
+        }
       });
     });
 
