@@ -18,7 +18,8 @@
 }
 
 .note-item {
-  border-bottom: 1px solid #ccc;
+  /*border-bottom: 20px solid #ccc; */
+  border-bottom: 4px #ccc groove;
 }
 .note-item h2 {
   font-size: 16px
@@ -44,6 +45,17 @@
   background-color: #eee;
   padding: 10px;
   width: 100%;
+}
+
+.note-close-container {  /* OLD - iOS 6-, Safari 3.1-6, BB7 */  /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.note-close {
+  margin-left: auto;
 }
 
 #tag-container {
