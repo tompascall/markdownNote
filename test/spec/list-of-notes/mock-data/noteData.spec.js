@@ -81,8 +81,39 @@ describe('Service: noteData', function () {
         ' if the simpleNote field exist', function () {
       window.localStorage.simpleNotes = angular.toJson([]);
       noteData.initNotes();
+      noteData.addNote(note);
       var notes = angular.fromJson(window.localStorage.simpleNotes);
-      expect(notes[0].title).to.not.equal('Welcome!');
+      expect(notes.length).to.equal(1);
     });
   });
+
+  describe('Load notes from windows.localStorage.notes', function () {
+    var note;
+
+    beforeEach(function () {
+      noteData.notes = [];
+      note = {
+        title: 'Title for testing purpose',
+        text: 'Lorem ipsum dolor sit amet...',
+        tags: ['first note', 'testing purpose']
+      };
+    });
+
+    it('should load notes from storage to notesData service', function () {
+      window.localStorage.removeItem('simpleNotes');
+      noteData.addNote(note);
+      noteData.notes = noteData.loadNotesFromStorage();
+      expect(noteData.notes[0].title).to.equal('Title for testing purpose');
+    });
+
+    it('should init noteData.notes from localStorage', function () {
+      window.localStorage.simpleNotes = angular.toJson([]);
+      noteData.notes = [];
+      noteData.addNote(note);
+      noteData.notes = [];
+      noteData.initNotes();
+      expect(noteData.notes[0].title).to.equal('Title for testing purpose');
+    });
+  });
+
 });
