@@ -189,5 +189,18 @@ describe('Directive: noteList', function () {
     it('should have class button button-icon icon icon-right ion-ios7-close-outline note-close', function () {
       expect(button).to.have.class('button button-icon icon icon-right ion-ios7-close-outline note-close');
     });
-  })
+  });
+
+  describe('Add `deleteNote` method to `noteList` directive.' +
+    ' The method pop-up a confirm message', function () {
+
+    var stub;
+
+    it('should mak a confirm', function () {
+      stub = sinon.stub(window, 'confirm');
+      stub.returns(true);
+
+      stub.restore();
+    });
+    });
 });

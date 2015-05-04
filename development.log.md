@@ -1774,9 +1774,57 @@ THEN the note is deleted
 
 ####6.4.1. Test: Add button with `ion-ios7-close-outline` icon to the notes
 
+```js
+describe('Create a button for deleting note', function () {
+  var button;
+
+  beforeEach(function () {
+    button = element.find('div.note-close-container a');
+  });
+
+  it('should have class button button-icon icon icon-right ion-ios7-close-outline note-close', function () {
+    expect(button).to.have.class('button button-icon icon icon-right ion-ios7-close-outline note-close');
+  });
+})
+```
+
 ####6.4.2. Add button with `ion-ios7-close-outline` icon to the notes
 
+```html
+<div class="col col-20 note-close-container">
+  <a class="button button-icon icon icon-right ion-ios7-close-outline note-close"></a>
+</div>
+```
+
+```css
+.note-close-container {
+  display: -webkit-box;  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox;  /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
+  align-items: center;
+}
+
+.note-close {
+  margin-left: auto;
+}
+```
+
 ###6.5. Create a `deleteNote` method in `noteList` directive
+
+**NOTE** We have to stub the `window.confirm` method.
+
+Install karma-chai-sinon:
+
+```bash
+npm install karma-chai-sinon --save-dev
+```
+
+Add chai-sinon to the frameworks key in your Karma configuration:
+
+```js
+frameworks: ['mocha', 'chai-sinon']
+```
 
 ####6.5.1. Test: Add `deleteNote` method to `noteList` directive. The method pop-up a confirm message
 
