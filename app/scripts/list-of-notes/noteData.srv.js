@@ -24,19 +24,11 @@ angular.module('simpleNote')
       this.saveNotesToLocalStorage();
     },
 
-    initNotes: function (notes) {
-      this.notes = [];
-      if (!angular.fromJson(window.localStorage.simpleNotes)) {
-        this.addNote(notes || this.welcomeNote);
-      }
-      else {
-        notes = {
-          title: 'title',
-          text: 'text',
-          tags: ['tag'],
-          opened: false
-        };
-        this.addNote(notes);
+    initNotes: function () {
+      this.notes = this.loadNotesFromStorage();
+      if (!this.notes) {
+        this.notes = [];
+        this.addNote(this.welcomeNote);
       }
     },
 
@@ -51,6 +43,10 @@ angular.module('simpleNote')
 
     saveNotesToLocalStorage: function () {
       window.localStorage.simpleNotes = angular.toJson(this.notes);
+    },
+
+    loadNotesFromStorage: function () {
+      return angular.fromJson(window.localStorage.simpleNotes);
     },
 
     welcomeNote: {
