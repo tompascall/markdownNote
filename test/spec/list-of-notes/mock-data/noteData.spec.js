@@ -12,18 +12,26 @@ describe('Service: noteData', function () {
   }));
 
   describe('Test noteData.notes and addNote method', function () {
+
+    beforeEach(function () {
+      noteData.notes = [];
+    });
+
+    afterEach(function () {
+      noteData.notes = [];
+    });
+
     it('should get noteData service', function () {
       expect(noteData).to.not.equal(undefined);
       expect(noteData.notes).to.be.an('array');
     });
 
     it('should add note', function () {
-      noteData.notes = [];
       var note = {
-          title: 'Title for testing purpose',
-          text: 'Lorem ipsum dolor sit amet...',
-          tags: ['first note', 'testing purpose']
-        };
+        title: 'Title for testing purpose',
+        text: 'Lorem ipsum dolor sit amet...',
+        tags: ['first note', 'testing purpose']
+      };
       noteData.addNote(note);
       expect(noteData.notes.length).to.equal(1);
       expect(noteData.notes[0].title).to.equal('Title for testing purpose');
@@ -53,6 +61,10 @@ describe('Service: noteData', function () {
         text: 'Lorem ipsum dolor sit amet...',
         tags: ['first note', 'testing purpose']
       };
+    });
+
+    afterEach(function () {
+      noteData.notes = [];
     });
 
     it('should save notes to storage', function () {
@@ -99,6 +111,10 @@ describe('Service: noteData', function () {
       };
     });
 
+    afterEach(function () {
+      noteData.notes = [];
+    });
+
     it('should load notes from storage to notesData service', function () {
       window.localStorage.removeItem('simpleNotes');
       noteData.addNote(note);
@@ -113,6 +129,58 @@ describe('Service: noteData', function () {
       noteData.notes = [];
       noteData.initNotes();
       expect(noteData.notes[0].title).to.equal('Title for testing purpose');
+    });
+  });
+
+  describe('Add `deleteNote` method to `noteData` directive.' +
+    ' The method pop-up a confirm message', function () {
+
+    var stub;
+    var mockNote;
+    var noteIndex;
+    var backupNotes;
+
+    beforeEach(function () {
+      stub = sinon.stub(window, 'confirm');
+      noteData.notes = [];
+      mockNote = {
+        title: 'mockNote',
+        text: 'mockText',
+        tags: ['mockTag']
+      };
+      noteIndex = 0;
+      backupNotes = noteData.loadNotesFromStorage();
+    });
+
+    afterEach(function () {
+      stub.restore();
+      noteData.notes = backupNotes;
+      noteData.saveNotesToLocalStorage();
+    });
+
+    it('should stub the a confirm', function () {
+      stub.returns(true);
+      expect(noteData.confirmDeleteNote()).to.equal(true);
+    });
+
+    it('should not delete note if it is not confirmed', function () {
+      stub.returns(false);
+      var notesLength = noteData.notes.length;
+      noteData.addNote(mockNote);
+      noteData.deleteNote(noteIndex); // trying to remove the last added note
+      expect(noteData.notes.length).to.equal(notesLength + 1);
+    });
+
+    it('should delete note if it is confirmed', function () {
+      stub.returns(true);
+      var notesLength = noteData.notes.length;
+      noteData.addNote(mockNote);
+      var storageLengthAfterAddNote = noteData.loadNotesFromStorage().length;
+      noteData.deleteNote(noteIndex);
+      expect(noteData.notes.length).to.equal(notesLength);
+
+      var StorageLengthAfterDeleteNote = noteData.loadNotesFromStorage().length;
+      expect(StorageLengthAfterDeleteNote).to.equal(storageLengthAfterAddNote - 1);
     });
   });
 

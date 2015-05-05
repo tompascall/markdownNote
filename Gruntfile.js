@@ -323,7 +323,7 @@ module.exports = function (grunt) {
     karma: {
       options: {
         basePath: '',
-        frameworks: ['chai-jquery', 'chai', 'jquery-1.8.3', 'mocha'],
+        frameworks: ['chai-sinon','chai-jquery', 'chai', 'jquery-1.8.3', 'mocha'],
         files: [
           '<%= yeoman.app %>/bower_components/angular/angular.js',
           '<%= yeoman.app %>/bower_components/angular-mocks/angular-mocks.js',

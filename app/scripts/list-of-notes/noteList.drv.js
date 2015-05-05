@@ -11,10 +11,8 @@ function noteList () {
     var controller = this;
     noteData.initNotes();
     controller.noteData = noteData;
-    controller.notes = noteData.notes;
 
     controller.toggleNoteState = function (note) {
-      //noteData.stateOfNotes[note.id].opened = !noteData.stateOfNotes[note.id].opened;
       note.opened = !note.opened;
     };
   }

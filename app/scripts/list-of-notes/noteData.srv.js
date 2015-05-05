@@ -49,6 +49,20 @@ angular.module('simpleNote')
       return angular.fromJson(window.localStorage.simpleNotes);
     },
 
+    confirmDeleteNote: function () {
+      return window.confirm('Are you sure you want to remove this note?');
+    },
+
+    deleteNote: function (index, event) {
+      if (this.confirmDeleteNote()) {
+        this.notes.splice(index, 1);
+        this.saveNotesToLocalStorage();
+      }
+      if (event) {
+        event.stopPropagation();
+      }
+    },
+
     welcomeNote: {
       title: 'Welcome!',
       text: 'Welcome to simpleNotes! This is a simple app ' +

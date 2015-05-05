@@ -22,18 +22,20 @@ describe('Directive: noteList', function () {
     angular.element(document).find('body').append(element); // for rendering css
   }));
 
-  beforeEach(inject(function (_noteData_) {
-    noteData = _noteData_;
-  }));
+  beforeEach(function () {
+    inject(function ($injector) {
+      noteData = $injector.get('noteData');
+    });
+  });
 
   describe('Create a list of notes', function () {
 
     it('contains the appropriate content', function () {
-      expect(element.html()).to.contain('ng-repeat="note in ctrl.notes"');
+      expect(element.html()).to.contain('ng-repeat="note in ctrl.noteData.notes"');
     });
 
     it('should inject the noteData service', function () {
-      expect(isolated.ctrl.notes).to.deep.equal(noteData.notes);
+      expect(isolated.ctrl.noteData.notes).to.deep.equal(noteData.notes);
     });
 
     it('should contain the title of the note', function () {
@@ -91,7 +93,7 @@ describe('Directive: noteList', function () {
 
         it('should toggle state', function () {
           var index = 0;
-          var note = isolated.ctrl.notes[index];
+          var note = isolated.ctrl.noteData.notes[index];
           isolated.ctrl.toggleNoteState(note);
           expect(isolated.ctrl.noteData.notes[index].opened).to.equal(true);
           isolated.ctrl.toggleNoteState(note);
@@ -154,7 +156,7 @@ describe('Directive: noteList', function () {
 
         it('should contain #tag-title with given css', function () {
           var tag = tagsRow.find('span.tag-title');
-          expect(tag.html()).to.contain(isolated.ctrl.notes[0].tags[0])
+          expect(tag.html()).to.contain(isolated.ctrl.noteData.notes[0].tags[0])
           expect(tag).to.have.css('background-color', 'rgb(153, 153, 153)');
           expect(tag).to.have.css('color', 'rgb(255, 255, 255)');
         });
@@ -180,14 +182,40 @@ describe('Directive: noteList', function () {
   });
 
   describe('Create a button for deleting note', function () {
-    var button;
-
-    beforeEach(function () {
-      button = element.find('div.note-close-container a');
-    });
 
     it('should have class button button-icon icon icon-right ion-ios7-close-outline note-close', function () {
-      expect(button).to.have.class('button button-icon icon icon-right ion-ios7-close-outline note-close');
+     var button = element.find('div.note-close-container a');
+     expect(button).to.have.class('button button-icon icon icon-right ion-ios7-close-outline note-close');
     });
-  })
+
+    describe('Connect `deleteNote` method to delete button with ng-click', function () {
+      var stub;
+
+      beforeEach(function () {
+        stub = sinon.stub(window, 'confirm');
+      });
+
+      afterEach(function () {
+        stub.restore();
+      });
+
+      it('should delete note', function () {
+        var testNote = {
+          title: 'Testnote',
+          text: 'Test text',
+          tags: ['test tag'],
+        };
+        isolated.ctrl.noteData.addNote(testNote);
+        scope.$digest();
+        var firstNote = element.find('ion-list .note-item').eq(0);
+        expect(firstNote.html()).to.contain('Testnote');
+        var button = firstNote.find('div.note-close-container a');
+        stub.returns(true); // Confirm deleting the note
+        button.click();
+        scope.$digest();
+        firstNote = element.find('ion-list .note-item').eq(0);
+        expect(firstNote.html()).to.not.contain('Testnote');
+      });
+    });
+  });
 });
