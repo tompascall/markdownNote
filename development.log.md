@@ -1944,3 +1944,46 @@ describe('Connect `deleteNote` method to delete button with ng-click', function 
 </div>
 ```
 
+##7. STORY: Edit note
+
+###7.1. USER STORY
+
+>AS I customer I WANT to be able to edit my notes SO THAT I can update them
+
+###7.2. ACCEPTANCE CRITERIA
+
+GIVEN I am a user
+WHEN I open a note
+THEN I can see an edit button in the tags' row
+
+GIVEN I am a user
+WHEN I tap the edit button
+THEN I can see an edit modal coming up with the content of the note
+
+GIVEN I am a user
+WHEN I tap the cancel button of the modal
+THEN the modal goes away without modifying my note
+
+GIVEN I am a user
+WHEN I edit the content of the note
+AND I tap the Save Note button
+THEN I the modal goes away and my note is being changed
+
+GIVEN I am a user
+WHEN I try to update my notes without a title
+THEN I cannot push the Save button
+
+###7.3. TODOS
+
+- **Add edit button to `noteList` directive**
+- **Create `editModal` in `noteList` directive**
+- **Connect edit button to `editModal`**
+- **Connect modal data to `noteData` service**
+
+###7.4. Add edit button to `noteList` directive
+
+###7.5. Create `editModal` in `noteList` directive
+
+###7.6. Connect edit button to `editModal`
+
+###7.7. Connect modal data to `noteData` service
