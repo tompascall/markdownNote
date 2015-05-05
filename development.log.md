@@ -1826,19 +1826,121 @@ Add chai-sinon to the frameworks key in your Karma configuration:
 frameworks: ['mocha', 'chai-sinon']
 ```
 
-####6.5.1. Test: Add `deleteNote` method to `noteList` directive. The method pop-up a confirm message
+####6.5.1. Test: Add `confirmDeleteNote` method to `noteList` directive. The method pop-up a confirm message
 
-####6.5.2. Add `deleteNote` method to `noteList` directive. The method pop-up a confirm message
+```js
+beforeEach(function () {
+  stub = sinon.stub(window, 'confirm');
+  noteData.notes = [];
+  mockNote = {
+    title: 'mockNote',
+    text: 'mockText',
+    tags: ['mockTag']
+  };
+  noteIndex = 0;
+});
+
+afterEach(function () {
+  stub.restore();
+  noteData.notes = [];
+});
+
+it('should stub the a confirm', function () {
+  stub.returns(true);
+  expect(isolated.ctrl.confirmDeleteNote()).to.equal(true);
+});
+```
+
+####6.5.2. Add `confirmDeleteNote` method to `noteList` directive. The method pop-up a confirm message
+
+```js
+ controller.confirmDeleteNote = function () {
+  return confirm('Are you sure you want to remove this note?');
+};
+```
 
 ####6.5.3. Test: If the return value of the confirm is true, delete the note from noteData service and local storage
 
+```js
+it('should not delete note if it is not confirmed', function () {
+  stub.returns(false);
+  var notesLength = noteData.notes.length;
+  noteData.addNote(mockNote);
+  noteData.deleteNote(noteIndex); // trying to remove the last added note
+  expect(noteData.notes.length).to.equal(notesLength + 1);
+});
+
+it('should delete note if it is confirmed', function () {
+  stub.returns(true);
+  var notesLength = noteData.notes.length;
+  noteData.addNote(mockNote);
+  var storageLengthAfterAddNote = noteData.loadNotesFromStorage().length;
+  noteData.deleteNote(noteIndex);
+  expect(noteData.notes.length).to.equal(notesLength);
+
+  var StorageLengthAfterDeleteNote = noteData.loadNotesFromStorage().length;
+  expect(StorageLengthAfterDeleteNote).to.equal(storageLengthAfterAddNote - 1);
+});
+```
+
 ####6.5.4. If the return value of the confirm is true, delete the note from noteData service and local storage
+
+```js
+// noteData.srv.js
+
+deleteNote: function (index) {
+  if (this.confirmDeleteNote()) {
+    this.notes.splice(index, 1);
+    this.saveNotesToLocalStorage();
+  }
+},
+```
 
 ###6.6. Connect `deleteNote` method with delete button
 
 ####6.6.1. Test: Connect `deleteNote` method to delete button with ng-click
 
+We have to stub again the `window.confirm()` method.
+
+```js
+describe('Connect `deleteNote` method to delete button with ng-click', function () {
+  var stub;
+
+  beforeEach(function () {
+    stub = sinon.stub(window, 'confirm');
+  });
+
+  afterEach(function () {
+    stub.restore();
+  });
+
+  it('should delete note', function () {
+    var testNote = {
+      title: 'Testnote',
+      text: 'Test text',
+      tags: ['test tag'],
+    };
+    isolated.ctrl.noteData.addNote(testNote);
+    scope.$digest();
+    var firstNote = element.find('ion-list .note-item').eq(0);
+    expect(firstNote.html()).to.contain('Testnote');
+    var button = firstNote.find('div.note-close-container a');
+    stub.returns(true); // Confirm deleting the note
+    button.click();
+    scope.$digest();
+    firstNote = element.find('ion-list .note-item').eq(0);
+    expect(firstNote.html()).to.not.contain('Testnote');
+  });
+});
+```
+
 ####6.6.2. Connect `deleteNote` method to delete button with ng-click
 
+```html
+<!-- note-list.drv.html -->
 
+<div class="col col-20 note-close-container">
+  <a class="button button-icon icon icon-right ion-ios7-close-outline note-close" ng-click="ctrl.noteData.deleteNote($index)"></a>
+</div>
+```
 
