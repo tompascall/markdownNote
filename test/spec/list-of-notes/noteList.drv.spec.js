@@ -218,4 +218,11 @@ describe('Directive: noteList', function () {
       });
     });
   });
+
+  describe('Create a button for editing note', function () {
+    it('should have class button button-icon icon icon-right ion-edit note-edit', function () {
+     var button = element.find('div.note-edit-container a');
+     expect(button).to.have.class('button button-icon icon icon-right ion-edit note-edit');
+    });
+  });
 });
