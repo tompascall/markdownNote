@@ -2211,6 +2211,50 @@ controller.hideModal = function (modal) {
 
 ####7.7.1. Test: Show editModal when edit button is clicked
 
+```js
+describe('Add tap handler to edit button', function () {
+  it('should show the modal', function (done) {
+      element.find('#edit-button').click();
+      setTimeout(function () {
+        expect(editNoteModal.isShown()).to.equal(true);
+        editNoteModal.remove();
+        done();
+    },0);
+  });
+});
+```
+
 ####7.7.2. Show editModal when edit button is clicked
+
+```html
+<div class="col col-20 note-edit-container">
+  <a id="edit-button" class="button button-icon icon icon-right ion-edit note-edit" ng-click="ctrl.showModal(ctrl.editNoteModal)"></a>
+</div>
+```
+
+####7.7.3. Test: Hide editModal when modal cancel button is clicked
+
+```js
+describe('Add tap handler to Cancel button', function () {
+  it('should hide the modal', function (done) {
+    editNoteModal.show();
+    timeout.flush();
+    modalElement.find('#edit-note-modal-cancel-button').click();
+    setTimeout(function () {
+      expect(editNoteModal.isShown()).to.equal(false);
+      editNoteModal.remove();
+      done();
+    },0);
+  });
+});
+```
+
+####7.7.4. Hide editModal when modal cancel button is clicked
+
+```html
+<div class="col col-20 note-edit-container">
+  <a id="edit-button" class="button button-icon icon icon-right ion-edit note-edit" ng-click="ctrl.showModal(ctrl.editNoteModal)"></a>
+</div>
+```
 
 ###7.8. Connect modal data to `noteData` service
