@@ -1982,7 +1982,48 @@ THEN I cannot push the Save button
 
 ###7.4. Add edit button to `noteList` directive
 
+####7.4.1. Test: Add edit button to `noteList` directive
+
+```js
+//noteList.drv.spec.js
+
+describe('Create a button for editing note', function () {
+  it('should have class button button-icon icon icon-right ion-edit note-edit', function () {
+   var button = element.find('div.note-edit-container a');
+   expect(button).to.have.class('button button-icon icon icon-right ion-edit note-edit');
+  });
+});
+```
+
+####7.4.2. Add edit button to `noteList` directive
+
+```html
+<div id="tags-row" class="row">
+  <p id="tag-container" class="col col-80"><i class="icon ion-pricetag"></i>&nbsp;
+    <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"></span>
+  </p>
+  <div class="col col-20 note-edit-container">
+    <a class="button button-icon icon icon-right ion-edit note-edit"></a>
+  </div>
+</div>
+```
+
+```css
+.text-title-container, .note-close-container, .note-edit-container {
+  display: -webkit-box;  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox;  /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
+  align-items: center;
+}
+
+.note-close, .note-edit {
+  margin-left: auto;
+}
+```
+
 ###7.5. Create `editModal` in `noteList` directive
+
 
 ###7.6. Connect edit button to `editModal`
 
