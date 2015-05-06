@@ -2024,6 +2024,78 @@ describe('Create a button for editing note', function () {
 
 ###7.5. Create `editModal` in `noteList` directive
 
+####7.5.1. Test: Create modal-body directive
+
+**NOTE:** Because the 2 modal (newNote and editNote) are pretty similar, I try to create a modal body directive and put this into the modal body.
+
+```js
+// modalBody.drv.spec.js
+
+'use strict';
+
+describe('Directive: modalBody', function () {
+  var $compile;
+  var scope;
+  var element;
+
+  beforeEach(function () {
+    module('simpleNote');
+    module('templates');
+    inject(function (_$compile_, _$rootScope_) {
+      $compile = _$compile_;
+      scope = _$rootScope_.$new();
+      element = $compile('<modal-body></modal-body>')(scope);
+      scope.$digest();
+      angular.element(document).find('body').append(element); // for rendering css
+    });
+  });
+
+  describe('Testing elements', function () {
+    it('should have input fields', function () {
+      var inputList = element.find('div.list label');
+      expect(inputList.children('input'))
+        .to.have.attr('placeholder', 'Title of your note');
+      expect(inputList.children('textarea'))
+        .to.have.attr('placeholder', 'Enter your note here');
+       expect(inputList.children('input').eq(1))
+        .to.have.attr('placeholder', 'Tags (separated by commas)');
+    });
+  });
+});
+```
+
+####7.5.2. Create modal-body directive
+
+```js
+'use strict';
+
+function modalBody () {
+  return {
+    restrict: 'E',
+    templateUrl: 'scripts/modal/modal-body.drv.html'
+  };
+}
+
+angular.module('simpleNote').directive('modalBody', modalBody);
+```
+
+```html
+<!-- moda-body.drv.html -->
+
+<div class="list">
+  <label class="item item-input">
+    <input id="newNoteModalTitle" name="title" type="text" placeholder="Title of your note" ng-model="ctrl.title" required>
+  </label>
+
+  <label class="item item-input">
+    <textarea rows="10" placeholder="Enter your note here" ng-model="ctrl.text"></textarea>
+  </label>
+
+  <label class="item item-input">
+    <input id="newNoteModalTags" type="text" placeholder="Tags (separated by commas)" ng-model="ctrl.tags">
+  </label>
+</div>
+```
 
 ###7.6. Connect edit button to `editModal`
 
