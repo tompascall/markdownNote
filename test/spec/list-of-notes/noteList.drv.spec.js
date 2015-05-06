@@ -225,4 +225,65 @@ describe('Directive: noteList', function () {
      expect(button).to.have.class('button button-icon icon icon-right ion-edit note-edit');
     });
   });
+
+  describe('Create editNote modal', function () {
+    var editNoteModal;
+    var modalElement;
+
+    beforeEach(function () {
+      editNoteModal = isolated.ctrl.editNoteModal;
+      modalElement = editNoteModal.$el;
+    });
+
+    describe('Add editNoteModal', function () {
+      it('should be an $ionicModal', function () {
+        editNoteModal.show();
+        expect(editNoteModal.isShown()).to.equal(true);
+        editNoteModal.hide();
+        expect(editNoteModal.isShown()).to.equal(false);
+        editNoteModal.remove();
+      });
+    });
+
+    describe('Show and hide editNoteModal', function () {
+      it('should sow and hide modal', function () {
+        isolated.ctrl.showModal(editNoteModal);
+        expect(editNoteModal.isShown()).to.equal(true);
+        isolated.ctrl.hideModal(editNoteModal);
+        expect(editNoteModal.isShown()).to.equal(false);
+        editNoteModal.remove();
+      });
+    });
+
+     describe('Test modal Header', function () {
+
+       it('should have a modal class', function () {
+         expect(modalElement.find('div')).to.have.class('modal');
+       });
+
+      it('should contain ion-header-bar', function () {
+        var headerBar = modalElement.find('ion-header-bar');
+        expect(headerBar).to.have.class('secondary');
+        expect(headerBar.children('h1')).to.have.class('title');
+        expect(headerBar.children('h1').text())
+          .to.contain('Edit Your Note');
+        expect(headerBar.children('button'))
+          .to.have.class('button button-clear button-positive');
+      });
+     });
+
+    describe('Test modal body', function () {
+      it('should have a modal-body element', function () {
+        expect(modalElement.find('modal-body').html()).to.contain('<!-- moda-body.drv.html -->');
+      });
+    });
+
+    describe('Test modal footer', function () {
+      it('should have a padding area', function () {
+        var button = modalElement.find('ion-content form div.padding button');
+        expect(button).to.have.attr('type', 'submit');
+        expect(button.text()).to.contain('Update Note');
+      });
+    });
+  });
 });
