@@ -186,11 +186,13 @@ describe('Directive: appHeader', function () {
       });
 
       it('should add new note', function () {
+        var id = noteData.createId();
         var preparedNote = {
           title: 'test title',
           text: 'test text',
           tags: ['test tag1', 'test tag2'],
-          opened: false
+          opened: false,
+          id: id
         }
         isolated.ctrl.addNewNote();
         expect(noteData.notes.slice(-1)[0]).to.deep.equal(preparedNote);

@@ -2263,5 +2263,54 @@ describe('Add tap handler to Cancel button', function () {
 
 ####7.8.1. Test: Add unique id to `noteData.notes`
 
+```js
+it('should create unique id', function () {
+  var note = {
+    title: 'Title for testing purpose',
+    text: 'Lorem ipsum dolor sit amet...',
+    tags: ['first note', 'testing purpose']
+  };
+  expect(noteData.createId()).to.equal(0);
+  noteData.addNote(note);
+  expect(noteData.createId()).to.equal(1);
+});
+```
+
 ####7.8.2. Add unique id to `noteData.notes`
+
+```js
+saveNoteToNoteData: function (note) {
+  this.notes.unshift({
+    title: note.title,
+    text: note.text,
+    tags: note.tags,
+    opened: false,
+    id: this.createId()
+  });
+}
+```
+
+####7.8.3. Test: Get index by note.id
+
+```js
+it('should get note index', function () {
+  noteData.addNote(mockNote);
+  noteData.addNote(mockNote2);
+  mockNote = noteData.notes[1];
+  expect(noteData.getIndex(mockNote)).to.equal(1);
+});
+```
+
+####7.8.4. Get index by note.id
+
+```js
+getIndex: function (note) {
+  var id = note.id;
+  for (var i = 0, length = this.notes.length; i < length; i++) {
+    if (this.notes[i].id === id) {
+      return i;
+    }
+  }
+}
+```
 

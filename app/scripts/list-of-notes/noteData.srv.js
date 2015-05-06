@@ -37,8 +37,18 @@ angular.module('simpleNote')
         title: note.title,
         text: note.text,
         tags: note.tags,
-        opened: false
+        opened: false,
+        id: this.createId()
       });
+    },
+
+    createId: function () {
+      if (!this.notes.length) {
+        return 0;
+      }
+      else {
+        return this.notes[0].id + 1;
+      }
     },
 
     saveNotesToLocalStorage: function () {
@@ -53,13 +63,24 @@ angular.module('simpleNote')
       return window.confirm('Are you sure you want to remove this note?');
     },
 
-    deleteNote: function (index, event) {
+    deleteNote: function (note, event) {
+      var index;
       if (this.confirmDeleteNote()) {
+        index = this.getIndex(note);
         this.notes.splice(index, 1);
         this.saveNotesToLocalStorage();
       }
       if (event) {
         event.stopPropagation();
+      }
+    },
+
+    getIndex: function (note) {
+      var id = note.id;
+      for (var i = 0, length = this.notes.length; i < length; i++) {
+        if (this.notes[i].id === id) {
+          return i;
+        }
       }
     },
 
