@@ -42,6 +42,10 @@ function appHeaderDirective () {
       controller.tags = '';
       controller.hideModal(controller.newNoteModal);
     };
+
+    $scope.$on('$destroy', function() {
+      controller.newNoteModal.remove();
+    });
   }
 
   return {

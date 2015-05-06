@@ -31,6 +31,10 @@ function noteList () {
     controller.hideModal = function (modal) {
       modal.hide();
     };
+
+    $scope.$on('$destroy', function() {
+      controller.editNoteModal.remove();
+    });
   }
 
   return {

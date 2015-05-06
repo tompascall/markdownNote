@@ -4,14 +4,14 @@
   <!-- Modal header bar -->
   <ion-header-bar class="secondary">
     <h1 class="title">Edit Your Note</h1>
-    <button id="new-note-modal-cancel-button" class="button button-clear button-positive">Cancel</button>
+    <button id="edit-note-modal-cancel-button" class="button button-clear button-positive" ng-click="ctrl.hideModal(ctrl.editNoteModal)">Cancel</button>
   </ion-header-bar>
   <!-- Modal content area -->
   <ion-content>
     <form name="newNoteModalForm" novalidate>
       <modal-body></modal-body>
       <div class="padding">
-        <button id="ceditNoteButton" type="submit" class="button button-block button-positive" ng-disabled="newNoteModalForm.title.$invalid">Update Note</button>
+        <button id="edit-note-modal-update-button" type="submit" class="button button-block button-positive" ng-disabled="newNoteModalForm.title.$invalid">Update Note</button>
       </div>
     </form>
   </ion-content>

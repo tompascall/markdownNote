@@ -8,18 +8,20 @@ describe('Directive: noteList', function () {
   var element;
   var isolated;
   var noteData;
+  var timeout;
 
   beforeEach(module('simpleNote'));
 
   beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
 
-  beforeEach(inject(function (_$compile_, _$rootScope_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _$timeout_) {
     $compile = _$compile_;
     scope = _$rootScope_.$new();
     element = $compile('<note-list></note-list>')(scope);
     scope.$digest();
     isolated = element.isolateScope();
     angular.element(document).find('body').append(element); // for rendering css
+    timeout = _$timeout_;
   }));
 
   beforeEach(function () {
@@ -274,7 +276,7 @@ describe('Directive: noteList', function () {
 
     describe('Test modal body', function () {
       it('should have a modal-body element', function () {
-        expect(modalElement.find('modal-body').html()).to.contain('<!-- moda-body.drv.html -->');
+        expect(modalElement.find('modal-body').html()).to.contain('<!-- modal-body.drv.html -->');
       });
     });
 
@@ -283,6 +285,30 @@ describe('Directive: noteList', function () {
         var button = modalElement.find('ion-content form div.padding button');
         expect(button).to.have.attr('type', 'submit');
         expect(button.text()).to.contain('Update Note');
+      });
+    });
+
+    describe('Add tap handler to edit button', function () {
+      it('should show the modal', function (done) {
+          element.find('#edit-button').click();
+          setTimeout(function () {
+            expect(editNoteModal.isShown()).to.equal(true);
+            editNoteModal.remove();
+            done();
+        },0);
+      });
+    });
+
+    describe('Add tap handler to Cancel button', function () {
+      it('should hide the modal', function (done) {
+        editNoteModal.show();
+        timeout.flush();
+        modalElement.find('#edit-note-modal-cancel-button').click();
+        setTimeout(function () {
+          expect(editNoteModal.isShown()).to.equal(false);
+          editNoteModal.remove();
+          done();
+        },0);
       });
     });
   });

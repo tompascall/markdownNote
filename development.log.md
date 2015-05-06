@@ -2209,4 +2209,8 @@ controller.hideModal = function (modal) {
 
 ###7.7. Connect edit button to `editNote` modal
 
+####7.7.1. Test: Show editModal when edit button is clicked
+
+####7.7.2. Show editModal when edit button is clicked
+
 ###7.8. Connect modal data to `noteData` service

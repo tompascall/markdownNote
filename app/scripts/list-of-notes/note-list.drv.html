@@ -21,7 +21,7 @@
           <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"></span>
         </p>
         <div class="col col-20 note-edit-container">
-          <a class="button button-icon icon icon-right ion-edit note-edit"></a>
+          <a id="edit-button" class="button button-icon icon icon-right ion-edit note-edit" ng-click="ctrl.showModal(ctrl.editNoteModal)"></a>
         </div>
       </div>
     </div>
