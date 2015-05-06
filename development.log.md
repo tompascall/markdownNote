@@ -2067,6 +2067,8 @@ describe('Directive: modalBody', function () {
 ####7.5.2. Create modal-body directive
 
 ```js
+//modalBody.drv.js
+
 'use strict';
 
 function modalBody () {
@@ -2097,6 +2099,169 @@ angular.module('simpleNote').directive('modalBody', modalBody);
 </div>
 ```
 
-###7.6. Connect edit button to `editModal`
+###7.6. Create `editNote` modal in `noteList` directive
 
-###7.7. Connect modal data to `noteData` service
+####7.6.1. Test: Create `editNote` modal in `noteList` directive
+
+```js
+describe('Create editNote modal', function () {
+  var editNoteModal;
+  var modalElement;
+
+  beforeEach(function () {
+    editNoteModal = isolated.ctrl.editNoteModal;
+    modalElement = editNoteModal.$el;
+  });
+
+  describe('Add editNoteModal', function () {
+    it('should be an $ionicModal', function () {
+      editNoteModal.show();
+      expect(editNoteModal.isShown()).to.equal(true);
+      editNoteModal.hide();
+      expect(editNoteModal.isShown()).to.equal(false);
+      editNoteModal.remove();
+    });
+  });
+
+  describe('Show and hide editNoteModal', function () {
+    it('should sow and hide modal', function () {
+      isolated.ctrl.showModal(editNoteModal);
+      expect(editNoteModal.isShown()).to.equal(true);
+      isolated.ctrl.hideModal(editNoteModal);
+      expect(editNoteModal.isShown()).to.equal(false);
+      editNoteModal.remove();
+    });
+  });
+
+   describe('Test modal Header', function () {
+
+     it('should have a modal class', function () {
+       expect(modalElement.find('div')).to.have.class('modal');
+     });
+
+    it('should contain ion-header-bar', function () {
+      var headerBar = modalElement.find('ion-header-bar');
+      expect(headerBar).to.have.class('secondary');
+      expect(headerBar.children('h1')).to.have.class('title');
+      expect(headerBar.children('h1').text())
+        .to.contain('Edit Your Note');
+      expect(headerBar.children('button'))
+        .to.have.class('button button-clear button-positive');
+    });
+   });
+
+  describe('Test modal body', function () {
+    it('should have a modal-body element', function () {
+      expect(modalElement.find('modal-body').html()).to.contain('<!-- moda-body.drv.html -->');
+    });
+  });
+
+  describe('Test modal footer', function () {
+    it('should have a padding area', function () {
+      var button = modalElement.find('ion-content form div.padding button');
+      expect(button).to.have.attr('type', 'submit');
+      expect(button.text()).to.contain('Update Note');
+    });
+  });
+});
+```
+
+####7.6.2. Create `editNote` modal in `noteList` directive
+
+```js
+$ionicModal.fromTemplateUrl('scripts/modal/edit-note-modal.html', {
+    scope: $scope,
+    focusFirstInput: false
+  })
+.then(function (modal) {
+  controller.editNoteModal = modal;
+});
+
+controller.showModal = function (modal) {
+  modal.show();
+};
+
+controller.hideModal = function (modal) {
+  modal.hide();
+};
+```
+
+```html
+<!-- edit-note-modal.html -->
+
+<div class="modal">
+  <!-- Modal header bar -->
+  <ion-header-bar class="secondary">
+    <h1 class="title">Edit Your Note</h1>
+    <button id="new-note-modal-cancel-button" class="button button-clear button-positive">Cancel</button>
+  </ion-header-bar>
+  <!-- Modal content area -->
+  <ion-content>
+    <form name="newNoteModalForm" novalidate>
+      <modal-body></modal-body>
+      <div class="padding">
+        <button id="ceditNoteButton" type="submit" class="button button-block button-positive" ng-disabled="newNoteModalForm.title.$invalid">Update Note</button>
+      </div>
+    </form>
+  </ion-content>
+</div>
+```
+
+###7.7. Connect edit button to `editNote` modal
+
+####7.7.1. Test: Show editModal when edit button is clicked
+
+```js
+describe('Add tap handler to edit button', function () {
+  it('should show the modal', function (done) {
+      element.find('#edit-button').click();
+      setTimeout(function () {
+        expect(editNoteModal.isShown()).to.equal(true);
+        editNoteModal.remove();
+        done();
+    },0);
+  });
+});
+```
+
+####7.7.2. Show editModal when edit button is clicked
+
+```html
+<div class="col col-20 note-edit-container">
+  <a id="edit-button" class="button button-icon icon icon-right ion-edit note-edit" ng-click="ctrl.showModal(ctrl.editNoteModal)"></a>
+</div>
+```
+
+####7.7.3. Test: Hide editModal when modal cancel button is clicked
+
+```js
+describe('Add tap handler to Cancel button', function () {
+  it('should hide the modal', function (done) {
+    editNoteModal.show();
+    timeout.flush();
+    modalElement.find('#edit-note-modal-cancel-button').click();
+    setTimeout(function () {
+      expect(editNoteModal.isShown()).to.equal(false);
+      editNoteModal.remove();
+      done();
+    },0);
+  });
+});
+```
+
+####7.7.4. Hide editModal when modal cancel button is clicked
+
+```html
+<div class="col col-20 note-edit-container">
+  <a id="edit-button" class="button button-icon icon icon-right ion-edit note-edit" ng-click="ctrl.showModal(ctrl.editNoteModal)"></a>
+</div>
+```
+
+###7.8. Connect modal data to `noteData` service
+
+**NOTE** I realized that I have to change noteData data structure, and have to introduce a unique id to edit the correct note. If I used `$index`, it will cause a problem when filtering the list.
+
+####7.8.1. Test: Add unique id to `noteData.notes`
+
+####7.8.2. Add unique id to `noteData.notes`
+
