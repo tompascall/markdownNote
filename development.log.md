@@ -2258,3 +2258,10 @@ describe('Add tap handler to Cancel button', function () {
 ```
 
 ###7.8. Connect modal data to `noteData` service
+
+**NOTE** I realized that I have to change noteData data structure, and have to introduce a unique id to edit the correct note. If I used `$index`, it will cause a problem when filtering the list.
+
+####7.8.1. Test: Add unique id to `noteData.notes`
+
+####7.8.2. Add unique id to `noteData.notes`
+
