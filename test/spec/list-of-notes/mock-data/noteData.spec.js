@@ -26,6 +26,17 @@ describe('Service: noteData', function () {
       expect(noteData.notes).to.be.an('array');
     });
 
+    it('should create unique id', function () {
+      var note = {
+        title: 'Title for testing purpose',
+        text: 'Lorem ipsum dolor sit amet...',
+        tags: ['first note', 'testing purpose']
+      };
+      expect(noteData.createId()).to.equal(0);
+      noteData.addNote(note);
+      expect(noteData.createId()).to.equal(1);
+    });
+
     it('should add note', function () {
       var note = {
         title: 'Title for testing purpose',
@@ -38,6 +49,7 @@ describe('Service: noteData', function () {
       expect(noteData.notes[0].text).to.equal('Lorem ipsum dolor sit amet...');
       expect(noteData.notes[0].tags).to.deep.equal(['first note', 'testing purpose']);
       expect(noteData.notes[0].opened).to.equal(false);
+      expect(noteData.notes[0].id).to.equal(0);
 
       var note2 = {
           title: 'Second note',
@@ -48,6 +60,7 @@ describe('Service: noteData', function () {
       noteData.addNote(note2);
       expect(noteData.notes.length).to.equal(2);
       expect(noteData.notes[0].title).to.equal('Second note');
+      expect(noteData.notes[0].id).to.equal(1);
     });
   });
 
@@ -137,7 +150,7 @@ describe('Service: noteData', function () {
 
     var stub;
     var mockNote;
-    var noteIndex;
+    var mockNote2;
     var backupNotes;
 
     beforeEach(function () {
@@ -148,7 +161,12 @@ describe('Service: noteData', function () {
         text: 'mockText',
         tags: ['mockTag']
       };
-      noteIndex = 0;
+      mockNote2 = {
+        title: 'mockNote2',
+        text: 'mockText2',
+        tags: ['mockTag2']
+      };
+
       backupNotes = noteData.loadNotesFromStorage();
     });
 
@@ -163,21 +181,32 @@ describe('Service: noteData', function () {
       expect(noteData.confirmDeleteNote()).to.equal(true);
     });
 
+    it('should get note index', function () {
+      noteData.addNote(mockNote);
+      noteData.addNote(mockNote2);
+      mockNote = noteData.notes[1];
+      expect(noteData.getIndex(mockNote)).to.equal(1);
+    });
+
     it('should not delete note if it is not confirmed', function () {
       stub.returns(false);
-      var notesLength = noteData.notes.length;
+      var notesLength = 0;
       noteData.addNote(mockNote);
-      noteData.deleteNote(noteIndex); // trying to remove the last added note
+      mockNote = noteData.notes[0];
+      noteData.deleteNote(mockNote); // trying to remove the last added note
       expect(noteData.notes.length).to.equal(notesLength + 1);
     });
 
     it('should delete note if it is confirmed', function () {
       stub.returns(true);
-      var notesLength = noteData.notes.length;
+      var notesLength = 0;
       noteData.addNote(mockNote);
+      noteData.addNote(mockNote2);
       var storageLengthAfterAddNote = noteData.loadNotesFromStorage().length;
-      noteData.deleteNote(noteIndex);
-      expect(noteData.notes.length).to.equal(notesLength);
+      mockNote = noteData.notes[1];
+      noteData.deleteNote(mockNote);
+      expect(noteData.notes[0].title).to.equal('mockNote2');
+      expect(noteData.notes.length).to.equal(notesLength + 1);
 
       var StorageLengthAfterDeleteNote = noteData.loadNotesFromStorage().length;
       expect(StorageLengthAfterDeleteNote).to.equal(storageLengthAfterAddNote - 1);
