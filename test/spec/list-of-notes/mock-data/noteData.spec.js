@@ -236,9 +236,4 @@ describe('Service: noteData', function () {
       expect(StorageLengthAfterDeleteNote).to.equal(storageLengthAfterAddNote - 1);
     });
   });
-
-  describe('Create updateNotes method', function () {
-
-  });
-
 });

@@ -2374,6 +2374,115 @@ controller.editNote = function (note) {
 
 ####7.10.1. Test: Create updateNotes(editedNote) method
 
+**NOTE** When you edit the tags field, it will be a string, but if you edit note without editing tags, the type of the field remains array.
+
+```js
+describe('Create updateNotes method', function () {
+  var testNote;
+  var editedNote;
+
+  beforeEach(function () {
+    noteData.notes = [];
+
+    testNote = {
+      title: 'Testnote',
+      text: 'Test text',
+      tags: ['test tag'],
+    };
+
+    editedNote = {
+      title: 'Edited Note',
+      text: 'Edited Text',
+      tags: 'Edited, Tags'
+    };
+
+    isolated.ctrl.editedNote = editedNote;
+
+    noteData.addNote(testNote);
+    isolated.ctrl.note = noteData.notes[0];
+  });
+
+  afterEach(function () {
+    noteData.notes = [];
+  });
+
+  it('should close the modal', function (done) {
+    editNoteModal.show();
+    timeout.flush();
+    testNote = noteData.notes[0];
+    isolated.ctrl.updateNotes(testNote);
+    setTimeout(function () {
+      expect(editNoteModal.isShown()).to.equal(false);
+      editNoteModal.remove();
+      done();
+    },0);
+  });
+
+  it('should call noteData.updateNotes method', function () {
+    sinon.spy(noteData, 'updateNotes');
+    testNote = noteData.notes[0];
+    isolated.ctrl.updateNotes(testNote);
+    expect(noteData.updateNotes.called).to.equal(true);
+    noteData.updateNotes.restore();
+  });
+
+  it('should call noteData.updateNotes when update button is clicked', function () {
+    sinon.spy(isolated.ctrl, 'updateNotes');
+    modalElement.find('#edit-note-modal-update-button').click();
+
+    expect(isolated.ctrl.updateNotes.called).to.equal(true);
+    isolated.ctrl.updateNotes.restore();
+  });
+});
+```
+
 ####7.10.2. Create updateNotes(editedNote) method
 
+```js
+// noteList.drv.js
 
+controller.setEditedNote = function (note) {
+  controller.editedNote = controller.cloneNote(note);
+};
+
+controller.editNote = function (note, event) {
+  if (event) {
+    event.stopPropagation();
+  }
+  controller.note = note;
+  controller.setEditedNote(note);
+  controller.showModal(controller.editNoteModal);
+};
+
+controller.updateNotes = function (note) {
+  noteData.updateNotes(note, controller.editedNote);
+  controller.editedNote.title = '';
+  controller.editedNote.text = '';
+  controller.editedNote.tags = '';
+  controller.hideModal(controller.editNoteModal);
+};
+```
+
+And the `noteData.updateNote` method:
+
+```js
+prepareNote: function (noteInput) {
+  var preparedNote = {};
+  preparedNote.title = noteInput.title;
+  preparedNote.text = noteInput.text;
+  if (angular.isArray(noteInput.tags)) {
+    noteInput.tags = noteInput.tags.join(',');
+  }
+  preparedNote.tags = tagsFactory.filterTagsString(noteInput.tags);
+  return preparedNote;
+},
+
+updateNotes: function (note, editedNote) {
+  editedNote = this.prepareNote(editedNote);
+  var index = this.getIndex(note);
+  this.notes[index].title = editedNote.title;
+  this.notes[index].text = editedNote.text;
+  this.notes[index].tags = editedNote.tags;
+  this.saveNotesToLocalStorage();
+}
+```

@@ -8,11 +8,14 @@ angular.module('simpleNote')
   return {
     notes: [],
 
-    prepareNote: function (note) {
+    prepareNote: function (noteInput) {
       var preparedNote = {};
-      preparedNote.title = note.title;
-      preparedNote.text = note.text;
-      preparedNote.tags = tagsFactory.filterTagsString(note.tags);
+      preparedNote.title = noteInput.title;
+      preparedNote.text = noteInput.text;
+      if (angular.isArray(noteInput.tags)) {
+        noteInput.tags = noteInput.tags.join(',');
+      }
+      preparedNote.tags = tagsFactory.filterTagsString(noteInput.tags);
       return preparedNote;
     },
 
@@ -91,6 +94,7 @@ angular.module('simpleNote')
         }
       }
     },
+
     updateNotes: function (note, editedNote) {
       editedNote = this.prepareNote(editedNote);
       var index = this.getIndex(note);

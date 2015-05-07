@@ -9,7 +9,7 @@
         </h2>
       </div>
       <div class="col col-20 note-close-container">
-        <a class="button button-icon icon icon-right ion-ios7-close-outline note-close" ng-click="ctrl.noteData.deleteNote($index, $event)"></a>
+        <a class="button button-icon icon icon-right ion-ios7-close-outline note-close" ng-click="ctrl.noteData.deleteNote(note, $event)"></a>
       </div>
     </div>
     <div id="note-text-and-tags" class="animate-show" ng-show="note.opened">
@@ -21,7 +21,7 @@
           <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"></span>
         </p>
         <div class="col col-20 note-edit-container">
-          <a id="edit-button" class="button button-icon icon icon-right ion-edit note-edit" ng-click="ctrl.editNote(note)"></a>
+          <a id="edit-button" class="button button-icon icon icon-right ion-edit note-edit" ng-click="ctrl.editNote(note, $event)"></a>
         </div>
       </div>
     </div>

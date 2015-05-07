@@ -44,7 +44,10 @@ function noteList () {
       controller.editedNote = controller.cloneNote(note);
     };
 
-    controller.editNote = function (note) {
+    controller.editNote = function (note, event) {
+      if (event) {
+        event.stopPropagation();
+      }
       controller.note = note;
       controller.setEditedNote(note);
       controller.showModal(controller.editNoteModal);

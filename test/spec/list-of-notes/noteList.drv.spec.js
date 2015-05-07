@@ -390,7 +390,7 @@ describe('Directive: noteList', function () {
         noteData.updateNotes.restore();
       });
 
-      it('should call noteData.updateNotes', function () {
+      it('should call noteData.updateNotes when update button is clicked', function () {
         sinon.spy(isolated.ctrl, 'updateNotes');
         modalElement.find('#edit-note-modal-update-button').click();
 
