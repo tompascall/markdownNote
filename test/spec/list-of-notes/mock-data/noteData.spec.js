@@ -11,6 +11,30 @@ describe('Service: noteData', function () {
     noteData = $injector.get('noteData');
   }));
 
+  describe('Prepare note to add and edit', function () {
+    var preparedNote;
+    var note = {
+      title: 'test title',
+      text: 'test text',
+      tags: 'test tag1, test tag2'
+    };
+
+    it('should give back an object with title', function () {
+      preparedNote = noteData.prepareNote(note);
+      expect(preparedNote.title).to.equal('test title');
+    });
+
+    it('should give back an object with text', function () {
+      preparedNote = noteData.prepareNote(note);
+      expect(preparedNote.text).to.equal('test text');
+    });
+
+    it('should give back tags array', function () {
+      preparedNote = noteData.prepareNote(note);
+      expect(preparedNote.tags).to.deep.equal(['test tag1', 'test tag2']);
+    });
+  });
+
   describe('Test noteData.notes and addNote method', function () {
 
     beforeEach(function () {
@@ -211,6 +235,10 @@ describe('Service: noteData', function () {
       var StorageLengthAfterDeleteNote = noteData.loadNotesFromStorage().length;
       expect(StorageLengthAfterDeleteNote).to.equal(storageLengthAfterAddNote - 1);
     });
+  });
+
+  describe('Create updateNotes method', function () {
+
   });
 
 });

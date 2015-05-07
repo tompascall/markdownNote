@@ -340,5 +340,63 @@ describe('Directive: noteList', function () {
         expect(modalElement.find('input.modal-title').val()).to.equal('Testnote');
       });
     });
+
+    describe('Create updateNotes method', function () {
+      var testNote;
+      var editedNote;
+
+      beforeEach(function () {
+        noteData.notes = [];
+
+        testNote = {
+          title: 'Testnote',
+          text: 'Test text',
+          tags: ['test tag'],
+        };
+
+        editedNote = {
+          title: 'Edited Note',
+          text: 'Edited Text',
+          tags: 'Edited, Tags'
+        };
+
+        isolated.ctrl.editedNote = editedNote;
+
+        noteData.addNote(testNote);
+        isolated.ctrl.note = noteData.notes[0];
+      });
+
+      afterEach(function () {
+        noteData.notes = [];
+      });
+
+      it('should close the modal', function (done) {
+        editNoteModal.show();
+        timeout.flush();
+        testNote = noteData.notes[0];
+        isolated.ctrl.updateNotes(testNote);
+        setTimeout(function () {
+          expect(editNoteModal.isShown()).to.equal(false);
+          editNoteModal.remove();
+          done();
+        },0);
+      });
+
+      it('should call noteData.updateNotes method', function () {
+        sinon.spy(noteData, 'updateNotes');
+        testNote = noteData.notes[0];
+        isolated.ctrl.updateNotes(testNote);
+        expect(noteData.updateNotes.called).to.equal(true);
+        noteData.updateNotes.restore();
+      });
+
+      it('should call noteData.updateNotes', function () {
+        sinon.spy(isolated.ctrl, 'updateNotes');
+        modalElement.find('#edit-note-modal-update-button').click();
+
+        expect(isolated.ctrl.updateNotes.called).to.equal(true);
+        isolated.ctrl.updateNotes.restore();
+      });
+    });
   });
 });

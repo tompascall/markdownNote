@@ -4,9 +4,17 @@
 
 angular.module('simpleNote')
 
-.factory('noteData', function noteDataFactory() {
+.factory('noteData', function noteDataFactory(tagsFactory) {
   return {
     notes: [],
+
+    prepareNote: function (note) {
+      var preparedNote = {};
+      preparedNote.title = note.title;
+      preparedNote.text = note.text;
+      preparedNote.tags = tagsFactory.filterTagsString(note.tags);
+      return preparedNote;
+    },
 
     addNote: function (data) {
       var self = this;
@@ -82,6 +90,14 @@ angular.module('simpleNote')
           return i;
         }
       }
+    },
+    updateNotes: function (note, editedNote) {
+      editedNote = this.prepareNote(editedNote);
+      var index = this.getIndex(note);
+      this.notes[index].title = editedNote.title;
+      this.notes[index].text = editedNote.text;
+      this.notes[index].tags = editedNote.tags;
+      this.saveNotesToLocalStorage();
     },
 
     welcomeNote: {

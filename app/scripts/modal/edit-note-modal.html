@@ -11,7 +11,7 @@
     <form name="newNoteModalForm" novalidate>
       <edit-note-modal-body></edit-note-modal-body>
       <div class="padding">
-        <button id="edit-note-modal-update-button" type="submit" class="button button-block button-positive" ng-disabled="newNoteModalForm.title.$invalid">Update Note</button>
+        <button id="edit-note-modal-update-button" type="submit" class="button button-block button-positive" ng-disabled="newNoteModalForm.title.$invalid" ng-click="ctrl.updateNotes(ctrl.note)">Update Note</button>
       </div>
     </form>
   </ion-content>

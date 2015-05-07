@@ -170,21 +170,6 @@ describe('Directive: appHeader', function () {
         isolated.ctrl.tags = 'test tag1, test tag2';
       });
 
-      it('should give back an object with title', function () {
-        note = isolated.ctrl.prepareNewNote();
-        expect(note.title).to.equal('test title');
-      });
-
-      it('should give back an object with text', function () {
-        note = isolated.ctrl.prepareNewNote();
-        expect(note.text).to.equal('test text');
-      });
-
-      it('should give back tags array', function () {
-        note = isolated.ctrl.prepareNewNote();
-        expect(note.tags).to.deep.equal(['test tag1', 'test tag2']);
-      });
-
       it('should add new note', function () {
         var id = noteData.createId();
         var preparedNote = {

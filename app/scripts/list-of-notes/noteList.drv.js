@@ -36,7 +36,7 @@ function noteList () {
       var cloneNote = {};
       for (var key in note) {
         cloneNote[key] = note[key];
-      };
+      }
       return cloneNote;
     };
 
@@ -45,8 +45,17 @@ function noteList () {
     };
 
     controller.editNote = function (note) {
+      controller.note = note;
       controller.setEditedNote(note);
       controller.showModal(controller.editNoteModal);
+    };
+
+    controller.updateNotes = function (note) {
+      noteData.updateNotes(note, controller.editedNote);
+      controller.editedNote.title = '';
+      controller.editedNote.text = '';
+      controller.editedNote.tags = '';
+      controller.hideModal(controller.editNoteModal);
     };
 
     $scope.$on('$destroy', function() {

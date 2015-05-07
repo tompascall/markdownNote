@@ -4,7 +4,7 @@
 
 function appHeaderDirective () {
 
-  function appHeaderController ($scope, $ionicModal, noteData, tagsFactory) {
+  function appHeaderController ($scope, $ionicModal, noteData) {
     /*jshint validthis: true */
     var controller = this;
 
@@ -26,17 +26,15 @@ function appHeaderDirective () {
 
     controller.noteData = noteData;
 
-    controller.prepareNewNote = function () {
-      var note = {};
-      note.title = controller.title;
-      note.text = controller.text;
-      note.tags = tagsFactory.filterTagsString(controller.tags);
-      return note;
-    };
-
     controller.addNewNote = function () {
-      var note = controller.prepareNewNote();
-      controller.noteData.addNote(note);
+      var newNote = {
+        title: controller.title,
+        text: controller.text,
+        tags: controller.tags
+      };
+
+      newNote = noteData.prepareNote(newNote);
+      noteData.addNote(newNote);
       controller.title = '';
       controller.text = '';
       controller.tags = '';

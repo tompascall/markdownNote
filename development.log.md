@@ -2318,7 +2318,62 @@ getIndex: function (note) {
 
 ####7.9.1. Test: Bind modal data to noteList directive
 
+```js
+describe('Connect modal to note data', function () {
+  var testNote = {
+    title: 'Testnote',
+    text: 'Test text',
+    tags: ['test tag'],
+    id: 1,
+    opened: false
+  };
+
+  it('should create a copy of the edited note', function () {
+    var cloneNote = isolated.ctrl.cloneNote(testNote);
+    expect(cloneNote).to.not.equal(testNote);
+    expect(cloneNote).to.deep.equal(testNote);
+  });
+
+  it('should clone the edited note', function () {
+    sinon.spy(isolated.ctrl, 'cloneNote');
+    element.find('#edit-button').click();
+    expect(isolated.ctrl.cloneNote.calledOnce).to.equal(true);
+    isolated.ctrl.cloneNote.restore();
+  });
+
+  it('should bind cloned note data to modal', function () {
+    isolated.ctrl.editedNote = isolated.ctrl.cloneNote(testNote);
+    scope.$digest();
+    expect(modalElement.find('input.modal-title').val()).to.equal('Testnote');
+  });
+});
+```
 
 ####7.9.2. Bind modal data to noteList directive
+
+```js
+controller.cloneNote = function (note) {
+  var cloneNote = {};
+  for (var key in note) {
+    cloneNote[key] = note[key];
+  }
+  return cloneNote;
+};
+
+controller.setEditedNote = function (note) {
+  controller.editedNote = controller.cloneNote(note);
+};
+
+controller.editNote = function (note) {
+  controller.setEditedNote(note);
+  controller.showModal(controller.editNoteModal);
+};
 ```
+
+###7.10. Create updateNotes method
+
+####7.10.1. Test: Create updateNotes(editedNote) method
+
+####7.10.2. Create updateNotes(editedNote) method
+
 
