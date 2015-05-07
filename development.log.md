@@ -2314,3 +2314,11 @@ getIndex: function (note) {
 }
 ```
 
+###7.9 Bind modal data to noteList directive
+
+####7.9.1. Test: Bind modal data to noteList directive
+
+
+####7.9.2. Bind modal data to noteList directive
+```
+

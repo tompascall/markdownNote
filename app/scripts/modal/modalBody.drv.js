@@ -1,10 +1,10 @@
 'use strict';
 
-function modalBody () {
+function editNoteModalBody () {
   return {
     restrict: 'E',
-    templateUrl: 'scripts/modal/modal-body.drv.html'
+    templateUrl: 'scripts/modal/edit-note-modal-body.drv.html'
   };
 }
 
-angular.module('simpleNote').directive('modalBody', modalBody);
+angular.module('simpleNote').directive('editNoteModalBody', editNoteModalBody);

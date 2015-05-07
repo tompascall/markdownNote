@@ -32,6 +32,23 @@ function noteList () {
       modal.hide();
     };
 
+    controller.cloneNote = function (note) {
+      var cloneNote = {};
+      for (var key in note) {
+        cloneNote[key] = note[key];
+      };
+      return cloneNote;
+    };
+
+    controller.setEditedNote = function (note) {
+      controller.editedNote = controller.cloneNote(note);
+    };
+
+    controller.editNote = function (note) {
+      controller.setEditedNote(note);
+      controller.showModal(controller.editNoteModal);
+    };
+
     $scope.$on('$destroy', function() {
       controller.editNoteModal.remove();
     });

@@ -13,7 +13,7 @@ describe('Directive: modalBody', function () {
     inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
       scope = _$rootScope_.$new();
-      element = $compile('<modal-body></modal-body>')(scope);
+      element = $compile('<edit-note-modal-body></edit-note-modal-body>')(scope);
       scope.$digest();
       angular.element(document).find('body').append(element); // for rendering css
     });

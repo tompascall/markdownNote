@@ -276,7 +276,7 @@ describe('Directive: noteList', function () {
 
     describe('Test modal body', function () {
       it('should have a modal-body element', function () {
-        expect(modalElement.find('modal-body').html()).to.contain('<!-- modal-body.drv.html -->');
+        expect(modalElement.find('edit-note-modal-body').html()).to.contain('<!-- edit-note-modal-body.drv.html -->');
       });
     });
 
@@ -309,6 +309,35 @@ describe('Directive: noteList', function () {
           editNoteModal.remove();
           done();
         },0);
+      });
+    });
+
+    describe('Connect modal to note data', function () {
+      var testNote = {
+        title: 'Testnote',
+        text: 'Test text',
+        tags: ['test tag'],
+        id: 1,
+        opened: false
+      };
+
+      it('should create a copy of the edited note', function () {
+        var cloneNote = isolated.ctrl.cloneNote(testNote);
+        expect(cloneNote).to.not.equal(testNote);
+        expect(cloneNote).to.deep.equal(testNote);
+      });
+
+      it('should clone the edited note', function () {
+        sinon.spy(isolated.ctrl, 'cloneNote');
+        element.find('#edit-button').click();
+        expect(isolated.ctrl.cloneNote.calledOnce).to.equal(true);
+        isolated.ctrl.cloneNote.restore();
+      });
+
+      it('should bind cloned note data to modal', function () {
+        isolated.ctrl.editedNote = isolated.ctrl.cloneNote(testNote);
+        scope.$digest();
+        expect(modalElement.find('input.modal-title').val()).to.equal('Testnote');
       });
     });
   });
