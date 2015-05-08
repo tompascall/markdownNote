@@ -2547,6 +2547,73 @@ describe('Add search button', function () {
 
 ###8.5. Create `searchInput` directive
 
+####8.5.1. Test: Create searchInput directive with a search input field
+
+```js
+// searchInput.drv.spec.js
+
+'use strict';
+
+describe('Directive: searchInput', function () {
+  var $compile;
+  var scope;
+  var element;
+
+  beforeEach(function () {
+    module('simpleNote');
+    module('templates');
+    inject(function (_$compile_, _$rootScope_) {
+      $compile = _$compile_;
+      scope = _$rootScope_.$new();
+      element = $compile('<search-input></search-input>')(scope);
+      scope.$digest();
+      angular.element(document).find('body').append(element); // for rendering css
+    });
+  });
+
+  describe('Testing input element', function () {
+
+    it('should have item item-input class', function () {
+      expect(element.find('div label')).to.have.class('item item-input')
+    });
+
+    it('should have input field', function () {
+      var input = element.find('input');
+      expect(input).to.have.attr('placeholder', 'search');
+    });
+  });
+});
+```
+
+####8.5.2. Create searchInput directive with a search input field
+
+```js
+// searchInput.drv.js
+
+'use strict';
+
+function searchInput () {
+  return {
+    restrict: 'E',
+    templateUrl: 'scripts/directive/search-input.drv.html'
+  };
+}
+
+angular.module('simpleNote').directive('searchInput', searchInput);
+```
+
+And the template file:
+
+```html
+<!-- search-input.drv.html -->
+
+<div>
+  <label class="item item-input">
+    <input type="search" placeholder="search">
+  </label>
+</div>
+```
+
 ###8.6. Create `searchNote` service
 
 ###8.7. Inject `searchNote` service to `searchInput` directive
