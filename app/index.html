@@ -42,12 +42,14 @@
     <script src="scripts/list-of-notes/noteList.drv.js" type="text/javascript"></script>
     <script src="scripts/new-note/appHeader.drv.js" type="text/javascript"></script>
     <script type="text/javascript" src="scripts/modal/modalBody.drv.js"></script>
+    <script type="text/javascript" src="scripts/directive/searchInput.drv.js"></script>
     <!-- endbuild -->
   </head>
   <body ng-app="simpleNote">
     <ion-pane>
       <ion-header-bar app-header class="bar-dark" align-title="center"></ion-header-bar>
       <ion-content>
+        <search-input></search-input>
         <note-list></note-list>
       </ion-content>
     </ion-pane>
