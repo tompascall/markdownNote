@@ -8,7 +8,7 @@ function appHeaderDirective () {
     /*jshint validthis: true */
     var controller = this;
 
-    $ionicModal.fromTemplateUrl('scripts/new-note/new-note-modal.html', {
+    $ionicModal.fromTemplateUrl('scripts/modal/new-note-modal.html', {
         scope: $scope,
         focusFirstInput: true
       })
@@ -48,7 +48,7 @@ function appHeaderDirective () {
 
   return {
     restrict: 'A',
-    templateUrl: 'scripts/new-note/app-header.drv.html',
+    templateUrl: 'scripts/directive/app-header.drv.html',
     controller: appHeaderController,
     controllerAs: 'ctrl',
     scope: {

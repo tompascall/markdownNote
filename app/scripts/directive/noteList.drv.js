@@ -68,7 +68,7 @@ function noteList () {
 
   return {
     restrict: 'E',
-    templateUrl: 'scripts/list-of-notes/note-list.drv.html',
+    templateUrl: 'scripts/directive/note-list.drv.html',
     controller: noteListCtrl,
     controllerAs: 'ctrl',
     scope: {},
