@@ -2521,6 +2521,30 @@ THEN I can the filtered notes
 
 ###8.4. Create search button in the header bar
 
+####8.4.1. Test: Create search button in the header bar
+
+```js
+describe('Add search button', function () {
+  it('should have a button with class button button-icon', function () {
+    expect(element.find('button#search-button'))
+      .to.have.class('button button-icon');
+  });
+
+  it('should have an icon with ion-search class', function () {
+    expect(element.find('button#search-button i'))
+      .to.have.class('icon ion-search');
+  });
+});
+```
+
+####8.4.2. Create search button in the header bar
+
+```html
+<button id="search-button" class="button button-icon">
+  <i class="icon ion-search"></i>
+</button>
+```
+
 ###8.5. Create `searchInput` directive
 
 ###8.6. Create `searchNote` service
