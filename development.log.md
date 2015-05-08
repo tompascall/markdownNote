@@ -2486,3 +2486,47 @@ updateNotes: function (note, editedNote) {
   this.saveNotesToLocalStorage();
 }
 ```
+##8. STORY: Filter note by search term
+
+###8.1. USER STORY
+
+>AS I customer I WANT to be able to filter my notes by any keyword SO THAT I can find the appropriate note
+
+###8.2. ACCEPTANCE CRITERIA
+
+GIVEN I am a user
+WHEN I open the app
+THEN I can see a search button in the header on the left
+
+GIVEN I am a user
+WHEN I push the search button
+THEN I can see a search input field
+
+GIVEN I am a user
+WHEN I push the search button again
+THEN I the input field disappears
+
+GIVEN I am a user
+WHEN I write any keyword in the search field
+THEN I can the filtered notes
+
+###8.3. TODOS
+
+- **Create search button in the header bar**
+- **Create `searchInput` directive**
+- **Create `searchNote` service**
+- **Connect `searchNote` service to `searchInput` directive**
+- **Connect search button to `searchInput` directive**
+- **Create filter in `noteList` directive**
+
+###8.4. Create search button in the header bar
+
+###8.5. Create `searchInput` directive
+
+###8.6. Create `searchNote` service
+
+###8.7. Inject `searchNote` service to `searchInput` directive
+
+###8.8. Connect search button to `searchInput` directive
+
+###8.9. Create filter in `noteList` directive
