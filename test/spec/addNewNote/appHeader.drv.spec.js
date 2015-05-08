@@ -23,7 +23,7 @@ describe('Directive: appHeader', function () {
     newNoteModal = isolated.ctrl.newNoteModal;
   }));
 
-  describe('Test directive elements', function () {
+  describe('Create header and add button', function () {
 
     it('should have a h1 with a notes-header id', function () {
       expect(element.find('h1#notes-header'))
@@ -201,6 +201,18 @@ describe('Directive: appHeader', function () {
         expect(isolated.ctrl.tags).to.equal('');
         expect(isolated.ctrl.newNoteModal.isShown()).to.equal(false);
       });
+    });
+  });
+
+  describe('Add search button', function () {
+    it('should have a button with class button button-icon', function () {
+      expect(element.find('button#search-button'))
+        .to.have.class('button button-icon');
+    });
+
+    it('should have an icon with ion-search class', function () {
+      expect(element.find('button#search-button i'))
+        .to.have.class('icon ion-search');
     });
   });
 });
