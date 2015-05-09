@@ -2616,7 +2616,85 @@ And the template file:
 
 ###8.6. Create `searchNote` service
 
+Create service as a factory to share the state of search input field and search term.
+
+####8.6.1. Test: Create `searchNote` service
+
+```js
+// searchNote.srv.spec.js
+
+'use strict';
+
+describe('Service: searchNote', function () {
+  var searchNote;
+
+  beforeEach(function () {
+    module('simpleNote');
+
+    inject(function ($injector) {
+      searchNote = $injector.get('searchNote');
+    });
+  });
+
+  describe('Test searchTerm', function () {
+    it('should have searchTerm', function () {
+      expect(searchNote.searchTerm).to.not.equal(undefined);
+    });
+  });
+});
+```
+
+####8.6.2. Create `searchNote` service
+
+```js
+// searchNote.srv.js
+
+'use strict';
+
+function searchNote() {
+  return {
+    searchTerm: ''
+  };
+}
+
+angular.module('simpleNote').factory('searchNote', searchNote);
+```
+
+
 ###8.7. Inject `searchNote` service to `searchInput` directive
+
+####8.7.1. Test: Inject `searchNote` service to `searchInput` directive
+
+```js
+describe('Bind `searchNote.searchTerm` property to `searchInput` directive', function () {
+  beforeEach(function () {
+    searchNote.searchTerm = 'hey';
+  });
+
+  it('should bind searchNote service to searchInput directive', function () {
+    expect(isolated.ctrl.searchNote.searchTerm).to.equal(searchNote.searchTerm);
+  });
+});
+```
+
+####8.7.2. Inject `searchNote` service to `searchInput` directive
+
+```js
+function searchInputController (searchNote) {
+  this.searchNote = searchNote;
+}
+
+function searchInput () {
+  return {
+    restrict: 'E',
+    templateUrl: 'scripts/directive/search-input.drv.html',
+    scope: {},
+    controller: searchInputController,
+    controllerAs: 'ctrl',
+    bindToController: true
+  };
+}
+```
 
 ###8.8. Connect search button to `searchInput` directive
 

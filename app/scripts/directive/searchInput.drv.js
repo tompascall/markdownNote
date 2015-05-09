@@ -2,10 +2,18 @@
 
 'use strict';
 
+function searchInputController (searchNote) {
+  this.searchNote = searchNote;
+}
+
 function searchInput () {
   return {
     restrict: 'E',
-    templateUrl: 'scripts/directive/search-input.drv.html'
+    templateUrl: 'scripts/directive/search-input.drv.html',
+    scope: {},
+    controller: searchInputController,
+    controllerAs: 'ctrl',
+    bindToController: true
   };
 }
 
