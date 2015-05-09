@@ -8,6 +8,7 @@ describe('Directive: appHeader', function () {
   var element;
   var isolated;
   var newNoteModal;
+  var searchNote;
 
   beforeEach(module('simpleNote'));
 
@@ -213,6 +214,21 @@ describe('Directive: appHeader', function () {
     it('should have an icon with ion-search class', function () {
       expect(element.find('button#search-button i'))
         .to.have.class('icon ion-search');
+    });
+  });
+
+  describe('Connect search button to toggleSearchNote method', function () {
+    beforeEach(function () {
+      inject(function ($injector) {
+        searchNote = $injector.get('searchNote');
+      });
+    });
+
+    it('should call toggleSearchInput method', function () {
+      sinon.spy(searchNote, 'toggleSearchInput');
+      element.find('button#search-button').click();
+      expect(searchNote.toggleSearchInput.calledOnce).to.equal(true);
+      searchNote.toggleSearchInput.restore();
     });
   });
 });

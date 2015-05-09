@@ -2834,7 +2834,51 @@ function searchNote() {
 }
 ```
 
-####8.9.3. Test: Connect search button to `searchInput` directive
+####8.9.3. Test: Connect search button to `appHeader` directive
 
-####8.9.4. Connect search button to `searchInput` directive
+```js
+
+describe('Connect search button to toggleSearchNote method', function () {
+  beforeEach(function () {
+    inject(function ($injector) {
+      searchNote = $injector.get('searchNote');
+    });
+  });
+
+  it('should call toggleSearchInput method', function () {
+    sinon.spy(searchNote, 'toggleSearchInput');
+    element.find('button#search-button').click();
+    expect(searchNote.toggleSearchInput.calledOnce).to.equal(true);
+    searchNote.toggleSearchInput.restore();
+  });
+});
+```
+
+####8.9.4. Connect search button to `appHeader` directive
+
+```html
+<!-- search-input.drv.html -->
+
+<div ng-show="ctrl.searchNote.opened">
+  <label class="item item-input">
+    <input type="search" placeholder="search" ng-model="ctrl.searchNote.searchTerm.$">
+  </label>
+</div>
+```
+
+```js
+// appHeader.drv.js
+
+...
+
+  controller.searchNote = searchNote;
+```
+
+```html
+<!-- app-header.drv.html -->
+
+<button id="search-button" class="button button-icon" ng-click="ctrl.searchNote.toggleSearchInput()">
+  <i class="icon ion-search"></i>
+</button>
+```
 

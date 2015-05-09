@@ -4,7 +4,7 @@
 
 function appHeaderDirective () {
 
-  function appHeaderController ($scope, $ionicModal, noteData) {
+  function appHeaderController ($scope, $ionicModal, noteData, searchNote) {
     /*jshint validthis: true */
     var controller = this;
 
@@ -25,6 +25,8 @@ function appHeaderDirective () {
     };
 
     controller.noteData = noteData;
+
+    controller.searchNote = searchNote;
 
     controller.addNewNote = function () {
       var newNote = {
