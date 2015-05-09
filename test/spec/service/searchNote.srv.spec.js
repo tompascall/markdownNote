@@ -18,4 +18,15 @@ describe('Service: searchNote', function () {
       expect(searchNote.searchTerm).to.not.equal(undefined);
     });
   });
+
+  describe('Add toggleSearchInput method', function () {
+
+    it('should toggle searchInput state', function () {
+      searchNote.opened = false;
+      searchNote.toggleSearchInput();
+      expect(searchNote.opened).to.equal(true);
+      searchNote.toggleSearchInput();
+      expect(searchNote.opened).to.equal(false);
+    });
+  });
 });

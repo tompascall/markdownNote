@@ -4,7 +4,11 @@
 
 function searchNote() {
   return {
-    searchTerm: ''
+    searchTerm: '',
+    opened: false,
+    toggleSearchInput: function () {
+      this.opened = !this.opened;
+    }
   };
 }
 

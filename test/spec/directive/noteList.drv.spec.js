@@ -408,18 +408,18 @@ describe('Directive: noteList', function () {
       noteData.notes = [
         {
           title: 'testTitle1 testTitle',
-          text: 'testText1 textText',
-          tags: ['testTag1','testTag']
+          text: 'Text1',
+          tags: ['testTag1']
         },
         {
           title: 'testTitle2 testTitle',
-          text: 'testText2 textText',
-          tags: ['testTag2','testTag']
+          text: 'Text2 testText',
+          tags: ['testTag2']
         },
         {
           title: 'testTitle3 testTitle',
-          text: 'testText3 textText',
-          tags: ['testTag3','testTag']
+          text: 'Text3 testText',
+          tags: ['testTag3']
         }
       ];
     });
@@ -428,8 +428,20 @@ describe('Directive: noteList', function () {
       noteData.notes = [];
     });
 
-    it('should get all notes', function () {
+    it('should get filter title', function () {
       searchNote.searchTerm = 'testTitle1';
+      scope.$digest();
+      expect(element.find('div.note-item').length).to.equal(1);
+    });
+
+    it('should filter text', function () {
+      searchNote.searchTerm = 'testText';
+      scope.$digest();
+      expect(element.find('div.note-item').length).to.equal(2);
+    });
+
+    it('should filter tags', function () {
+      searchNote.searchTerm = 'testTag3';
       scope.$digest();
       expect(element.find('div.note-item').length).to.equal(1);
     });
