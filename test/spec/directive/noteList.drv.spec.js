@@ -9,6 +9,7 @@ describe('Directive: noteList', function () {
   var isolated;
   var noteData;
   var timeout;
+  var searchNote;
 
   beforeEach(module('simpleNote'));
 
@@ -27,13 +28,14 @@ describe('Directive: noteList', function () {
   beforeEach(function () {
     inject(function ($injector) {
       noteData = $injector.get('noteData');
+      searchNote = $injector.get('searchNote');
     });
   });
 
   describe('Create a list of notes', function () {
 
     it('contains the appropriate content', function () {
-      expect(element.html()).to.contain('ng-repeat="note in ctrl.noteData.notes"');
+      expect(element.html()).to.contain('ng-repeat="note in ctrl.noteData.notes');
     });
 
     it('should inject the noteData service', function () {
@@ -368,6 +370,7 @@ describe('Directive: noteList', function () {
 
       afterEach(function () {
         noteData.notes = [];
+        isolated.ctrl.editedNote = '';
       });
 
       it('should close the modal', function (done) {
@@ -397,6 +400,38 @@ describe('Directive: noteList', function () {
         expect(isolated.ctrl.updateNotes.called).to.equal(true);
         isolated.ctrl.updateNotes.restore();
       });
+    });
+  });
+
+  describe('Test: Create filter in `noteList` directive using `searchNote.searchTerm`', function () {
+    beforeEach(function () {
+      noteData.notes = [
+        {
+          title: 'testTitle1 testTitle',
+          text: 'testText1 textText',
+          tags: ['testTag1','testTag']
+        },
+        {
+          title: 'testTitle2 testTitle',
+          text: 'testText2 textText',
+          tags: ['testTag2','testTag']
+        },
+        {
+          title: 'testTitle3 testTitle',
+          text: 'testText3 textText',
+          tags: ['testTag3','testTag']
+        }
+      ];
+    });
+
+    afterEach(function () {
+      noteData.notes = [];
+    });
+
+    it('should get all notes', function () {
+      searchNote.searchTerm = 'testTitle1';
+      scope.$digest();
+      expect(element.find('div.note-item').length).to.equal(1);
     });
   });
 });
