@@ -3,7 +3,7 @@
 function editNoteModalBody () {
   return {
     restrict: 'E',
-    templateUrl: 'scripts/modal/edit-note-modal-body.drv.html'
+    templateUrl: 'scripts/directive/edit-note-modal-body.drv.html'
   };
 }
 

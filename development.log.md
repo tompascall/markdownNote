@@ -2616,8 +2616,269 @@ And the template file:
 
 ###8.6. Create `searchNote` service
 
+Create service as a factory to share the state of search input field and search term.
+
+####8.6.1. Test: Create `searchNote` service
+
+```js
+// searchNote.srv.spec.js
+
+'use strict';
+
+describe('Service: searchNote', function () {
+  var searchNote;
+
+  beforeEach(function () {
+    module('simpleNote');
+
+    inject(function ($injector) {
+      searchNote = $injector.get('searchNote');
+    });
+  });
+
+  describe('Test searchTerm', function () {
+    it('should have searchTerm', function () {
+      expect(searchNote.searchTerm).to.not.equal(undefined);
+    });
+  });
+});
+```
+
+####8.6.2. Create `searchNote` service
+
+```js
+// searchNote.srv.js
+
+'use strict';
+
+function searchNote() {
+  return {
+    searchTerm: ''
+  };
+}
+
+angular.module('simpleNote').factory('searchNote', searchNote);
+```
+
+
 ###8.7. Inject `searchNote` service to `searchInput` directive
 
-###8.8. Connect search button to `searchInput` directive
+####8.7.1. Test: Inject `searchNote` service to `searchInput` directive
 
-###8.9. Create filter in `noteList` directive
+```js
+describe('Bind `searchNote.searchTerm` property to `searchInput` directive', function () {
+  beforeEach(function () {
+    searchNote.searchTerm = 'hey';
+  });
+
+  it('should bind searchNote service to searchInput directive', function () {
+    expect(isolated.ctrl.searchNote.searchTerm).to.equal(searchNote.searchTerm);
+  });
+});
+```
+
+####8.7.2. Inject `searchNote` service to `searchInput` directive
+
+```js
+function searchInputController (searchNote) {
+  this.searchNote = searchNote;
+}
+
+function searchInput () {
+  return {
+    restrict: 'E',
+    templateUrl: 'scripts/directive/search-input.drv.html',
+    scope: {},
+    controller: searchInputController,
+    controllerAs: 'ctrl',
+    bindToController: true
+  };
+}
+```
+
+###8.8. Create filter in `noteList` directive
+
+**NOTE** Must have to install ionic v1.0.0-rc.5 and its dependecies to work the filter correctly.
+
+####8.8.1. Test: Create filter in `noteList` directive
+
+```js
+describe('Test: Create filter in `noteList` directive using `searchNote.searchTerm`', function () {
+  beforeEach(function () {
+    noteData.notes = [
+      {
+        title: 'testTitle1 testTitle',
+        text: 'Text1',
+        tags: ['testTag1']
+      },
+      {
+        title: 'testTitle2 testTitle',
+        text: 'Text2 testText',
+        tags: ['testTag2']
+      },
+      {
+        title: 'testTitle3 testTitle',
+        text: 'Text3 testText',
+        tags: ['testTag3']
+      }
+    ];
+  });
+
+  afterEach(function () {
+    noteData.notes = [];
+  });
+
+  it('should get filter title', function () {
+    searchNote.searchTerm = 'testTitle1';
+    scope.$digest();
+    expect(element.find('div.note-item').length).to.equal(1);
+  });
+
+  it('should filter text', function () {
+    searchNote.searchTerm = 'testText';
+    scope.$digest();
+    expect(element.find('div.note-item').length).to.equal(2);
+  });
+
+  it('should filter tags', function () {
+    searchNote.searchTerm = 'testTag3';
+    scope.$digest();
+    expect(element.find('div.note-item').length).to.equal(1);
+  });
+});
+```
+
+####8.8.2. Create filter in `noteList` directive
+
+```js
+// noteList.drv.js
+
+function noteListCtrl (noteData, $ionicModal, $scope, searchNote) {
+
+    /*jshint validthis: true */
+    var controller = this;
+    noteData.initNotes();
+    controller.noteData = noteData;
+    controller.searchNote = searchNote;
+```
+
+
+```js
+// searchInput.drv.js
+
+'use strict';
+
+function searchInputController (searchNote) {
+  this.searchNote = searchNote;
+}
+
+function searchInput () {
+  return {
+    restrict: 'E',
+    templateUrl: 'scripts/directive/search-input.drv.html',
+    scope: {},
+    controller: searchInputController,
+    controllerAs: 'ctrl',
+    bindToController: true
+  };
+}
+
+angular.module('simpleNote').directive('searchInput', searchInput);
+```
+
+```html
+<!-- noteList.drv.html -->
+
+<ion-list>
+  <div class="note-item" ng-repeat="note in ctrl.noteData.notes | filter: ctrl.searchNote.searchTerm" ng-click="ctrl.toggleNoteState(note)">
+```
+
+```html
+<!-- search-input.drv.html -->
+
+<div>
+  <label class="item item-input">
+    <input type="search" placeholder="search" ng-model="ctrl.searchNote.searchTerm.$">
+  </label>
+</div>
+```
+
+###8.9. Connect search button to `searchInput` directive
+
+####8.9.1. Test: Create `toggleSearchInput` method in `searchNote` service
+
+```js
+describe('Add toggleSearchInput method', function () {
+
+  it('should toggle searchInput state', function () {
+    searchNote.opened = false;
+    searchNote.toggleSearchInput();
+    expect(searchNote.opened).to.equal(true);
+    searchNote.toggleSearchInput();
+    expect(searchNote.opened).to.equal(false);
+  });
+});
+```
+
+####8.9.2. Create `toggleSearchInput` method in `searchNote` service
+
+```js
+function searchNote() {
+  return {
+    searchTerm: '',
+    opened: false,
+    toggleSearchInput: function () {
+      this.opened = !this.opened;
+    }
+  };
+}
+```
+
+####8.9.3. Test: Connect search button to `appHeader` directive
+
+```js
+
+describe('Connect search button to toggleSearchNote method', function () {
+  beforeEach(function () {
+    inject(function ($injector) {
+      searchNote = $injector.get('searchNote');
+    });
+  });
+
+  it('should call toggleSearchInput method', function () {
+    sinon.spy(searchNote, 'toggleSearchInput');
+    element.find('button#search-button').click();
+    expect(searchNote.toggleSearchInput.calledOnce).to.equal(true);
+    searchNote.toggleSearchInput.restore();
+  });
+});
+```
+
+####8.9.4. Connect search button to `appHeader` directive
+
+```html
+<!-- search-input.drv.html -->
+
+<div ng-show="ctrl.searchNote.opened">
+  <label class="item item-input">
+    <input type="search" placeholder="search" ng-model="ctrl.searchNote.searchTerm.$">
+  </label>
+</div>
+```
+
+```js
+// appHeader.drv.js
+
+...
+
+  controller.searchNote = searchNote;
+```
+
+```html
+<!-- app-header.drv.html -->
+
+<button id="search-button" class="button button-icon" ng-click="ctrl.searchNote.toggleSearchInput()">
+  <i class="icon ion-search"></i>
+</button>
+```
+

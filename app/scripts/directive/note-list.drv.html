@@ -1,7 +1,7 @@
 <!-- noteList.drv.html -->
 
 <ion-list>
-  <div class="note-item" ng-repeat="note in ctrl.noteData.notes" ng-click="ctrl.toggleNoteState(note)">
+  <div class="note-item" ng-repeat="note in ctrl.noteData.notes | filter: ctrl.searchNote.searchTerm" ng-click="ctrl.toggleNoteState(note)">
     <div class="row">
       <div class="note-title-container col col-80">
         <h2 class='note-title'>
@@ -9,7 +9,7 @@
         </h2>
       </div>
       <div class="col col-20 note-close-container">
-        <a class="button button-icon icon icon-right ion-ios7-close-outline note-close" ng-click="ctrl.noteData.deleteNote(note, $event)"></a>
+        <a class="button button-icon icon icon-right ion-ios-close-outline note-close" ng-click="ctrl.noteData.deleteNote(note, $event)"><i></i></a>
       </div>
     </div>
     <div id="note-text-and-tags" class="animate-show" ng-show="note.opened">

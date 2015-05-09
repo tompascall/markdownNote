@@ -9,6 +9,7 @@ describe('Directive: noteList', function () {
   var isolated;
   var noteData;
   var timeout;
+  var searchNote;
 
   beforeEach(module('simpleNote'));
 
@@ -27,13 +28,14 @@ describe('Directive: noteList', function () {
   beforeEach(function () {
     inject(function ($injector) {
       noteData = $injector.get('noteData');
+      searchNote = $injector.get('searchNote');
     });
   });
 
   describe('Create a list of notes', function () {
 
     it('contains the appropriate content', function () {
-      expect(element.html()).to.contain('ng-repeat="note in ctrl.noteData.notes"');
+      expect(element.html()).to.contain('ng-repeat="note in ctrl.noteData.notes');
     });
 
     it('should inject the noteData service', function () {
@@ -368,6 +370,7 @@ describe('Directive: noteList', function () {
 
       afterEach(function () {
         noteData.notes = [];
+        isolated.ctrl.editedNote = '';
       });
 
       it('should close the modal', function (done) {
@@ -397,6 +400,50 @@ describe('Directive: noteList', function () {
         expect(isolated.ctrl.updateNotes.called).to.equal(true);
         isolated.ctrl.updateNotes.restore();
       });
+    });
+  });
+
+  describe('Test: Create filter in `noteList` directive using `searchNote.searchTerm`', function () {
+    beforeEach(function () {
+      noteData.notes = [
+        {
+          title: 'testTitle1 testTitle',
+          text: 'Text1',
+          tags: ['testTag1']
+        },
+        {
+          title: 'testTitle2 testTitle',
+          text: 'Text2 testText',
+          tags: ['testTag2']
+        },
+        {
+          title: 'testTitle3 testTitle',
+          text: 'Text3 testText',
+          tags: ['testTag3']
+        }
+      ];
+    });
+
+    afterEach(function () {
+      noteData.notes = [];
+    });
+
+    it('should get filter title', function () {
+      searchNote.searchTerm = 'testTitle1';
+      scope.$digest();
+      expect(element.find('div.note-item').length).to.equal(1);
+    });
+
+    it('should filter text', function () {
+      searchNote.searchTerm = 'testText';
+      scope.$digest();
+      expect(element.find('div.note-item').length).to.equal(2);
+    });
+
+    it('should filter tags', function () {
+      searchNote.searchTerm = 'testTag3';
+      scope.$digest();
+      expect(element.find('div.note-item').length).to.equal(1);
     });
   });
 });

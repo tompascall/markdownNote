@@ -4,11 +4,11 @@
 
 function appHeaderDirective () {
 
-  function appHeaderController ($scope, $ionicModal, noteData) {
+  function appHeaderController ($scope, $ionicModal, noteData, searchNote) {
     /*jshint validthis: true */
     var controller = this;
 
-    $ionicModal.fromTemplateUrl('scripts/new-note/new-note-modal.html', {
+    $ionicModal.fromTemplateUrl('scripts/modal/new-note-modal.html', {
         scope: $scope,
         focusFirstInput: true
       })
@@ -25,6 +25,8 @@ function appHeaderDirective () {
     };
 
     controller.noteData = noteData;
+
+    controller.searchNote = searchNote;
 
     controller.addNewNote = function () {
       var newNote = {
@@ -48,7 +50,7 @@ function appHeaderDirective () {
 
   return {
     restrict: 'A',
-    templateUrl: 'scripts/new-note/app-header.drv.html',
+    templateUrl: 'scripts/directive/app-header.drv.html',
     controller: appHeaderController,
     controllerAs: 'ctrl',
     scope: {

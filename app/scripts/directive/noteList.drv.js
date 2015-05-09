@@ -5,12 +5,13 @@
 function noteList () {
 
 
-  function noteListCtrl (noteData, $ionicModal, $scope) {
+  function noteListCtrl (noteData, $ionicModal, $scope, searchNote) {
 
     /*jshint validthis: true */
     var controller = this;
     noteData.initNotes();
     controller.noteData = noteData;
+    controller.searchNote = searchNote;
 
     controller.toggleNoteState = function (note) {
       note.opened = !note.opened;
@@ -68,7 +69,7 @@ function noteList () {
 
   return {
     restrict: 'E',
-    templateUrl: 'scripts/list-of-notes/note-list.drv.html',
+    templateUrl: 'scripts/directive/note-list.drv.html',
     controller: noteListCtrl,
     controllerAs: 'ctrl',
     scope: {},
