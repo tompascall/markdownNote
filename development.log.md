@@ -3008,8 +3008,8 @@ describe('Inject markdown service', function () {
   },
 ```
 
-###9.6. Create `notes.html` object in `noteData` service
-###9.7. Populate `notes.html` to `noteList` directive
+###9.6. Create `note.htmlText` object in `noteData` service
+###9.7. Populate `note.htmlText` to `noteList` directive
 ###9.8. Update `updateNotes` method in `noteData` service
 
 
