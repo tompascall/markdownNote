@@ -2882,3 +2882,38 @@ describe('Connect search button to toggleSearchNote method', function () {
 </button>
 ```
 
+##9. STORY: Markdown editing
+
+###9.1. USER STORY
+
+>AS I customer I WANT to be able to use markdown language SO THAT I can style my notes 
+
+###9.2. ACCEPTANCE CRITERIA
+
+GIVEN I am a user
+WHEN I push the edit button
+THEN I can see the content of the note in markdown language in the edit modal
+
+GIVEN I am a user
+WHEN I edit my note
+THEN I can use markdown language
+
+GIVEN I am a user
+WHEN I update my note
+THEN I can see the styled note
+
+###9.3. TODOS
+
+- Create `markdown` service 
+- Inject `markdown` service to `noteData` service
+- Create `notes.html` object in `noteData` service
+- Populate `notes.html` to `noteList` directive
+- Update `updateNotes` method in `noteData` service
+
+####9.4. Create `markdown` service 
+####9.5. Inject `markdown` service to `noteData` service
+####9.6. Create `notes.html` object in `noteData` service
+####9.7. Populate `notes.html` to `noteList` directive
+####9.8. Update `updateNotes` method in `noteData` service
+
+
