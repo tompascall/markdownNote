@@ -189,7 +189,7 @@ describe('Directive: noteList', function () {
 
     it('should have class button button-icon icon icon-right ion-ios7-close-outline note-close', function () {
      var button = element.find('div.note-close-container a');
-     expect(button).to.have.class('button button-icon icon icon-right ion-ios7-close-outline note-close');
+     expect(button).to.have.class('button button-icon icon icon-right ion-ios-close-outline note-close');
     });
 
     describe('Connect `deleteNote` method to delete button with ng-click', function () {
