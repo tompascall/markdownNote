@@ -4,7 +4,7 @@
 
 angular.module('simpleNote')
 
-.factory('noteData', function noteDataFactory(tagsFactory) {
+.factory('noteData', function noteDataFactory(tagsFactory, markdown) {
   return {
     notes: [],
 
@@ -102,6 +102,10 @@ angular.module('simpleNote')
       this.notes[index].text = editedNote.text;
       this.notes[index].tags = editedNote.tags;
       this.saveNotesToLocalStorage();
+    },
+
+    setHtmlText: function (note) {
+      note.htmlText = markdown.convertMarkdownToHTML(note.text);
     },
 
     welcomeNote: {

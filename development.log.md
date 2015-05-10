@@ -2912,6 +2912,11 @@ THEN I can see the styled note
 
 ###9.4. Create `markdown` service
 
+
+The `markdown` service contains a `convertMarkdownToHTML` method, which uses [Pagedown](https://code.google.com/p/pagedown/wiki/PageDown)
+
+**NOTE** You need to insert Markdown.Converter.js to `index.html` file.
+
 ####9.4.1. Test: Create `markdown` service
 
 ```js
@@ -2962,6 +2967,47 @@ angular.module('simpleNote').factory('markdown', markdown);
 ```
 
 ###9.5. Inject `markdown` service to `noteData` service
+
+####9.5.1. Test: Inject `markdown` service to `noteData` service
+
+```js
+describe('Inject markdown service', function () {
+  var note = {
+    title: 'Test note',
+    text: '##Test',
+    tags: ['markdown']
+  };
+
+  beforeEach(function () {
+    noteData.notes = [];
+  });
+
+  afterEach( function () {
+    noteData.notes = [];
+  });
+
+  it('should call markdown.convertMarkdownToHTML', function () {
+    sinon.spy(markdown, 'convertMarkdownToHTML');
+    noteData.setHtmlText(note);
+    expect(markdown.convertMarkdownToHTML.calledOnce).to.equal(true);
+    markdown.convertMarkdownToHTML.restore();
+  });
+
+  it('should set HtmlText of note', function () {
+    noteData.setHtmlText(note);
+    expect(note.htmlText).to.equal('<h2>Test</h2>');
+  });
+});
+```
+
+####9.5.2. Inject `markdown` service to `noteData` service
+
+```js
+  setHtmlText: function (note) {
+    note.htmlText = markdown.convertMarkdownToHTML(note.text);
+  },
+```
+
 ###9.6. Create `notes.html` object in `noteData` service
 ###9.7. Populate `notes.html` to `noteList` directive
 ###9.8. Update `updateNotes` method in `noteData` service
