@@ -2904,16 +2904,66 @@ THEN I can see the styled note
 
 ###9.3. TODOS
 
-- Create `markdown` service 
+- Create `markdown` service
 - Inject `markdown` service to `noteData` service
 - Create `notes.html` object in `noteData` service
 - Populate `notes.html` to `noteList` directive
 - Update `updateNotes` method in `noteData` service
 
-####9.4. Create `markdown` service 
-####9.5. Inject `markdown` service to `noteData` service
-####9.6. Create `notes.html` object in `noteData` service
-####9.7. Populate `notes.html` to `noteList` directive
-####9.8. Update `updateNotes` method in `noteData` service
+###9.4. Create `markdown` service
+
+####9.4.1. Test: Create `markdown` service
+
+```js
+// markdown.srv.spec.js
+
+'use strict';
+
+describe('Service: markdown', function () {
+
+var markdown;
+
+  beforeEach(function () {
+    module('simpleNote');
+
+    inject(function ($injector) {
+      markdown = $injector.get('markdown');
+    });
+  });
+
+  describe('Create markdown service', function () {
+    var text = '##Title';
+    it('should convert markdown to HTML', function () {
+      expect(markdown.convertMarkdownToHTML(text)).to.equal('<h2>Title</h2>');
+    });
+  });
+});
+```
+
+####9.4.2. Create `markdown` service
+
+```js
+// markdown.srv.js
+// dependency: install pagedown 
+// https://code.google.com/p/pagedown/wiki/PageDown
+
+'use strict';
+
+function markdown () {
+  var converter = new Markdown.Converter();
+  return {
+    convertMarkdownToHTML: function (markdownText) {
+      return converter.makeHtml(markdownText);
+    }
+  };
+}
+
+angular.module('simpleNote').factory('markdown', markdown);
+```
+
+###9.5. Inject `markdown` service to `noteData` service
+###9.6. Create `notes.html` object in `noteData` service
+###9.7. Populate `notes.html` to `noteList` directive
+###9.8. Update `updateNotes` method in `noteData` service
 
 

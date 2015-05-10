@@ -26,6 +26,7 @@ Just plain **Markdown**, except that the input is sanitized:
   <script>
     var converter = new Markdown.Converter();
     var mdTextarea = converter.makeHtml($('textarea').val());
+    console.log(mdTextarea);
     $('#pagedown-view').val(mdTextarea);
 
     angular.module('bindHtmlExample', ['ngSanitize'])
