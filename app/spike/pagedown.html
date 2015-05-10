@@ -1,0 +1,37 @@
+<html>
+<head>
+  <title></title>
+</head>
+<body ng-app="bindHtmlExample">
+
+  <div class="wmd-panel" >
+    <div id="wmd-button-bar"></div>
+      <textarea class="wmd-input" id="wmd-input">
+
+##This is the *first* editor.
+
+Just plain **Markdown**, except that the input is sanitized:
+      </textarea>
+    </div>
+  </div>
+  <div id="pagedown-view" ng-controller="ExampleController">
+    <p ng-bind-html="myHTML"></p>
+  </div>
+
+  <script type="text/javascript" src="../bower_components/pagedown/Markdown.Converter.js"></script>
+  <script type="text/javascript" src="../bower_components/pagedown/Markdown.Sanitizer.js"></script>
+  <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script>
+    var converter = new Markdown.Converter();
+    var mdTextarea = converter.makeHtml($('textarea').val());
+    $('#pagedown-view').val(mdTextarea);
+
+    angular.module('bindHtmlExample', ['ngSanitize'])
+    .controller('ExampleController', ['$scope', function($scope) {
+      $scope.myHTML = mdTextarea;
+    }]);
+  </script>
+</body>
+</html>
