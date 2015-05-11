@@ -6,6 +6,7 @@
 
 function markdown () {
   var converter = new Markdown.Converter();
+  Markdown.Extra.init(converter);
   return {
     convertMarkdownToHTML: function (markdownText) {
       return converter.makeHtml(markdownText);

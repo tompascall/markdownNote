@@ -1,6 +1,8 @@
+// app.js
+
 'use strict';
 
-angular.module('simpleNote', ['ionic'])
+angular.module('simpleNote', ['ionic', 'ngSanitize'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
