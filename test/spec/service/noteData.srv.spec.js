@@ -239,7 +239,7 @@ describe('Service: noteData', function () {
     });
   });
 
-  describe('Inject markdown service', function () {
+  describe('Integrate markdown service to noteData service', function () {
     var note = {
       title: 'Test note',
       text: '##Test',
@@ -264,6 +264,25 @@ describe('Service: noteData', function () {
     it('should set HtmlText of note', function () {
       noteData.setHtmlText(note);
       expect(note.htmlText).to.equal('<h2>Test</h2>');
+    });
+
+    it('should prepare note using setHtmlText', function () {
+      var preparedNote = noteData.prepareNote(note);
+      expect(preparedNote.htmlText).to.equal('<h2>Test</h2>');
+    });
+
+    it('should save htmlText property to noteData.notes array', function () {
+      note = noteData.prepareNote(note);
+      noteData.saveNewNoteToNoteData(note);
+      expect(noteData.notes[0].htmlText).to.equal('<h2>Test</h2>');
+    });
+
+    it('should update htmlText property when update note', function () {
+      note = noteData.prepareNote(note);
+      noteData.saveNewNoteToNoteData(note);
+      note.text = '###Updated text';
+      noteData.updateNotes(noteData.notes[0], note);
+      expect(noteData.notes[0].htmlText).to.equal('<h3>Updated text</h3>');
     });
   });
 });

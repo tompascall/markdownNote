@@ -16,18 +16,14 @@ angular.module('simpleNote')
         noteInput.tags = noteInput.tags.join(',');
       }
       preparedNote.tags = tagsFactory.filterTagsString(noteInput.tags);
+      this.setHtmlText(preparedNote);
       return preparedNote;
     },
 
-    addNote: function (data) {
-      var self = this;
-      if (angular.isArray(data)) {
-        data.forEach(function (note) {
-          self.saveNoteToNoteData(note);
-        });
-      }
-      else if (angular.isObject(data)) {
-        this.saveNoteToNoteData(data);
+    addNote: function (note) {
+      if (angular.isObject(note)) {
+        note = this.prepareNote(note);
+        this.saveNewNoteToNoteData(note);
       }
       else {
         throw new Error('You are about to inject bad data format');
@@ -43,10 +39,11 @@ angular.module('simpleNote')
       }
     },
 
-    saveNoteToNoteData: function (note) {
+    saveNewNoteToNoteData: function (note) {
       this.notes.unshift({
         title: note.title,
         text: note.text,
+        htmlText: note.htmlText,
         tags: note.tags,
         opened: false,
         id: this.createId()
@@ -100,6 +97,7 @@ angular.module('simpleNote')
       var index = this.getIndex(note);
       this.notes[index].title = editedNote.title;
       this.notes[index].text = editedNote.text;
+      this.notes[index].htmlText = editedNote.htmlText;
       this.notes[index].tags = editedNote.tags;
       this.saveNotesToLocalStorage();
     },

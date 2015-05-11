@@ -35,7 +35,6 @@ function appHeaderDirective () {
         tags: controller.tags
       };
 
-      newNote = noteData.prepareNote(newNote);
       noteData.addNote(newNote);
       controller.title = '';
       controller.text = '';
