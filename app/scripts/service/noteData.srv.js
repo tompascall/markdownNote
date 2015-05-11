@@ -16,6 +16,7 @@ angular.module('simpleNote')
         noteInput.tags = noteInput.tags.join(',');
       }
       preparedNote.tags = tagsFactory.filterTagsString(noteInput.tags);
+      preparedNote.opened = noteInput.opened || false;
       this.setHtmlText(preparedNote);
       return preparedNote;
     },
@@ -35,6 +36,7 @@ angular.module('simpleNote')
       this.notes = this.loadNotesFromStorage();
       if (!this.notes) {
         this.notes = [];
+        this.addNote(this.markdownNote);
         this.addNote(this.welcomeNote);
       }
     },
@@ -45,7 +47,7 @@ angular.module('simpleNote')
         text: note.text,
         htmlText: note.htmlText,
         tags: note.tags,
-        opened: false,
+        opened: note.opened,
         id: this.createId()
       });
     },
@@ -112,6 +114,49 @@ angular.module('simpleNote')
         'to manage your notes.\n\n' +
         'Enjoy it!',
       tags: ['Welcome note', 'enjoy'],
+      opened: true
+    },
+
+    markdownNote: {
+      title: 'Markdown tools for styling the body of your note',
+      text: '###Headers\n\n' +
+            '#h1\n' +
+            '##h2\n' +
+            '###h3\n' +
+            '####h4\n' +
+            '#####h5\n' +
+            '######h6\n\n' +
+            '---\n\n' +
+            '###Link\n\n' +
+            '[Pagedown Extra](https://github.com/jmcmanus/pagedown-extra)\n\n' +
+            '###Bold\n\n' +
+            '**bold**\n\n' +
+            '---\n\n' +
+            '###Italic\n\n' +
+            '*italic*\n\n' +
+            '---\n\n' +
+            '###Code\n\n' +
+            '```\n' +
+            'it("should call toggleSearchInput method", function () {\n' +
+            '  sinon.spy(searchNote, "toggleSearchInput");\n' +
+            '  element.find("button#search-button").click();\n' +
+            '  expect(searchNote.toggleSearchInput.calledOnce).to.equal(true);\n' +
+            '  searchNote.toggleSearchInput.restore();\n' +
+            '});\n' +
+            '```\n\n' +
+            '---\n\n' +
+            '###Strike through\n\n' +
+            '~~Deleted~~\n\n' +
+            '---\n\n' +
+            '###Definiton\n\n' +
+            'Term 1\n' +
+            ':   Definition 1\n\n' +
+            'Term 2\n' +
+            ':   Definition 2\n\n' +
+            '---\n\n' +
+            '###Images\n\n' +
+            '![grumpy dog](http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/grumpy-dog-11.jpg)\n\n',
+      tags: 'markdown',
       opened: false
     }
   };
