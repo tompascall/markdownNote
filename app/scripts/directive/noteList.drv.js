@@ -62,10 +62,25 @@ function noteList () {
       controller.hideModal(controller.editNoteModal);
     };
 
+    controller.launchExternalLink = function (event) {
+      if (event) {
+        console.log('in launchExternalLink');
+      }
+    };
+
+    controller.handleLinkClicked = function (event) {
+      if (event.target.nodeName === 'A') {
+        event.preventDefault();
+        event.stopPropagation();
+        controller.launchExternalLink(event);
+      }
+    };
+
     $scope.$on('$destroy', function() {
       controller.editNoteModal.remove();
     });
   }
+
 
   return {
     restrict: 'E',
