@@ -40,6 +40,14 @@
   width: 100%;
 }
 
+div.text-title h2 {
+  font-size: 28px;
+}
+
+div.text-title em {
+  font-style: italic;
+}
+
 .text-title-container, .note-close-container, .note-edit-container {  /* OLD - iOS 6-, Safari 3.1-6, BB7 */  /* TWEENER - IE 10 */
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
