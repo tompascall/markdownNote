@@ -15,21 +15,19 @@ describe('Directive: noteList', function () {
 
   beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
 
-  beforeEach(inject(function (_$compile_, _$rootScope_, _$timeout_) {
-    $compile = _$compile_;
-    scope = _$rootScope_.$new();
+  beforeEach(function () {
+    inject(function ($injector) {
+      $compile = $injector.get('$compile');
+      scope = $injector.get('$rootScope').$new();
+      timeout = $injector.get('$timeout');
+      noteData = $injector.get('noteData');
+      searchNote = $injector.get('searchNote');
+    });
+
     element = $compile('<note-list></note-list>')(scope);
     scope.$digest();
     isolated = element.isolateScope();
     angular.element(document).find('body').append(element); // for rendering css
-    timeout = _$timeout_;
-  }));
-
-  beforeEach(function () {
-    inject(function ($injector) {
-      noteData = $injector.get('noteData');
-      searchNote = $injector.get('searchNote');
-    });
   });
 
   describe('Create a list of notes', function () {
@@ -444,6 +442,31 @@ describe('Directive: noteList', function () {
       searchNote.searchTerm = 'testTag3';
       scope.$digest();
       expect(element.find('div.note-item').length).to.equal(1);
+    });
+  });
+
+  describe('Populate note.htmlText property via ngBindHtml', function () {
+    beforeEach(function () {
+      noteData.notes = [
+        {
+          title: 'testTitle',
+          text: '##Text',
+          htmlText: '<h2>Text</h2>',
+          tags: ['testTag'],
+          opened: false,
+          id: 0
+        }
+      ];
+      scope.$digest();
+    });
+
+    afterEach(function () {
+      noteData.notes = [];
+    });
+
+    it('should insert note.htmlText into a div element', function () {
+      var textDiv = element.find('div.text-title-container div');
+      expect(textDiv.html()).to.contain('<h2>Text</h2>');
     });
   });
 });

@@ -176,6 +176,7 @@ describe('Directive: appHeader', function () {
         var preparedNote = {
           title: 'test title',
           text: 'test text',
+          htmlText: '<p>test text</p>',
           tags: ['test tag1', 'test tag2'],
           opened: false,
           id: id

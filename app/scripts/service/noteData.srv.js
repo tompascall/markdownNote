@@ -4,7 +4,7 @@
 
 angular.module('simpleNote')
 
-.factory('noteData', function noteDataFactory(tagsFactory) {
+.factory('noteData', function noteDataFactory(tagsFactory, markdown) {
   return {
     notes: [],
 
@@ -16,18 +16,15 @@ angular.module('simpleNote')
         noteInput.tags = noteInput.tags.join(',');
       }
       preparedNote.tags = tagsFactory.filterTagsString(noteInput.tags);
+      preparedNote.opened = noteInput.opened || false;
+      this.setHtmlText(preparedNote);
       return preparedNote;
     },
 
-    addNote: function (data) {
-      var self = this;
-      if (angular.isArray(data)) {
-        data.forEach(function (note) {
-          self.saveNoteToNoteData(note);
-        });
-      }
-      else if (angular.isObject(data)) {
-        this.saveNoteToNoteData(data);
+    addNote: function (note) {
+      if (angular.isObject(note)) {
+        note = this.prepareNote(note);
+        this.saveNewNoteToNoteData(note);
       }
       else {
         throw new Error('You are about to inject bad data format');
@@ -39,16 +36,18 @@ angular.module('simpleNote')
       this.notes = this.loadNotesFromStorage();
       if (!this.notes) {
         this.notes = [];
+        this.addNote(this.markdownNote);
         this.addNote(this.welcomeNote);
       }
     },
 
-    saveNoteToNoteData: function (note) {
+    saveNewNoteToNoteData: function (note) {
       this.notes.unshift({
         title: note.title,
         text: note.text,
+        htmlText: note.htmlText,
         tags: note.tags,
-        opened: false,
+        opened: note.opened,
         id: this.createId()
       });
     },
@@ -100,16 +99,69 @@ angular.module('simpleNote')
       var index = this.getIndex(note);
       this.notes[index].title = editedNote.title;
       this.notes[index].text = editedNote.text;
+      this.notes[index].htmlText = editedNote.htmlText;
       this.notes[index].tags = editedNote.tags;
       this.saveNotesToLocalStorage();
     },
 
+    setHtmlText: function (note) {
+      note.htmlText = markdown.convertMarkdownToHTML(note.text);
+    },
+
     welcomeNote: {
       title: 'Welcome!',
-      text: 'Welcome to simpleNotes! This is a simple app ' +
+      text: '###Welcome to simpleNotes!\n\n'  +
+        'This is a simple app ' +
         'to manage your notes.\n\n' +
+        'You can **store** your notes, **edit** or ~~remove them~~' +
+        ', and you can **filter** them by any keyword.\n\n' +
+        'You can also use **markdown language** or **raw html** to style' +
+        ' and structure the body of your notes.\n\n' +
         'Enjoy it!',
       tags: ['Welcome note', 'enjoy'],
+      opened: true
+    },
+
+    markdownNote: {
+      title: 'Markdown tools for styling the body of your note',
+      text: '###Headers\n\n' +
+            '#h1\n' +
+            '##h2\n' +
+            '###h3\n' +
+            '####h4\n' +
+            '#####h5\n' +
+            '######h6\n\n' +
+            '---\n\n' +
+            '###Link\n\n' +
+            '[Pagedown Extra](https://github.com/jmcmanus/pagedown-extra)\n\n' +
+            '###Bold\n\n' +
+            '**bold**\n\n' +
+            '---\n\n' +
+            '###Italic\n\n' +
+            '*italic*\n\n' +
+            '---\n\n' +
+            '###Code\n\n' +
+            '```\n' +
+            'it("should call toggleSearchInput method", function () {\n' +
+            '  sinon.spy(searchNote, "toggleSearchInput");\n' +
+            '  element.find("button#search-button").click();\n' +
+            '  expect(searchNote.toggleSearchInput.calledOnce).to.equal(true);\n' +
+            '  searchNote.toggleSearchInput.restore();\n' +
+            '});\n' +
+            '```\n\n' +
+            '---\n\n' +
+            '###Strike through\n\n' +
+            '~~Deleted~~\n\n' +
+            '---\n\n' +
+            '###Definiton\n\n' +
+            'Term 1\n' +
+            ':   Definition 1\n\n' +
+            'Term 2\n' +
+            ':   Definition 2\n\n' +
+            '---\n\n' +
+            '###Images\n\n' +
+            '![grumpy dog](http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/grumpy-dog-11.jpg)\n\n',
+      tags: 'markdown',
       opened: false
     }
   };

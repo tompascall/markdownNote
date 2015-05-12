@@ -3,6 +3,7 @@
 'use strict';
 
 function searchInputController (searchNote) {
+  /*jshint validthis: true */
   this.searchNote = searchNote;
 }
 

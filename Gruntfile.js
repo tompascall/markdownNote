@@ -35,7 +35,7 @@ module.exports = function (grunt) {
     ngconstant: {
       options: {
         space: '  ',
-        wrap: "'use strict';\n\n {%= __ngModule %}",
+        wrap: '\'use strict\';\n\n {%= __ngModule %}',
         name: 'config',
         dest: '<%= yeoman.app %>/<%= yeoman.scripts %>/configuration.js'
       },
@@ -332,6 +332,7 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/bower_components/angular-ui-router/release/angular-ui-router.js',
           '<%= yeoman.app %>/bower_components/ionic/release/js/ionic.js',
           '<%= yeoman.app %>/bower_components/ionic/release/js/ionic-angular.js',
+          '<%= yeoman.app %>/bower_components/pagedown/*.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
           '<%= yeoman.test %>/mock/**/*.js',
           '<%= yeoman.test %>/spec/**/*.js',

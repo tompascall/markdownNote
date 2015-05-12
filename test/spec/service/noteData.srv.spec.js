@@ -6,9 +6,11 @@ describe('Service: noteData', function () {
 
   beforeEach(module('simpleNote'));
     var noteData;
+    var markdown;
 
   beforeEach(inject(function ($injector) {
     noteData = $injector.get('noteData');
+    markdown = $injector.get('markdown');
   }));
 
   describe('Prepare note to add and edit', function () {
@@ -234,6 +236,53 @@ describe('Service: noteData', function () {
 
       var StorageLengthAfterDeleteNote = noteData.loadNotesFromStorage().length;
       expect(StorageLengthAfterDeleteNote).to.equal(storageLengthAfterAddNote - 1);
+    });
+  });
+
+  describe('Integrate markdown service to noteData service', function () {
+    var note = {
+      title: 'Test note',
+      text: '##Test',
+      tags: ['markdown']
+    };
+
+    beforeEach(function () {
+      noteData.notes = [];
+    });
+
+    afterEach( function () {
+      noteData.notes = [];
+    });
+
+    it('should call markdown.convertMarkdownToHTML', function () {
+      sinon.spy(markdown, 'convertMarkdownToHTML');
+      noteData.setHtmlText(note);
+      expect(markdown.convertMarkdownToHTML.calledOnce).to.equal(true);
+      markdown.convertMarkdownToHTML.restore();
+    });
+
+    it('should set HtmlText of note', function () {
+      noteData.setHtmlText(note);
+      expect(note.htmlText).to.equal('<h2>Test</h2>');
+    });
+
+    it('should prepare note using setHtmlText', function () {
+      var preparedNote = noteData.prepareNote(note);
+      expect(preparedNote.htmlText).to.equal('<h2>Test</h2>');
+    });
+
+    it('should save htmlText property to noteData.notes array', function () {
+      note = noteData.prepareNote(note);
+      noteData.saveNewNoteToNoteData(note);
+      expect(noteData.notes[0].htmlText).to.equal('<h2>Test</h2>');
+    });
+
+    it('should update htmlText property when update note', function () {
+      note = noteData.prepareNote(note);
+      noteData.saveNewNoteToNoteData(note);
+      note.text = '###Updated text';
+      noteData.updateNotes(noteData.notes[0], note);
+      expect(noteData.notes[0].htmlText).to.equal('<h3>Updated text</h3>');
     });
   });
 });

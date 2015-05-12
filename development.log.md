@@ -2882,3 +2882,240 @@ describe('Connect search button to toggleSearchNote method', function () {
 </button>
 ```
 
+##9. STORY: Markdown editing
+
+###9.1. USER STORY
+
+>AS I customer I WANT to be able to use markdown language SO THAT I can style my notes 
+
+###9.2. ACCEPTANCE CRITERIA
+
+GIVEN I am a user
+WHEN I push the edit button
+THEN I can see the content of the note in markdown language in the edit modal
+
+GIVEN I am a user
+WHEN I edit my note
+THEN I can use markdown language
+
+GIVEN I am a user
+WHEN I update my note
+THEN I can see the styled note
+
+###9.3. TODOS
+
+- Create `markdown` service
+- Inject `markdown` service to `noteData` service
+- Create `notes.html` object in `noteData` service
+- Populate `notes.html` to `noteList` directive
+- Update `updateNotes` method in `noteData` service
+
+###9.4. Create `markdown` service
+
+
+The `markdown` service contains a `convertMarkdownToHTML` method, which uses [Pagedown](https://code.google.com/p/pagedown/wiki/PageDown)
+
+**NOTE** You need to insert Markdown.Converter.js to `index.html` file.
+
+####9.4.1. Test: Create `markdown` service
+
+```js
+// markdown.srv.spec.js
+
+'use strict';
+
+describe('Service: markdown', function () {
+
+var markdown;
+
+  beforeEach(function () {
+    module('simpleNote');
+
+    inject(function ($injector) {
+      markdown = $injector.get('markdown');
+    });
+  });
+
+  describe('Create markdown service', function () {
+    var text = '##Title';
+    it('should convert markdown to HTML', function () {
+      expect(markdown.convertMarkdownToHTML(text)).to.equal('<h2>Title</h2>');
+    });
+  });
+});
+```
+
+####9.4.2. Create `markdown` service
+
+```js
+// markdown.srv.js
+// dependency: install pagedown 
+// https://code.google.com/p/pagedown/wiki/PageDown
+
+'use strict';
+
+function markdown () {
+  var converter = new Markdown.Converter();
+  return {
+    convertMarkdownToHTML: function (markdownText) {
+      return converter.makeHtml(markdownText);
+    }
+  };
+}
+
+angular.module('simpleNote').factory('markdown', markdown);
+```
+
+###9.5. Inject `markdown` service to `noteData` service
+
+####9.5.1. Test: Inject `markdown` service to `noteData` service
+
+```js
+describe('Inject markdown service', function () {
+  var note = {
+    title: 'Test note',
+    text: '##Test',
+    tags: ['markdown']
+  };
+
+  beforeEach(function () {
+    noteData.notes = [];
+  });
+
+  afterEach( function () {
+    noteData.notes = [];
+  });
+
+  it('should call markdown.convertMarkdownToHTML', function () {
+    sinon.spy(markdown, 'convertMarkdownToHTML');
+    noteData.setHtmlText(note);
+    expect(markdown.convertMarkdownToHTML.calledOnce).to.equal(true);
+    markdown.convertMarkdownToHTML.restore();
+  });
+
+  it('should set HtmlText of note', function () {
+    noteData.setHtmlText(note);
+    expect(note.htmlText).to.equal('<h2>Test</h2>');
+  });
+});
+```
+
+####9.5.2. Inject `markdown` service to `noteData` service
+
+```js
+  setHtmlText: function (note) {
+    note.htmlText = markdown.convertMarkdownToHTML(note.text);
+  },
+```
+
+###9.6. Create `note.htmlText` property in `noteData` service
+
+###9.6.1. Test: Create `note.htmlText` property in `noteData` service
+
+```js
+it('should prepare note using setHtmlText', function () {
+  var preparedNote = noteData.prepareNote(note);
+  expect(preparedNote.htmlText).to.equal('<h2>Test</h2>');
+});
+
+it('should save htmlText property to noteData.notes array', function () {
+  note = noteData.prepareNote(note);
+  noteData.saveNewNoteToNoteData(note);
+  expect(noteData.notes[0].htmlText).to.equal('<h2>Test</h2>');
+});
+
+it('should update htmlText property when update note', function () {
+  note = noteData.prepareNote(note);
+  noteData.saveNewNoteToNoteData(note);
+  note.text = '###Updated text';
+  noteData.updateNotes(noteData.notes[0], note);
+  expect(noteData.notes[0].htmlText).to.equal('<h3>Updated text</h3>');
+});
+```
+
+###9.6.2. Create `note.htmlText` property in `noteData` service
+
+```js
+ prepareNote: function (noteInput) {
+  var preparedNote = {};
+  preparedNote.title = noteInput.title;
+  preparedNote.text = noteInput.text;
+  if (angular.isArray(noteInput.tags)) {
+    noteInput.tags = noteInput.tags.join(',');
+  }
+  preparedNote.tags = tagsFactory.filterTagsString(noteInput.tags);
+  this.setHtmlText(preparedNote);
+  return preparedNote;
+},
+
+saveNewNoteToNoteData: function (note) {
+  this.notes.unshift({
+    title: note.title,
+    text: note.text,
+    htmlText: note.htmlText,
+    tags: note.tags,
+    opened: false,
+    id: this.createId()
+  });
+},
+
+updateNotes: function (note, editedNote) {
+  editedNote = this.prepareNote(editedNote);
+  var index = this.getIndex(note);
+  this.notes[index].title = editedNote.title;
+  this.notes[index].text = editedNote.text;
+  this.notes[index].htmlText = editedNote.htmlText;
+  this.notes[index].tags = editedNote.tags;
+  this.saveNotesToLocalStorage();
+},
+```
+
+###9.7. Populate `note.htmlText` to `noteList` directive
+
+We want to use [`ngBindHtml`](https://docs.angularjs.org/api/ng/directive/ngBindHtml) to bind the converted markdown to noteList.
+
+**NOTE** We have to us ngSanitize service to insert the resulting HTML in a secure way.
+
+####9.7.1. Test: Populate `note.htmlText` to `noteList` directive
+
+```js
+describe('Populate note.htmlText property via ngBindHtml', function () {
+  beforeEach(function () {
+    noteData.notes = [
+      {
+        title: 'testTitle',
+        text: '##Text',
+        htmlText: '<h2>Text</h2>',
+        tags: ['testTag'],
+        opened: false,
+        id: 0
+      }
+    ];
+    scope.$digest();
+  });
+
+  afterEach(function () {
+    noteData.notes = [];
+  });
+
+  it('should insert note.htmlText into a div element', function () {
+    var textDiv = element.find('div.text-title-container div');
+    expect(textDiv.html()).to.contain('<h2>Text</h2>');
+  });
+});
+```
+
+####9.7.2. Populate `note.htmlText` to `noteList` directive
+
+```js
+// app.js
+angular.module('simpleNote', ['ionic', 'ngSanitize'])
+```
+
+```html
+<div class="text-title-container">
+  <div class="text-title text-title-wordwrap" ng-bind-html="note.htmlText"></div>
+</div>
+```
+
+
