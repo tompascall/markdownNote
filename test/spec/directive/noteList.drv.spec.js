@@ -470,7 +470,7 @@ describe('Directive: noteList', function () {
     });
   });
 
-  describe('Add event listener to noteList directive', function () {
+  describe('Handle link element in the text of the note', function () {
     beforeEach(function () {
       noteData.notes = [
         {
@@ -495,12 +495,6 @@ describe('Directive: noteList', function () {
       noteLink.click();
       expect(isolated.ctrl.launchExternalLink.calledOnce).to.equal(true);
       isolated.ctrl.launchExternalLink.restore();
-    });
-
-    it('should get link target', function () {
-      var linkString = '<a href="http://google.com"..."></a>';
-      expect(isolated.ctrl.getLinkTarget(linkString))
-        .to.equal('http://google.com');
     });
   });
 });

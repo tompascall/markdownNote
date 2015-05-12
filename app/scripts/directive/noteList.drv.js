@@ -62,17 +62,10 @@ function noteList () {
       controller.hideModal(controller.editNoteModal);
     };
 
-    controller.getLinkTarget = function (linkElementString) {
-      var matched = linkElementString.match(/href="(\S*?)"/);
-      return matched ? matched[1] : '#';
-    };
-
     controller.launchExternalLink = function (event) {
-      var target;
-      var targetString = event.target;
-      if (targetString) {
-        target = controller.getLinkTarget(event.target);
-        window.open(target, '_system', 'location=yes');
+      var linkElementString = event.target.toString();
+      if (linkElementString) {
+        window.open(linkElementString, '_system', 'location=yes');
       }
     };
 
