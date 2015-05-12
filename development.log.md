@@ -3008,8 +3008,114 @@ describe('Inject markdown service', function () {
   },
 ```
 
-###9.6. Create `note.htmlText` object in `noteData` service
+###9.6. Create `note.htmlText` property in `noteData` service
+
+###9.6.1. Test: Create `note.htmlText` property in `noteData` service
+
+```js
+it('should prepare note using setHtmlText', function () {
+  var preparedNote = noteData.prepareNote(note);
+  expect(preparedNote.htmlText).to.equal('<h2>Test</h2>');
+});
+
+it('should save htmlText property to noteData.notes array', function () {
+  note = noteData.prepareNote(note);
+  noteData.saveNewNoteToNoteData(note);
+  expect(noteData.notes[0].htmlText).to.equal('<h2>Test</h2>');
+});
+
+it('should update htmlText property when update note', function () {
+  note = noteData.prepareNote(note);
+  noteData.saveNewNoteToNoteData(note);
+  note.text = '###Updated text';
+  noteData.updateNotes(noteData.notes[0], note);
+  expect(noteData.notes[0].htmlText).to.equal('<h3>Updated text</h3>');
+});
+```
+
+###9.6.2. Create `note.htmlText` property in `noteData` service
+
+```js
+ prepareNote: function (noteInput) {
+  var preparedNote = {};
+  preparedNote.title = noteInput.title;
+  preparedNote.text = noteInput.text;
+  if (angular.isArray(noteInput.tags)) {
+    noteInput.tags = noteInput.tags.join(',');
+  }
+  preparedNote.tags = tagsFactory.filterTagsString(noteInput.tags);
+  this.setHtmlText(preparedNote);
+  return preparedNote;
+},
+
+saveNewNoteToNoteData: function (note) {
+  this.notes.unshift({
+    title: note.title,
+    text: note.text,
+    htmlText: note.htmlText,
+    tags: note.tags,
+    opened: false,
+    id: this.createId()
+  });
+},
+
+updateNotes: function (note, editedNote) {
+  editedNote = this.prepareNote(editedNote);
+  var index = this.getIndex(note);
+  this.notes[index].title = editedNote.title;
+  this.notes[index].text = editedNote.text;
+  this.notes[index].htmlText = editedNote.htmlText;
+  this.notes[index].tags = editedNote.tags;
+  this.saveNotesToLocalStorage();
+},
+```
+
 ###9.7. Populate `note.htmlText` to `noteList` directive
-###9.8. Update `updateNotes` method in `noteData` service
+
+We want to use [`ngBindHtml`](https://docs.angularjs.org/api/ng/directive/ngBindHtml) to bind the converted markdown to noteList.
+
+**NOTE** We have to us ngSanitize service to insert the resulting HTML in a secure way.
+
+####9.7.1. Test: Populate `note.htmlText` to `noteList` directive
+
+```js
+describe('Populate note.htmlText property via ngBindHtml', function () {
+  beforeEach(function () {
+    noteData.notes = [
+      {
+        title: 'testTitle',
+        text: '##Text',
+        htmlText: '<h2>Text</h2>',
+        tags: ['testTag'],
+        opened: false,
+        id: 0
+      }
+    ];
+    scope.$digest();
+  });
+
+  afterEach(function () {
+    noteData.notes = [];
+  });
+
+  it('should insert note.htmlText into a div element', function () {
+    var textDiv = element.find('div.text-title-container div');
+    expect(textDiv.html()).to.contain('<h2>Text</h2>');
+  });
+});
+```
+
+####9.7.2. Populate `note.htmlText` to `noteList` directive
+
+```js
+// app.js
+angular.module('simpleNote', ['ionic', 'ngSanitize'])
+```
+
+```html
+<div class="text-title-container">
+  <div class="text-title text-title-wordwrap" ng-bind-html="note.htmlText"></div>
+</div>
+```
 
 

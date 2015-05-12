@@ -108,8 +108,13 @@ angular.module('simpleNote')
 
     welcomeNote: {
       title: 'Welcome!',
-      text: 'Welcome to simpleNotes! This is a simple app ' +
+      text: '###Welcome to simpleNotes!\n\n'  +
+        'This is a simple app ' +
         'to manage your notes.\n\n' +
+        'You can **store** your notes, **edit** or ~~remove them~~' +
+        ', and you can **filter** them by any keyword.\n\n' +
+        'You can also use **markdown language** or **raw html** to style' +
+        ' and structure the body of your notes.\n\n' +
         'Enjoy it!',
       tags: ['Welcome note', 'enjoy'],
       opened: false
