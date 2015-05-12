@@ -496,5 +496,11 @@ describe('Directive: noteList', function () {
       expect(isolated.ctrl.launchExternalLink.calledOnce).to.equal(true);
       isolated.ctrl.launchExternalLink.restore();
     });
+
+    it('should get link target', function () {
+      var linkString = '<a href="http://google.com"..."></a>';
+      expect(isolated.ctrl.getLinkTarget(linkString))
+        .to.equal('http://google.com');
+    });
   });
 });
