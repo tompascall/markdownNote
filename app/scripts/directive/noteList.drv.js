@@ -13,10 +13,6 @@ function noteList () {
     controller.noteData = noteData;
     controller.searchNote = searchNote;
 
-    controller.toggleNoteState = function (note) {
-      note.opened = !note.opened;
-    };
-
     $ionicModal.fromTemplateUrl('scripts/modal/edit-note-modal.html', {
         scope: $scope,
         focusFirstInput: false
@@ -24,6 +20,10 @@ function noteList () {
     .then(function (modal) {
       controller.editNoteModal = modal;
     });
+
+    controller.toggleNoteState = function (note) {
+      note.opened = !note.opened;
+    };
 
     controller.showModal = function (modal) {
       modal.show();
@@ -41,8 +41,8 @@ function noteList () {
       return cloneNote;
     };
 
-    controller.setEditedNote = function (note) {
-      controller.editedNote = controller.cloneNote(note);
+    controller.setNoteInput = function (note) {
+      controller.noteInput = controller.cloneNote(note);
     };
 
     controller.editNote = function (note, event) {
@@ -50,15 +50,15 @@ function noteList () {
         event.stopPropagation();
       }
       controller.note = note;
-      controller.setEditedNote(note);
+      controller.setNoteInput(note);
       controller.showModal(controller.editNoteModal);
     };
 
     controller.updateNotes = function (note) {
-      noteData.updateNotes(note, controller.editedNote);
-      controller.editedNote.title = '';
-      controller.editedNote.text = '';
-      controller.editedNote.tags = '';
+      noteData.updateNotes(note, controller.noteInput);
+      controller.noteInput.title = '';
+      controller.noteInput.text = '';
+      controller.noteInput.tags = '';
       controller.hideModal(controller.editNoteModal);
     };
 
@@ -70,7 +70,7 @@ function noteList () {
     };
 
     controller.handleLinkClicked = function (event) {
-      if (event.target.nodeName === 'A') {
+      if (event.target.nodeName === 'A') {  // target is a link
         event.preventDefault();
         event.stopPropagation();
         controller.launchExternalLink(event);

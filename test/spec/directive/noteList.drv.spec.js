@@ -335,7 +335,7 @@ describe('Directive: noteList', function () {
       });
 
       it('should bind cloned note data to modal', function () {
-        isolated.ctrl.editedNote = isolated.ctrl.cloneNote(testNote);
+        isolated.ctrl.setNoteInput(testNote);
         scope.$digest();
         expect(modalElement.find('input.modal-title').val()).to.equal('Testnote');
       });
@@ -343,7 +343,7 @@ describe('Directive: noteList', function () {
 
     describe('Create updateNotes method', function () {
       var testNote;
-      var editedNote;
+      var noteInput;
 
       beforeEach(function () {
         noteData.notes = [];
@@ -354,13 +354,13 @@ describe('Directive: noteList', function () {
           tags: ['test tag'],
         };
 
-        editedNote = {
+        noteInput = {
           title: 'Edited Note',
           text: 'Edited Text',
           tags: 'Edited, Tags'
         };
 
-        isolated.ctrl.editedNote = editedNote;
+        isolated.ctrl.noteInput = noteInput;
 
         noteData.addNote(testNote);
         isolated.ctrl.note = noteData.notes[0];
@@ -368,7 +368,7 @@ describe('Directive: noteList', function () {
 
       afterEach(function () {
         noteData.notes = [];
-        isolated.ctrl.editedNote = '';
+        isolated.ctrl.noteInput = '';
       });
 
       it('should close the modal', function (done) {
@@ -475,8 +475,8 @@ describe('Directive: noteList', function () {
       noteData.notes = [
         {
           title: 'testTitle',
-          text: '[testLink](#)',
-          htmlText: '<a href="#">testLink</a>',
+          text: '[testLink](http://google.com/)',
+          htmlText: '<a href="http://google.com/">testLink</a>',
           tags: ['testTag'],
           opened: false,
           id: 0
@@ -489,12 +489,21 @@ describe('Directive: noteList', function () {
       noteData.notes = [];
     });
 
-    it('should call launchExternalLink', function () {
+    it('should call launchExternalLink when click on a link', function () {
       sinon.spy(isolated.ctrl, 'launchExternalLink');
       var noteLink = element.find('div.text-title a');
       noteLink.click();
       expect(isolated.ctrl.launchExternalLink.calledOnce).to.equal(true);
       isolated.ctrl.launchExternalLink.restore();
+    });
+
+    it('should call window.open with the proper arguments', function () {
+      sinon.spy(window, 'open');
+      var noteLink = element.find('div.text-title a');
+      noteLink.click();
+      expect(window.open.calledWith('http://google.com/', '_system', 'location=yes'))
+        .to.equal(true);
+      window.open.restore();
     });
   });
 });

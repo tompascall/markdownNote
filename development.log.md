@@ -3124,20 +3124,77 @@ When you have a link in the note and you tap it, the link opens in a browser but
 
 **NOTE** [Launch External URLs with IonicFramework](https://blog.nraboy.com/2014/07/launch-external-urls-ionicframework/)
 
-Install inaAppBrowser cordova plugin in project folder:
+Install inAppBrowser cordova plugin in project folder:
 
 ```bash
 $ cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
 ```
 
 
-
 ###10.1. Launch external url from note
 
-We have to add an event listener for clicking a link in the noteList directive. 
+We have to add an event listener for clicking a link in the noteList directive. We create this with `ng-click`.
 
-####10.1.1. Test: Add event listener to noteList directive
+####10.1.1. Test: Handle link element in the text of the note
 
-####10.1.2. Add event listener to noteList directive
+```js
+describe('Handle link element in the text of the note', function () {
+  beforeEach(function () {
+    noteData.notes = [
+      {
+        title: 'testTitle',
+        text: '[testLink](http://google.com/)',
+        htmlText: '<a href="http://google.com/">testLink</a>',
+        tags: ['testTag'],
+        opened: false,
+        id: 0
+      }
+    ];
+    scope.$digest();
+  });
 
+  afterEach(function () {
+    noteData.notes = [];
+  });
 
+  it('should call launchExternalLink when click on a link', function () {
+    sinon.spy(isolated.ctrl, 'launchExternalLink');
+    var noteLink = element.find('div.text-title a');
+    noteLink.click();
+    expect(isolated.ctrl.launchExternalLink.calledOnce).to.equal(true);
+    isolated.ctrl.launchExternalLink.restore();
+  });
+
+  it('should call window.open with the proper arguments', function () {
+    sinon.spy(window, 'open');
+    var noteLink = element.find('div.text-title a');
+    noteLink.click();
+    expect(window.open.calledWith('http://google.com/', '_system', 'location=yes'))
+      .to.equal(true);
+    window.open.restore();
+  });
+});
+```
+
+####10.1.2. Handle link element in the text of the note
+
+**NOTE** We use angular `$event` passed by `ng-click`. You can extract the value of the link with `event.target` object, by transforming it to a string.
+
+**NOTE** we have to prevent default behaviour of the link element, because we want to call `window.open` with special arguments required by [inAppBrowser plugin](https://wiki.apache.org/cordova/InAppBrowser).
+
+```js
+controller.launchExternalLink = function (event) {
+  var linkElementString = event.target.toString();
+  if (linkElementString) {
+    window.open(linkElementString, '_system', 'location=yes');
+  }
+};
+
+controller.handleLinkClicked = function (event) {
+  if (event.target.nodeName === 'A') {  // target is a link
+    event.preventDefault();
+    event.stopPropagation();
+    controller.launchExternalLink(event);
+  }
+};
+```
