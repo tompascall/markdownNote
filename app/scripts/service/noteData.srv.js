@@ -94,13 +94,13 @@ angular.module('simpleNote')
       }
     },
 
-    updateNotes: function (note, editedNote) {
-      editedNote = this.prepareNote(editedNote);
+    updateNotes: function (note, noteInput) {
+      noteInput = this.prepareNote(noteInput);
       var index = this.getIndex(note);
-      this.notes[index].title = editedNote.title;
-      this.notes[index].text = editedNote.text;
-      this.notes[index].htmlText = editedNote.htmlText;
-      this.notes[index].tags = editedNote.tags;
+      this.notes[index].title = noteInput.title;
+      this.notes[index].text = noteInput.text;
+      this.notes[index].htmlText = noteInput.htmlText;
+      this.notes[index].tags = noteInput.tags;
       this.saveNotesToLocalStorage();
     },
 
@@ -113,9 +113,9 @@ angular.module('simpleNote')
       text: '###Welcome to simpleNotes!\n\n'  +
         'This is a simple app ' +
         'to manage your notes.\n\n' +
-        'You can **store** your notes, **edit** or ~~remove them~~' +
+        'You can **store** your notes locally, you can **update** the content of notes' +
         ', and you can **filter** them by any keyword.\n\n' +
-        'You can also use **markdown language** or **raw html** to style' +
+        'You can also use **markdown language** to style' +
         ' and structure the body of your notes.\n\n' +
         'Enjoy it!',
       tags: ['Welcome note', 'enjoy'],
