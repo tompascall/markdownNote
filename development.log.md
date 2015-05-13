@@ -3118,4 +3118,26 @@ angular.module('simpleNote', ['ionic', 'ngSanitize'])
 </div>
 ```
 
+##10. FIX markdown link
+
+When you have a link in the note and you tap it, the link opens in a browser but you cannot go back to the app. It would be great if you could launch a browser with the link but the app wouldn't disappear.
+
+**NOTE** [Launch External URLs with IonicFramework](https://blog.nraboy.com/2014/07/launch-external-urls-ionicframework/)
+
+Install inaAppBrowser cordova plugin in project folder:
+
+```bash
+$ cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+```
+
+
+
+###10.1. Launch external url from note
+
+We have to add an event listener for clicking a link in the noteList directive. 
+
+####10.1.1. Test: Add event listener to noteList directive
+
+####10.1.2. Add event listener to noteList directive
+
 

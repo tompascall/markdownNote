@@ -469,4 +469,32 @@ describe('Directive: noteList', function () {
       expect(textDiv.html()).to.contain('<h2>Text</h2>');
     });
   });
+
+  describe('Handle link element in the text of the note', function () {
+    beforeEach(function () {
+      noteData.notes = [
+        {
+          title: 'testTitle',
+          text: '[testLink](#)',
+          htmlText: '<a href="#">testLink</a>',
+          tags: ['testTag'],
+          opened: false,
+          id: 0
+        }
+      ];
+      scope.$digest();
+    });
+
+    afterEach(function () {
+      noteData.notes = [];
+    });
+
+    it('should call launchExternalLink', function () {
+      sinon.spy(isolated.ctrl, 'launchExternalLink');
+      var noteLink = element.find('div.text-title a');
+      noteLink.click();
+      expect(isolated.ctrl.launchExternalLink.calledOnce).to.equal(true);
+      isolated.ctrl.launchExternalLink.restore();
+    });
+  });
 });
