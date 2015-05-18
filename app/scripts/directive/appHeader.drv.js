@@ -16,6 +16,13 @@ function appHeaderDirective () {
       controller.newNoteModal = modal;
     });
 
+    $ionicModal.fromTemplateUrl('scripts/modal/extras-modal.html', {
+        scope: $scope
+      })
+    .then(function (modal) {
+      controller.extrasModal = modal;
+    });
+
     controller.showModal = function (modal) {
       modal.show();
     };
@@ -44,6 +51,7 @@ function appHeaderDirective () {
 
     $scope.$on('$destroy', function() {
       controller.newNoteModal.remove();
+      controller.extrasModal.remove();
     });
   }
 

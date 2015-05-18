@@ -9,20 +9,26 @@ describe('Directive: appHeader', function () {
   var isolated;
   var newNoteModal;
   var searchNote;
+  var extrasModal;
 
   beforeEach(module('simpleNote'));
 
   beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
 
-  beforeEach(inject(function (_$compile_, _$rootScope_) {
-    $compile = _$compile_;
-    scope = _$rootScope_.$new();
+  beforeEach(function () {
+    inject(function ($injector) {
+      $compile = $injector.get('$compile');
+      scope = $injector.get('$rootScope').$new();
+    });
+
     element = $compile('<ion-header-bar app-header></ion-header-bar>')(scope);
     scope.$digest();
     isolated = element.isolateScope();
     angular.element(document).find('body').append(element); // for rendering css
     newNoteModal = isolated.ctrl.newNoteModal;
-  }));
+    extrasModal = isolated.ctrl.extrasModal;
+  });
+
 
   describe('Create header and add button', function () {
 
@@ -231,5 +237,83 @@ describe('Directive: appHeader', function () {
       expect(searchNote.toggleSearchInput.calledOnce).to.equal(true);
       searchNote.toggleSearchInput.restore();
     });
+  });
+
+  describe('testing extrasModal', function () {
+
+    var modalElement;
+
+    beforeEach(function () {
+      modalElement = extrasModal.$el;
+    });
+
+    describe('Add extrasModal', function () {
+      it('should be an $ionicModal', function () {
+        extrasModal.show();
+        expect(extrasModal.isShown()).to.equal(true);
+        extrasModal.hide();
+        expect(extrasModal.isShown()).to.equal(false);
+        extrasModal.remove();
+      });
+    });
+
+    describe('Show and hide extrasModal', function () {
+      it('should show and hide modal', function () {
+        isolated.ctrl.showModal(extrasModal);
+        expect(extrasModal.isShown()).to.equal(true);
+        isolated.ctrl.hideModal(extrasModal);
+        expect(extrasModal.isShown()).to.equal(false);
+        extrasModal.remove();
+      });
+    });
+
+    describe('Add elements to extrasModal', function () {
+
+      it('should have a modal class', function () {
+        expect(modalElement.find('div')).to.have.class('modal');
+      });
+
+      it('should contain ion-header-bar', function () {
+        var headerBar = modalElement.find('ion-header-bar');
+        expect(headerBar).to.have.class('secondary');
+        expect(headerBar.children('h1')).to.have.class('title');
+        expect(headerBar.children('h1').text())
+          .to.contain('Extras');
+        expect(headerBar.children('button'))
+          .to.have.class('button button-clear button-positive');
+      });
+
+      it('should have Save to Device button', function () {
+        var saveToDeviceButton = modalElement.find('ion-content form div.list button.saveToDeviceButton');
+         expect(saveToDeviceButton.text()).to.equal('Save Notes to simpleNotes.json');
+      });
+
+      it('should have Backup from Device button', function () {
+        var backupFromDeviceButton = modalElement.find('ion-content form div.list button.backupFromDeviceButton');
+         expect(backupFromDeviceButton.text()).to.equal('Backup Notes from simpleNotes.json');
+      });
+
+      it('should have a padding area', function () {
+        var button = modalElement.find('ion-content form div.padding button');
+        expect(button).to.have.attr('type', 'submit');
+        expect(button.text()).to.contain('Done');
+      });
+    });
+
+    // describe('Add tap handler to + button', function () {
+    //   it('should show the modal', function () {
+    //     element.find('button#add-button').click();
+    //     expect(newNoteModal.isShown()).to.equal(true);
+    //     newNoteModal.remove();
+    //   });
+    // });
+
+    // describe('Add tap handler to Cancel button', function () {
+    //   it('should hide the modal', function () {
+    //     modalElement.find('#new-note-modal-cancel-button').click();
+    //     expect(newNoteModal.isShown()).to.equal(false);
+    //     newNoteModal.remove();
+    //   });
+    // });
   });
 });
