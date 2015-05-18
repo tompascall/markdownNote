@@ -3345,6 +3345,42 @@ And the template:
 
 When you tap on the title of the header, the modal pops up.
 
+####11.5.1. Test: Connect Extras modal to header title
+
+```js
+describe('Add tap handler to header title', function () {
+  it('should show the modal', function () {
+    element.find('h1#notes-header').click();
+      expect(extrasModal.isShown()).to.equal(true);
+      extrasModal.remove();
+  });
+});
+
+describe('Add tap handler to Cancel button', function () {
+  it('should hide the modal', function () {
+    element.find('h1#notes-header').click();
+    expect(extrasModal.isShown()).to.equal(true);
+    modalElement.find('#extras-modal-cancel-button').click();
+    expect(extrasModal.isShown()).to.equal(false);
+    newNoteModal.remove();
+  });
+});
+```
+
+####11.5.2. Connect Extras modal to header title
+
+In th appHeader template:
+
+```html
+<h1 id="notes-header" class="title" ng-click="ctrl.showModal(ctrl.extrasModal)">simpleNotes</h1>
+```
+
+And the modal template:
+
+```html
+<button id="extras-modal-cancel-button" class="button button-clear button-positive" ng-click="ctrl.hideModal(ctrl.extrasModal)">Cancel</button>
+```
+
 ###11.6. Create SAVE TO DEVICE logic
 
 I'm Using [spike-file](https://github.com/tompascall/spikeFile) project for logic.
