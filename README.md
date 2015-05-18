@@ -16,7 +16,7 @@ If you are curious about the development work flow, just check out the [**develo
 - You need [Grunt](http://gruntjs.com/) globally: ```$ npm install -g grunt```
 - Follow the [Android]() and [iOS]() platform guides to install required platform dependencies
 - Check out [Ionic Generator documentation](https://github.com/diegonetto/generator-ionic/tree/master/docs)
-- Check out [my blogpost](http://js-workout.tompascall.com/lets-create-hybrid-mobile-apps-with-ionic-framework/) about creating hybrid mobile apps with Ionic framework
+- I recommend checking out [my blogpost](http://js-workout.tompascall.com/lets-create-hybrid-mobile-apps-with-ionic-framework/) about creating hybrid mobile apps with Ionic framework and [this post](http://js-workout.tompascall.com/lets-develop-hybrid-mobile-apps-with-ionic-framework-ii/) about setting up dev framework for developing ionic app with TDD.
 
 ##Build the app
 
