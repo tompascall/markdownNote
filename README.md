@@ -2,7 +2,9 @@
 
 In this project we'll develop a hybrid mobile app, using test-driven development approach, developing in [Ionic Framework](ionicframework.com).
 
-If you are curious about the developing work flow, just check out the [**development.log.md**](https://github.com/tompascall/simpleNote/blob/master/development.log.md) file for the details.
+The app is a note manager. You can **store** your notes locally, you can **update** the content of notes and you can **filter** them by any keyword. You can also use **markdown language** to style and structure the body of your notes. As regards markdown editing we use the [Pagedown](https://code.google.com/p/pagedown/wiki/PageDown) library and [Pagedown-Extra plugin](https://github.com/jmcmanus/pagedown-extra).
+
+If you are curious about the development work flow, just check out the [**development.log.md**](https://github.com/tompascall/simpleNote/blob/master/development.log.md) file for the details.
 
 ##Prerequisites of building the app
 
@@ -14,7 +16,7 @@ If you are curious about the developing work flow, just check out the [**develop
 - You need [Grunt](http://gruntjs.com/) globally: ```$ npm install -g grunt```
 - Follow the [Android]() and [iOS]() platform guides to install required platform dependencies
 - Check out [Ionic Generator documentation](https://github.com/diegonetto/generator-ionic/tree/master/docs)
-- Check out [my blogpost](http://js-workout.tompascall.com/lets-create-hybrid-mobile-apps-with-ionic-framework/) about creating hybrid mobile apps with Ionic framework
+- I recommend checking out [my blogpost](http://js-workout.tompascall.com/lets-create-hybrid-mobile-apps-with-ionic-framework/) about creating hybrid mobile apps with Ionic framework and [this post](http://js-workout.tompascall.com/lets-develop-hybrid-mobile-apps-with-ionic-framework-ii/) about setting up dev framework for developing ionic app with TDD.
 
 ##Build the app
 
