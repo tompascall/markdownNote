@@ -3198,3 +3198,52 @@ controller.handleLinkClicked = function (event) {
   }
 };
 ```
+
+##11. STORY: Export notes
+
+###11.1. USER STORY
+
+>AS I customer I WANT to be able to export my notes to JSON SO THAT I can move the data to an other device on android platform.
+
+###11.2. ACCEPTANCE CRITERIA
+
+GIVEN I am a user
+WHEN I tap on the title in the header
+THEN I can see a pop up modal called Extras
+
+GIVEN I am a user
+WHEN I tap on the title in the header
+THEN I can see a SAVE TO DEVICE button and a BACKUP FROM DEVICE button
+
+GIVEN I am a user
+WHEN I push the SAVE TO DEVICE button
+THEN I can see if the writing is succeeded or failed
+
+GIVEN I am a user
+WHEN I push the BACKUP FROM DEVICE button
+THEN I can see a warning message if I really want to overwrite data
+
+GIVEN I am a user
+WHEN I push the BACKUP FROM DEVICE button
+THEN I can see the updated notes
+
+###11.3. TODOS
+
+- Create Extras modal 
+- Connect Extras modal to header title
+- Create SAVE TO DEVICE logic
+- Create BACKUP FROM DEVICE logic
+
+###11.4. Create Extras modal 
+
+This modal pops up when the user taps the header title. It contains two buttons: 1. `Save to device` and `Backup from device` button. It also as a `Cancel` and a `Done` button. It is similar to `addNotes` and `editNotes` modal.
+
+###11.5. Connect Extras modal to header title
+
+When you tap on the title of the header, the modal pops up.
+
+###11.6. Create SAVE TO DEVICE logic
+
+I'm Using [spike-file](https://github.com/tompascall/spikeFile) project for logic.
+
+###11.7. Create BACKUP FROM DEVICE logic
