@@ -300,20 +300,22 @@ describe('Directive: appHeader', function () {
       });
     });
 
-    // describe('Add tap handler to + button', function () {
-    //   it('should show the modal', function () {
-    //     element.find('button#add-button').click();
-    //     expect(newNoteModal.isShown()).to.equal(true);
-    //     newNoteModal.remove();
-    //   });
-    // });
+    describe('Add tap handler to header title', function () {
+      it('should show the modal', function () {
+        element.find('h1#notes-header').click();
+          expect(extrasModal.isShown()).to.equal(true);
+          extrasModal.remove();
+      });
+    });
 
-    // describe('Add tap handler to Cancel button', function () {
-    //   it('should hide the modal', function () {
-    //     modalElement.find('#new-note-modal-cancel-button').click();
-    //     expect(newNoteModal.isShown()).to.equal(false);
-    //     newNoteModal.remove();
-    //   });
-    // });
+    describe('Add tap handler to Cancel button', function () {
+      it('should hide the modal', function () {
+        element.find('h1#notes-header').click();
+        expect(extrasModal.isShown()).to.equal(true);
+        modalElement.find('#extras-modal-cancel-button').click();
+        expect(extrasModal.isShown()).to.equal(false);
+        newNoteModal.remove();
+      });
+    });
   });
 });
