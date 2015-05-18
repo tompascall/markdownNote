@@ -3238,6 +3238,109 @@ THEN I can see the updated notes
 
 This modal pops up when the user taps the header title. It contains two buttons: 1. `Save to device` and `Backup from device` button. It also as a `Cancel` and a `Done` button. It is similar to `addNotes` and `editNotes` modal.
 
+####11.4.1. Test: Create Extras modal in appHeader directive
+
+```js
+describe('testing extrasModal', function () {
+
+    var modalElement;
+
+    beforeEach(function () {
+      modalElement = extrasModal.$el;
+    });
+
+    describe('Add extrasModal', function () {
+      it('should be an $ionicModal', function () {
+        extrasModal.show();
+        expect(extrasModal.isShown()).to.equal(true);
+        extrasModal.hide();
+        expect(extrasModal.isShown()).to.equal(false);
+        extrasModal.remove();
+      });
+    });
+
+    describe('Show and hide extrasModal', function () {
+      it('should show and hide modal', function () {
+        isolated.ctrl.showModal(extrasModal);
+        expect(extrasModal.isShown()).to.equal(true);
+        isolated.ctrl.hideModal(extrasModal);
+        expect(extrasModal.isShown()).to.equal(false);
+        extrasModal.remove();
+      });
+    });
+
+    describe('Add elements to extrasModal', function () {
+
+      it('should have a modal class', function () {
+        expect(modalElement.find('div')).to.have.class('modal');
+      });
+
+      it('should contain ion-header-bar', function () {
+        var headerBar = modalElement.find('ion-header-bar');
+        expect(headerBar).to.have.class('secondary');
+        expect(headerBar.children('h1')).to.have.class('title');
+        expect(headerBar.children('h1').text())
+          .to.contain('Extras');
+        expect(headerBar.children('button'))
+          .to.have.class('button button-clear button-positive');
+      });
+
+      it('should have Save to Device button', function () {
+        var saveToDeviceButton = modalElement.find('ion-content form div.list button.saveToDeviceButton');
+         expect(saveToDeviceButton.text()).to.equal('Save Notes to simpleNotes.json');
+      });
+
+      it('should have Backup from Device button', function () {
+        var backupFromDeviceButton = modalElement.find('ion-content form div.list button.backupFromDeviceButton');
+         expect(backupFromDeviceButton.text()).to.equal('Backup Notes from simpleNotes.json');
+      });
+
+      it('should have a padding area', function () {
+        var button = modalElement.find('ion-content form div.padding button');
+        expect(button).to.have.attr('type', 'submit');
+        expect(button.text()).to.contain('Done');
+      });
+    });
+  });
+```
+
+####11.4.2. Create Extras modal in appHeader directive
+
+```js
+$ionicModal.fromTemplateUrl('scripts/modal/extras-modal.html', {
+    scope: $scope
+  })
+.then(function (modal) {
+  controller.extrasModal = modal;
+});
+```
+
+And the template:
+
+```html
+<!-- extras-modal.html -->
+
+<div class="modal">
+  <!-- Modal header bar -->
+  <ion-header-bar class="secondary" align-title="center">
+    <h1 class="title">Extras</h1>
+    <button id="extras-modal-cancel-button" class="button button-clear button-positive">Cancel</button>
+  </ion-header-bar>
+  <!-- Modal content area -->
+  <ion-content>
+    <form name="extrasModalForm">
+      <div class="list">
+        <button class="item saveToDeviceButton button button-block button-positive">Save Notes to simpleNotes.json</button>
+        <button class="item backupFromDeviceButton button button-block button-positive">Backup Notes from simpleNotes.json</button>
+      </div>
+      <div class="padding">
+        <button id="doneExtrasButton" type="submit" class="button button-block button-positive">Done</button>
+      </div>
+    </form>
+  </ion-content>
+</div>
+```
+
 ###11.5. Connect Extras modal to header title
 
 When you tap on the title of the header, the modal pops up.
