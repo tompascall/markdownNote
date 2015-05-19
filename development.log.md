@@ -3385,4 +3385,190 @@ And the modal template:
 
 I'm Using [spike-file](https://github.com/tompascall/spikeFile) project for logic.
 
+####11.6.1. Test: Create fileService
+
+```js
+// fileService.srv.spec.js
+
+'use strict';
+
+var device;
+var cordova = window.cordova || {};
+cordova.file = { // mocking cordova global variables
+  externalRootDirectory: 'externalRootDirectory',
+  applicationStorageDirectory: 'applicationStorageDirectory'
+};
+
+describe('Service: fileService', function () {
+  var fileService;
+
+  beforeEach(function () {
+    module('simpleNote');
+    module('templates');
+  });
+
+  beforeEach(inject(function ($injector) {
+    fileService = $injector.get('fileService');
+  }));
+
+  describe('Check fileService initialization', function () {
+
+    beforeEach(function () {
+      device = {};
+    });
+
+    it('deviceReady should be false at the beginning', function () {
+      expect(fileService.deviceReady).to.equal(false);
+    });
+
+    it('should set deviceReady to true', function () {
+      fileService.setDeviceReady();
+      expect(fileService.deviceReady).to.equal(true);
+    });
+
+    it('should set platform using cordova device plugin', function () {
+      device.platform = 'Android';
+      fileService.setPlatform();
+      expect(fileService.platform).to.equal('Android');
+
+      device.platform = 'iOS';
+      fileService.setPlatform();
+      expect(fileService.platform).to.equal('iOS');
+
+      device.platform = 'notSupported';
+      expect(fileService.setPlatform).to.throw(Error);
+    });
+
+    it('should set rootDirectory', function () {
+
+      fileService.platform = 'Android';
+      fileService.setRootDirectory();
+      expect(fileService.rootDirectory).to.equal('externalRootDirectory');
+
+      fileService.platform = 'iOS';
+      fileService.setRootDirectory();
+      expect(fileService.rootDirectory).to.equal('applicationStorageDirectory');
+    });
+
+    it('should set file path', function () {
+      fileService.platform = 'Android';
+      fileService.setFilePath();
+      expect(fileService.filePath).to.equal('download/simpleNotes.json');
+
+      fileService.platform = 'iOS';
+      fileService.setFilePath();
+      expect(fileService.filePath).to.equal('Library/simpleNotes.json');
+    });
+
+    it('should set up fileSevice', function () {
+      device.platform = 'Android';
+      sinon.spy(fileService, 'setDeviceReady');
+      sinon.spy(fileService, 'setPlatform');
+      sinon.spy(fileService, 'setRootDirectory');
+      sinon.spy(fileService, 'setFilePath');
+
+      fileService.setupFileService();
+
+      expect(fileService.setDeviceReady.called).to.equal(true);
+      expect(fileService.setPlatform.called).to.equal(true);
+      expect(fileService.setRootDirectory.called).to.equal(true);
+      expect(fileService.setFilePath.called).to.equal(true);
+
+      fileService.setDeviceReady.restore();
+      fileService.setPlatform.restore();
+      fileService.setRootDirectory.restore();
+      fileService.setFilePath.restore();
+    });
+
+    it('should call setupFileService when device is ready', function () {
+      device.platform = 'Android';
+      sinon.spy(fileService, 'setDeviceReady');
+      sinon.spy(fileService, 'setPlatform');
+      sinon.spy(fileService, 'setRootDirectory');
+      sinon.spy(fileService, 'setFilePath');
+
+      $(document).trigger('deviceready');// cordova event
+      // **NOTE** I could't spy setupFileService with sinon
+
+      expect(fileService.setDeviceReady.called).to.equal(true);
+      expect(fileService.setPlatform.called).to.equal(true);
+      expect(fileService.setRootDirectory.called).to.equal(true);
+      expect(fileService.setFilePath.called).to.equal(true);
+
+      fileService.setDeviceReady.restore();
+      fileService.setPlatform.restore();
+      fileService.setRootDirectory.restore();
+      fileService.setFilePath.restore();
+    });
+  });
+});
+```
+
+
+####11.6.2. Create fileService
+
+```js
+// fileService.srv.js
+
+'use strict';
+
+function fileService () {
+  var fileService = {
+    deviceReady: false,
+    supportedPlatforms: ['Android', 'iOS']
+  };
+
+  fileService.setDeviceReady = function () {
+    fileService.deviceReady = true;
+  };
+
+  fileService.setPlatform = function () {
+    if (fileService.supportedPlatforms.indexOf(device.platform) !== -1) {
+      fileService.platform = device.platform;
+      return;
+    }
+    throw new Error(device.platform + ' platform is not supported');
+  };
+
+  fileService.setRootDirectory = function () {
+    switch (fileService.platform) {
+      case 'Android':
+        fileService.rootDirectory = cordova.file.externalRootDirectory;
+        break;
+      case 'iOS':
+        fileService.rootDirectory = cordova.file.applicationStorageDirectory;
+        break;
+      default:
+        fileService.rootDirectory = 'platform not supported'
+    }
+  };
+
+  fileService.setFilePath = function () {
+    switch (fileService.platform) {
+      case 'Android':
+        fileService.filePath = 'download/simpleNotes.json';
+        break;
+      case 'iOS':
+        fileService.filePath = 'Library/simpleNotes.json';
+        break;
+      default:
+        fileService.filePath = 'platform not supported'
+    }
+  };
+
+  fileService.setupFileService = function () {
+    fileService.setDeviceReady();
+    fileService.setPlatform();
+    fileService.setRootDirectory();
+    fileService.setFilePath();
+  };
+
+  $(document).on('deviceready', fileService.setupFileService);
+
+  return fileService;
+}
+
+angular.module('simpleNote').factory('fileService', fileService);
+```
+
 ###11.7. Create BACKUP FROM DEVICE logic
