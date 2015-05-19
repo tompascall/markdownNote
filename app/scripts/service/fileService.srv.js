@@ -7,6 +7,14 @@ function fileService () {
     deviceReady: false
   };
 
+  fileService.setDeviceReady = function () {
+    fileService.deviceReady = true;
+  };
+
+  fileService.setPlatform = function () {
+    fileService.platform = device.platform;
+  };
+
   return fileService;
 }
 
