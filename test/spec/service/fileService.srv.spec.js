@@ -51,21 +51,21 @@ describe('Service: fileService', function () {
 
     it('should set rootDirectory', function () {
 
-      fileService.platform = 'Android';
+      device.platform = 'Android';
       fileService.setRootDirectory();
       expect(fileService.rootDirectory).to.equal('externalRootDirectory');
 
-      fileService.platform = 'iOS';
+      device.platform = 'iOS';
       fileService.setRootDirectory();
       expect(fileService.rootDirectory).to.equal('applicationStorageDirectory');
     });
 
     it('should set file path', function () {
-      fileService.platform = 'Android';
+      device.platform = 'Android';
       fileService.setFilePath();
       expect(fileService.filePath).to.equal('download/simpleNotes.json');
 
-      fileService.platform = 'iOS';
+      device.platform = 'iOS';
       fileService.setFilePath();
       expect(fileService.filePath).to.equal('Library/simpleNotes.json');
     });

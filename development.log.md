@@ -3571,4 +3571,21 @@ function fileService () {
 angular.module('simpleNote').factory('fileService', fileService);
 ```
 
-###11.7. Create BACKUP FROM DEVICE logic
+###11.7. Update fileService regards adding ngCordova
+
+**NOTE** Add ngCordova and ngCordovaMocks to project:
+
+Add file paths to karma task in Gruntfile.js:
+
+```js
+'<%= yeoman.app %>/bower_components/ngCordova/dist/ng-cordova.js',
+```
+
+
+
+###11.8. Create BACKUP FROM DEVICE logic
+
+
+
+
+

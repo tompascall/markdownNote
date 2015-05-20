@@ -5,7 +5,16 @@
 function fileService () {
   var fileService = {
     deviceReady: false,
-    supportedPlatforms: ['Android', 'iOS']
+    supportedPlatforms: {
+      'Android' : {
+        rootDirectory: cordova.file.externalRootDirectory,
+        filePath: 'download/simpleNotes.json'
+      },
+      'iOS': {
+        rootDirectory: cordova.file.applicationStorageDirectory,
+        filePath: 'Library/simpleNotes.json'
+      }
+    }
   };
 
   fileService.setDeviceReady = function () {
@@ -13,7 +22,8 @@ function fileService () {
   };
 
   fileService.setPlatform = function () {
-    if (fileService.supportedPlatforms.indexOf(device.platform) !== -1) {
+    var platform = fileService.supportedPlatforms[device.platform]
+    if (platform) {
       fileService.platform = device.platform;
       return;
     }
@@ -21,29 +31,21 @@ function fileService () {
   };
 
   fileService.setRootDirectory = function () {
-    switch (fileService.platform) {
-      case 'Android':
-        fileService.rootDirectory = cordova.file.externalRootDirectory;
-        break;
-      case 'iOS':
-        fileService.rootDirectory = cordova.file.applicationStorageDirectory;
-        break;
-      default:
-        fileService.rootDirectory = 'platform not supported'
+    var platform = fileService.supportedPlatforms[device.platform];
+    if (platform) {
+      fileService.rootDirectory = platform.rootDirectory;
+      return;
     }
+    throw new Error(device.platform + ' platform is not supported');
   };
 
   fileService.setFilePath = function () {
-    switch (fileService.platform) {
-      case 'Android':
-        fileService.filePath = 'download/simpleNotes.json';
-        break;
-      case 'iOS':
-        fileService.filePath = 'Library/simpleNotes.json';
-        break;
-      default:
-        fileService.filePath = 'platform not supported'
+    var platform = fileService.supportedPlatforms[device.platform];
+    if (platform) {
+      fileService.filePath = platform.filePath;
+      return;
     }
+    throw new Error(device.platform + ' platform is not supported');
   };
 
   fileService.setupFileService = function () {
