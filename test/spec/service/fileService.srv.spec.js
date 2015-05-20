@@ -37,6 +37,7 @@ describe('Service: fileService', function () {
     });
 
     it('should set platform using cordova device plugin', function () {
+      fileService.setSupportedPlatforms();
       device.platform = 'Android';
       fileService.setPlatform();
       expect(fileService.platform).to.equal('Android');
@@ -50,7 +51,7 @@ describe('Service: fileService', function () {
     });
 
     it('should set rootDirectory', function () {
-
+      fileService.setSupportedPlatforms();
       device.platform = 'Android';
       fileService.setRootDirectory();
       expect(fileService.rootDirectory).to.equal('externalRootDirectory');
@@ -61,6 +62,7 @@ describe('Service: fileService', function () {
     });
 
     it('should set file path', function () {
+      fileService.setSupportedPlatforms();
       device.platform = 'Android';
       fileService.setFilePath();
       expect(fileService.filePath).to.equal('download/simpleNotes.json');
@@ -73,6 +75,7 @@ describe('Service: fileService', function () {
     it('should set up fileSevice', function () {
       device.platform = 'Android';
       sinon.spy(fileService, 'setDeviceReady');
+      sinon.spy(fileService, 'setSupportedPlatforms');
       sinon.spy(fileService, 'setPlatform');
       sinon.spy(fileService, 'setRootDirectory');
       sinon.spy(fileService, 'setFilePath');
@@ -80,11 +83,13 @@ describe('Service: fileService', function () {
       fileService.setupFileService();
 
       expect(fileService.setDeviceReady.called).to.equal(true);
+      expect(fileService.setSupportedPlatforms.called).to.equal(true);
       expect(fileService.setPlatform.called).to.equal(true);
       expect(fileService.setRootDirectory.called).to.equal(true);
       expect(fileService.setFilePath.called).to.equal(true);
 
       fileService.setDeviceReady.restore();
+      fileService.setSupportedPlatforms.restore();
       fileService.setPlatform.restore();
       fileService.setRootDirectory.restore();
       fileService.setFilePath.restore();
@@ -93,6 +98,7 @@ describe('Service: fileService', function () {
     it('should call setupFileService when device is ready', function () {
       device.platform = 'Android';
       sinon.spy(fileService, 'setDeviceReady');
+      sinon.spy(fileService, 'setSupportedPlatforms');
       sinon.spy(fileService, 'setPlatform');
       sinon.spy(fileService, 'setRootDirectory');
       sinon.spy(fileService, 'setFilePath');
@@ -100,11 +106,13 @@ describe('Service: fileService', function () {
       $(document).trigger('deviceready');// cordova event
 
       expect(fileService.setDeviceReady.called).to.equal(true);
+      expect(fileService.setSupportedPlatforms.called).to.equal(true);
       expect(fileService.setPlatform.called).to.equal(true);
       expect(fileService.setRootDirectory.called).to.equal(true);
       expect(fileService.setFilePath.called).to.equal(true);
 
       fileService.setDeviceReady.restore();
+      fileService.setSupportedPlatforms.restore();
       fileService.setPlatform.restore();
       fileService.setRootDirectory.restore();
       fileService.setFilePath.restore();

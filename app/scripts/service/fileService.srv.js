@@ -4,8 +4,15 @@
 
 function fileService () {
   var fileService = {
-    deviceReady: false,
-    supportedPlatforms: {
+    deviceReady: false
+  };
+
+  fileService.setDeviceReady = function () {
+    fileService.deviceReady = true;
+  };
+
+  fileService.setSupportedPlatforms = function () {
+    fileService.supportedPlatforms = {
       'Android' : {
         rootDirectory: cordova.file.externalRootDirectory,
         filePath: 'download/simpleNotes.json'
@@ -15,11 +22,7 @@ function fileService () {
         filePath: 'Library/simpleNotes.json'
       }
     }
-  };
-
-  fileService.setDeviceReady = function () {
-    fileService.deviceReady = true;
-  };
+  }
 
   fileService.setPlatform = function () {
     var platform = fileService.supportedPlatforms[device.platform]
@@ -50,6 +53,7 @@ function fileService () {
 
   fileService.setupFileService = function () {
     fileService.setDeviceReady();
+    fileService.setSupportedPlatforms();
     fileService.setPlatform();
     fileService.setRootDirectory();
     fileService.setFilePath();
