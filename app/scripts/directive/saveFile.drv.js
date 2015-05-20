@@ -10,7 +10,6 @@ function saveFile (fileService) {
 
     /*jshint validthis: true */
     controller.saveText = function () {
-
     };
   }
 
