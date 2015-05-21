@@ -57,10 +57,14 @@ function fileService () {
     fileService.setPlatform();
     fileService.setRootDirectory();
     fileService.setFilePath();
+    // console.log('deviceready: ' + fileService.deviceReady);
+    // console.log('platform: ' + fileService.platform);
+    // console.log('root: ' + fileService.rootDirectory);
+    // console.log('filePath: ' + fileService.filePath);
   };
 
   $(document).on('deviceready', fileService.setupFileService);
-
+  console.log('in fileService');
   return fileService;
 }
 

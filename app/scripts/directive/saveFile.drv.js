@@ -39,7 +39,13 @@ function saveFile (fileService) {
     };
 
     controller.saveText = function () {
+      console.log('in saveText');
       if (fileService.deviceReady) {
+        // console.log('in saveText, calling onDeviceReady');
+        // console.log('deviceready: ' + fileService.deviceReady);
+        // console.log('platform: ' + fileService.platform);
+        // console.log('root: ' + fileService.rootDirectory);
+        // console.log('filePath: ' + fileService.filePath);
         controller.onDeviceReady(fileService.rootDirectory);
       }
     };
