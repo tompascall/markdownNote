@@ -290,7 +290,7 @@ describe('Directive: appHeader', function () {
 
       it('should have Backup from Device button', function () {
         var backupFromDeviceButton = modalElement.find('ion-content form div.list button.backupFromDeviceButton');
-         expect(backupFromDeviceButton.text()).to.equal('Backup Notes from simpleNotes.json');
+         expect(backupFromDeviceButton.text()).to.equal('Backup notes from simpleNotes.json');
       });
 
       it('should have a padding area', function () {

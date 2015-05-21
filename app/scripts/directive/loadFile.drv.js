@@ -1,10 +1,10 @@
-// saveFile.drv.js
+// loadFile.drv.js
 
 'use strict';
 
-function saveFile (fileService) {
+function loadFile (fileService) {
 
-  function saveFileController () {
+  function loadFileController ($scope) {
 
     // only testing purpose to trigger deviceready event, must be delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //$(document).trigger('deviceready');
@@ -16,29 +16,30 @@ function saveFile (fileService) {
       console.log('ERROR: ' + error.code);
     };
 
-    controller.gotFileWriter = function (writer) {
-      writer.write('some sample text from simpleNotes.json, ' +
-        'saved to ' + fileService.filePath + ' at ' + new Date().toString());
-
-      writer.onwrite = function(evt) {
-        console.log('write success');
+    controller.readAsText = function (file) {
+      var reader = new FileReader();
+      reader.onloadend = function (evt) {
+        $scope.$apply(function () {
+          controller.loadedText = evt.target.result;
+        });
       };
+      reader.readAsText(file);
     };
 
     controller.gotFileEntry = function (fileEntry) {
-      fileEntry.createWriter(controller.gotFileWriter, controller.fail);
+      fileEntry.file(controller.readAsText, controller.fail);
     };
 
     controller.onResolveSuccess = function (directoryEntry) {
       directoryEntry.getFile(fileService.filePath,
-        {create: true, exclusive: false}, controller.gotFileEntry, controller.fail);
+        null, controller.gotFileEntry, controller.fail);
     };
 
     controller.onDeviceReady = function (rootDirectory) {
       window.resolveLocalFileSystemURL(rootDirectory, controller.onResolveSuccess, controller.fail);
     };
 
-    controller.saveText = function () {
+    controller.loadText = function () {
       if (fileService.deviceReady) {
         controller.onDeviceReady(fileService.rootDirectory);
       }
@@ -47,12 +48,12 @@ function saveFile (fileService) {
 
   return {
     restrict: 'E',
-    controller: saveFileController,
+    controller: loadFileController,
     controllerAs: 'ctrl',
     scope: {},
     bindToController: true,
-    templateUrl: 'scripts/directive/save-file.drv.html'
+    templateUrl: 'scripts/directive/load-file.drv.html'
   };
 }
 
-angular.module('simpleNote').directive('saveFile', saveFile);
+angular.module('simpleNote').directive('loadFile', loadFile);

@@ -21,11 +21,11 @@ function fileService () {
         rootDirectory: cordova.file.applicationStorageDirectory,
         filePath: 'Library/simpleNotes.json'
       }
-    }
-  }
+    };
+  };
 
   fileService.setPlatform = function () {
-    var platform = fileService.supportedPlatforms[device.platform]
+    var platform = fileService.supportedPlatforms[device.platform];
     if (platform) {
       fileService.platform = device.platform;
       return;

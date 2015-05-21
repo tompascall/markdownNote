@@ -3571,20 +3571,211 @@ function fileService () {
 angular.module('simpleNote').factory('fileService', fileService);
 ```
 
-###11.7. Update fileService regards adding ngCordova
 
-**NOTE** Add ngCordova and ngCordovaMocks to project:
+###11.7. Create BACKUP FROM DEVICE logic
 
-Add file paths to karma task in Gruntfile.js:
+####11.7.1. Test: Create saveFile directive
 
 ```js
-'<%= yeoman.app %>/bower_components/ngCordova/dist/ng-cordova.js',
+// saveFile.drv.spec.js
+
+'use strict';
+
+describe('Directive: saveFile', function () {
+  var $compile;
+  var scope;
+  var element;
+  var isolated;
+  var fileService;
+
+  beforeEach(module('simpleNote'));
+
+  beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
+
+  beforeEach(function () {
+    inject(function ($injector) {
+      $compile = $injector.get('$compile');
+      scope = $injector.get('$rootScope').$new();
+      fileService = $injector.get('fileService');
+    });
+
+    element = $compile('<save-file></save-file>')(scope);
+    scope.$digest();
+    isolated = element.isolateScope();
+    angular.element(document).find('body').append(element); // for rendering css
+  });
+
+  describe('Test element components', function () {
+    var backupDeviceReady;
+
+    it('should call saveText', function (done) {
+      sinon.spy(isolated.ctrl, 'saveText');
+      element.find('button.saveToDeviceButton').click();
+      setTimeout(function () {
+        expect(isolated.ctrl.saveText.called).to.equal(true);
+        isolated.ctrl.saveText.restore();
+        done();
+      },0);
+    });
+
+    it('should call onDeviceReady() if device is ready', function () {
+      fileService.deviceReady = false;
+      sinon.stub(isolated.ctrl, 'onDeviceReady');
+      isolated.ctrl.saveText();
+      expect(isolated.ctrl.onDeviceReady.called).to.equal(false);
+      fileService.deviceReady = true;
+      isolated.ctrl.saveText();
+      expect(isolated.ctrl.onDeviceReady.called).to.equal(true);
+      isolated.ctrl.onDeviceReady.restore();
+    });
+
+    it('should call onDeviceReady with fileService.rootDirectory', function () {
+      fileService.deviceReady = true;
+      var mock = sinon.mock(isolated.ctrl);
+      fileService.rootDirectory = 'root';
+      mock.expects('onDeviceReady').withExactArgs('root');
+      isolated.ctrl.saveText();
+      expect(mock.verify()).to.equal(true);
+    });
+
+    it('onDeviceReady should call window.resolveLocalFileSystemURL with ' +
+      'rootDirectory, controller.onResolveSuccess, controller.fail', function () {
+        window.resolveLocalFileSystemURL = function () {}; // mock this function
+        var mock = sinon.mock(window);
+        mock.expects('resolveLocalFileSystemURL').withExactArgs('root',
+          isolated.ctrl.onResolveSuccess, isolated.ctrl.fail);
+        isolated.ctrl.onDeviceReady('root');
+        expect(mock.verify()).to.equal(true);
+        window.resolveLocalFileSystemURL = undefined;
+    });
+
+    it('onResolveSuccess should call  directoryEntry.getFile with ' +
+      'fileService.filePath, {create: true, exclusive: false}, ' +
+      'controller.gotFileEntry, controller.fail', function () {
+        var directoryEntry = { // mock object
+          getFile: function () {}
+        };
+        var mock = sinon.mock(directoryEntry);
+        mock.expects('getFile').withExactArgs(fileService.filePath,
+          {create: true, exclusive: false}, isolated.ctrl.gotFileEntry,
+          isolated.ctrl.fail);
+        isolated.ctrl.onResolveSuccess(directoryEntry);
+        expect(mock.verify()).to.equal(true);
+    });
+
+    it('gotFileEntry should call fileEntry.createWriter with' +
+      'controller.gotFileWriter, controller.fail', function () {
+      var fileEntry = {
+        createWriter: function () {} // mock
+      };
+      var mock = sinon.mock(fileEntry);
+      mock.expects('createWriter').withExactArgs(isolated.ctrl.gotFileWriter,
+        isolated.ctrl.fail);
+      isolated.ctrl.gotFileEntry(fileEntry);
+      expect(mock.verify()).to.equal(true);
+    });
+
+    it('gotFileWriter should call  writer.write', function () {
+      var writer = {
+        write: function () {}
+      };
+      var mock = sinon.mock(writer);
+      mock.expects('write').once();
+      isolated.ctrl.gotFileWriter(writer);
+      expect(mock.verify()).to.equal(true);
+    });
+
+    it('controller.fail should log error', function () {
+      var error = {
+        code: 42
+      };
+      var mock = sinon.mock(window.console);
+      mock.expects('log').withArgs('ERROR: ' + error.code);
+      isolated.ctrl.fail(error);
+      expect(mock.verify()).to.equal(true);
+    });
+  });
+});
+
+
 ```
 
+####11.7.2. Create saveFile directive
 
+```js
+// saveFile.drv.js
 
-###11.8. Create BACKUP FROM DEVICE logic
+'use strict';
 
+function saveFile (fileService) {
+
+  function saveFileController () {
+
+    // only testing purpose to trigger deviceready event, must be delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //$(document).trigger('deviceready');
+
+   /*jshint validthis: true */
+    var controller = this;
+
+    controller.fail = function (error) {
+      console.log('ERROR: ' + error.code);
+    };
+
+    controller.gotFileWriter = function (writer) {
+      writer.write('some sample text from simpleNotes.json, ' +
+        'saved to ' + fileService.filePath + ' at ' + new Date().toString());
+
+      writer.onwrite = function(evt) {
+        console.log('write success');
+      };
+    };
+
+    controller.gotFileEntry = function (fileEntry) {
+      fileEntry.createWriter(controller.gotFileWriter, controller.fail);
+    };
+
+    controller.onResolveSuccess = function (directoryEntry) {
+      directoryEntry.getFile(fileService.filePath,
+        {create: true, exclusive: false}, controller.gotFileEntry, controller.fail);
+    };
+
+    controller.onDeviceReady = function (rootDirectory) {
+      window.resolveLocalFileSystemURL(rootDirectory, controller.onResolveSuccess, controller.fail);
+    };
+
+    controller.saveText = function () {
+      if (fileService.deviceReady) {
+        controller.onDeviceReady(fileService.rootDirectory);
+      }
+    };
+  }
+
+  return {
+    restrict: 'E',
+    controller: saveFileController,
+    controllerAs: 'ctrl',
+    scope: {},
+    bindToController: true,
+    templateUrl: 'scripts/directive/save-file.drv.html'
+  };
+}
+
+angular.module('simpleNote').directive('saveFile', saveFile);
+```
+
+And the template:
+
+```html
+<!-- save-file.drv.html -->
+
+<button class="item saveToDeviceButton button button-full button-balanced" ng-click="ctrl.saveText()">Save Notes to simpleNotes.json</button>
+```
+
+###11.8. Create backup from device logic
+
+####11.8.1. Test: Create loadFile directive
+
+####11.8.2. Create loadFile directive
 
 
 
