@@ -4,42 +4,16 @@
 
 function saveFile (fileService) {
 
-
   function saveFileController () {
 
-    // function onDeviceReady (rootDirectory) {
-    //   window.resolveLocalFileSystemURL(rootDirectory, onResolveSuccess, fail);
-    // }
-
-    // function onResolveSuccess (directoryEntry) {
-    //   directoryEntry.getFile(fileService.filePath, {create: true, exclusive: false}, gotFileEntry, fail);
-    // }
-
-    // function gotFileEntry (fileEntry) {
-    //   fileEntry.createWriter(gotFileWriter, fail);
-    // }
-
-    // function gotFileWriter (writer) {
-    //   writer.write('some sample text from simpleNotes.json, ' +
-    //     'saved to ' + fileService.filePath + ' at ' + new Date().toString());
-
-    //   writer.onwrite = function(evt) {
-    //     console.log("write success");
-    //   };
-    // }
-
-    // function fail(error) {
-    //   console.log('spikeCordovaFile: ERROR: ' + error.code);
-    // }
-
-    // only testing purpose, must be del !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // only testing purpose to trigger deviceready event, must be delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //$(document).trigger('deviceready');
 
    /*jshint validthis: true */
     var controller = this;
 
     controller.fail = function (error) {
-      console.log('spikeCordovaFile: ERROR: ' + error.code);
+      console.log('ERROR: ' + error.code);
     };
 
     controller.gotFileWriter = function (writer) {
@@ -65,14 +39,7 @@ function saveFile (fileService) {
     };
 
     controller.saveText = function () {
-      if (fileService.deviceready) {
-        controller.onDeviceReady(fileService.rootDirectory);
-      }
-    };
-
-    controller.saveText = function () {
       if (fileService.deviceReady) {
-        console.log('save button clicked, device is ready');
         controller.onDeviceReady(fileService.rootDirectory);
       }
     };

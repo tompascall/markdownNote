@@ -52,15 +52,11 @@ function fileService () {
   };
 
   fileService.setupFileService = function () {
-    console.log('in setupFileService, device is ready');
     fileService.setDeviceReady();
     fileService.setSupportedPlatforms();
     fileService.setPlatform();
     fileService.setRootDirectory();
     fileService.setFilePath();
-    console.log('platform: ' + fileService.platform);
-    console.log('rootDirectory: ' + fileService.rootDirectory);
-    console.log('filePath: ' + fileService.filePath);
   };
 
   $(document).on('deviceready', fileService.setupFileService);
