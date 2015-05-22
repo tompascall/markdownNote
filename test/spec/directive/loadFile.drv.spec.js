@@ -8,6 +8,7 @@ describe('Directive: loadFile', function () {
   var element;
   var isolated;
   var fileService;
+  var noteData;
 
   beforeEach(module('simpleNote'));
 
@@ -18,6 +19,7 @@ describe('Directive: loadFile', function () {
       $compile = $injector.get('$compile');
       scope = $injector.get('$rootScope').$new();
       fileService = $injector.get('fileService');
+      noteData = $injector.get('noteData');
     });
 
     element = $compile('<load-file></load-file>')(scope);
@@ -110,24 +112,24 @@ describe('Directive: loadFile', function () {
 
     it('readAsText method of FileReader instance should call ' +
       'onloadend method, and the latter one should call ' +
-      'noteData.backupNotesFromBackupData(backupData)', function () {
+      'noteData.backupNotesFromBackupData(backupData) method', function () {
 
       window.FileReader = function () {};
 
+      var evt = {
+        target: {
+          result: 'text from file'
+        }
+      };
+
       window.FileReader.prototype = {
-        onloadend: function () {},
+        onloadend: function () {}, // it will be overwritten by the instance
         readAsText: function () {
-          var evt = {
-            target: {
-              result: 'text from file'
-            }
-          };
-          this.onloadend(evt); // it will be overwrite by the instance
+          this.onloadend(evt);
         }
       };
 
       var file = {};
-      //var mock = sinon.mock(window.FileReader.prototype);
       var mock = sinon.mock(noteData);
       mock.expects('backupNotesFromBackupData').withExactArgs(evt.target.result);
       isolated.ctrl.readAsText(file);

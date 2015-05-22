@@ -2,7 +2,7 @@
 
 'use strict';
 
-function loadFile (fileService) {
+function loadFile (fileService, noteData) {
 
   function loadFileController ($scope) {
 
@@ -22,6 +22,7 @@ function loadFile (fileService) {
       reader.onloadend = function (evt) {
         $scope.$apply(function () {
           controller.loadedText = evt.target.result;
+          noteData.backupNotesFromBackupData(evt.target.result);
         });
       };
 
