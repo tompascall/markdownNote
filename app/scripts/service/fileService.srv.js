@@ -64,7 +64,6 @@ function fileService () {
   };
 
   $(document).on('deviceready', fileService.setupFileService);
-  console.log('in fileService');
   return fileService;
 }
 

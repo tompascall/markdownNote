@@ -18,11 +18,13 @@ function loadFile (fileService) {
 
     controller.readAsText = function (file) {
       var reader = new FileReader();
+
       reader.onloadend = function (evt) {
         $scope.$apply(function () {
           controller.loadedText = evt.target.result;
         });
       };
+
       reader.readAsText(file);
     };
 

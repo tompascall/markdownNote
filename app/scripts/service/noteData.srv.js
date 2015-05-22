@@ -108,6 +108,15 @@ angular.module('simpleNote')
       note.htmlText = markdown.convertMarkdownToHTML(note.text);
     },
 
+    saveBackupDataToStorage: function (backupData) {
+      window.localStorage.simpleNotes = backupData;
+    },
+
+    backupNotesFromBackupData: function (backupData) {
+      this.saveBackupDataToStorage(backupData);
+      this.initNotes();
+    },
+
     welcomeNote: {
       title: 'Welcome!',
       text: '###Welcome to simpleNotes!\n\n'  +

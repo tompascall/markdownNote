@@ -285,4 +285,31 @@ describe('Service: noteData', function () {
       expect(noteData.notes[0].htmlText).to.equal('<h3>Updated text</h3>');
     });
   });
+
+  describe('Backup data', function () {
+    var backupData = angular.toJson([
+      {
+        title: 'mockNote',
+        text: 'mockText',
+        tags: ['mockTag']
+      }
+    ]);
+
+    it('should save backup data to localStorage', function () {
+      var temp = window.localStorage.simpleNotes;
+      noteData.saveBackupDataToStorage(backupData);
+      expect(angular.fromJson(window.localStorage.simpleNotes)[0].title)
+        .to.equal('mockNote');
+      window.localStorage.simpleNotes = temp;
+    });
+
+    it('should backup Notes from backupData', function () {
+      var tempStorage = window.localStorage.simpleNotes;
+      var tempNotes = noteData.notes;
+      noteData.backupNotesFromBackupData(backupData);
+      expect(noteData.notes[0].title).to.equal('mockNote');
+      window.localStorage.simpleNotes = tempStorage;
+      noteData.notes = tempNotes;
+    });
+  });
 });

@@ -108,6 +108,33 @@ describe('Directive: loadFile', function () {
       window.FileReader = undefined;
     });
 
+    it('readAsText method of FileReader instance should call ' +
+      'onloadend method, and the latter one should call ' +
+      'noteData.backupNotesFromBackupData(backupData)', function () {
+
+      window.FileReader = function () {};
+
+      window.FileReader.prototype = {
+        onloadend: function () {},
+        readAsText: function () {
+          var evt = {
+            target: {
+              result: 'text from file'
+            }
+          };
+          this.onloadend(evt); // it will be overwrite by the instance
+        }
+      };
+
+      var file = {};
+      //var mock = sinon.mock(window.FileReader.prototype);
+      var mock = sinon.mock(noteData);
+      mock.expects('backupNotesFromBackupData').withExactArgs(evt.target.result);
+      isolated.ctrl.readAsText(file);
+      expect(mock.verify()).to.equal(true);
+      window.FileReader = undefined;
+    });
+
     it('controller.fail should log error', function () {
       var error = {
         code: 42

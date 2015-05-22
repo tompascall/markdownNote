@@ -39,7 +39,6 @@ function saveFile (fileService) {
     };
 
     controller.saveText = function () {
-      console.log('in saveText');
       if (fileService.deviceReady) {
         // console.log('in saveText, calling onDeviceReady');
         // console.log('deviceready: ' + fileService.deviceReady);
