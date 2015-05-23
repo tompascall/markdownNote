@@ -65,11 +65,11 @@ describe('Service: fileService', function () {
       fileService.setSupportedPlatforms();
       device.platform = 'Android';
       fileService.setFilePath();
-      expect(fileService.filePath).to.equal('download/simpleNotes.json');
+      expect(fileService.filePath).to.equal('download/simpleNote.json');
 
       device.platform = 'iOS';
       fileService.setFilePath();
-      expect(fileService.filePath).to.equal('Library/simpleNotes.json');
+      expect(fileService.filePath).to.equal('Library/simpleNote.json');
     });
 
     it('should set up fileSevice', function () {

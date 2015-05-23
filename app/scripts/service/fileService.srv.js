@@ -16,11 +16,11 @@ function fileService () {
     fileService.supportedPlatforms = {
       'Android' : {
         rootDirectory: cordova.file.externalRootDirectory,
-        filePath: 'download/simpleNotes.json'
+        filePath: 'download/simpleNote.json'
       },
       'iOS': {
         rootDirectory: cordova.file.applicationStorageDirectory,
-        filePath: 'Library/simpleNotes.json'
+        filePath: 'Library/simpleNote.json'
       }
     };
   };
