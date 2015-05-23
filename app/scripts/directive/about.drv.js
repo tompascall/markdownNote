@@ -7,9 +7,10 @@ function aboutDirective () {
   function aboutController () {
 
     var controller = this;
+    controller.showMessage = false;
 
-    controller.showAboutMessage = function () {
-
+    controller.toggleAboutMessage = function () {
+      controller.showMessage = !controller.showMessage;
     };
   }
 

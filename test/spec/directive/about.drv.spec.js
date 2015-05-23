@@ -27,14 +27,24 @@ describe('Directive: about', function () {
 
   describe('Test element components', function () {
 
-    it('should call showAboutMessage', function (done) {
-      sinon.spy(isolated.ctrl, 'showAboutMessage');
+    it('should call toggleAboutMessage', function (done) {
+      sinon.spy(isolated.ctrl, 'toggleAboutMessage');
       element.find('button.aboutButton').click();
       setTimeout(function () {
-        expect(isolated.ctrl.showAboutMessage.called).to.equal(true);
-        isolated.ctrl.showAboutMessage.restore();
+        expect(isolated.ctrl.toggleAboutMessage.called).to.equal(true);
+        isolated.ctrl.toggleAboutMessage.restore();
         done();
       },0);
+    });
+
+    it('should show message when aboutButton is clicked', function (done) {
+      var aboutMessage = element.find('div.aboutMessage');
+      expect(aboutMessage).to.have.class('ng-hide');
+      element.find('button.aboutButton').click();
+      setTimeout(function () {
+        expect(aboutMessage).to.not.have.class('ng-hide');
+        done();
+      }, 0);
     });
   });
 });
