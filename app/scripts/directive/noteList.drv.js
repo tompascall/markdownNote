@@ -5,13 +5,14 @@
 function noteList () {
 
 
-  function noteListCtrl (noteData, $ionicModal, $scope, searchNote, $ionicScrollDelegate) {
+  function noteListCtrl (noteData, $ionicModal, $scope, searchNote, $ionicScrollDelegate, externalLinkService) {
 
     /*jshint validthis: true */
     var controller = this;
     noteData.initNotes();
     controller.noteData = noteData;
     controller.searchNote = searchNote;
+    controller.externalLinkService = externalLinkService;
 
     $ionicModal.fromTemplateUrl('scripts/modal/edit-note-modal.html', {
         scope: $scope,
@@ -63,20 +64,20 @@ function noteList () {
       controller.hideModal(controller.editNoteModal);
     };
 
-    controller.launchExternalLink = function (event) {
-      var linkElementString = event.target.toString();
-      if (linkElementString) {
-        window.open(linkElementString, '_system', 'location=yes');
-      }
-    };
+    // controller.launchExternalLink = function (event) {
+    //   var linkElementString = event.target.toString();
+    //   if (linkElementString) {
+    //     window.open(linkElementString, '_system', 'location=yes');
+    //   }
+    // };
 
-    controller.handleLinkClicked = function (event) {
-      if (event.target.nodeName === 'A') {  // target is a link
-        event.preventDefault();
-        event.stopPropagation();
-        controller.launchExternalLink(event);
-      }
-    };
+    // controller.handleLinkClicked = function (event) {
+    //   if (event.target.nodeName === 'A') {  // target is a link
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     controller.launchExternalLink(event);
+    //   }
+    // };
 
     $scope.$on('$destroy', function() {
       controller.editNoteModal.remove();

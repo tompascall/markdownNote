@@ -14,7 +14,7 @@
     </div>
     <div id="note-text-and-tags" class="animate-show" ng-show="note.opened">
       <div class="text-title-container">
-        <div class="text-title text-title-wordwrap" ng-bind-html="note.htmlText" ng-click="ctrl.handleLinkClicked($event)"></div>
+        <div class="text-title text-title-wordwrap" ng-bind-html="note.htmlText" ng-click="ctrl.externalLinkService.handleLinkClicked($event)"></div>
       </div>
       <div id="tags-row" class="row">
         <p id="tag-container" class="col col-80"><i class="icon ion-pricetag"></i>&nbsp;

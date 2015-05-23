@@ -1,4 +1,4 @@
-// noteList.drv.spec.js
+  // noteList.drv.spec.js
 
 'use strict';
 
@@ -490,11 +490,11 @@ describe('Directive: noteList', function () {
     });
 
     it('should call launchExternalLink when click on a link', function () {
-      sinon.spy(isolated.ctrl, 'launchExternalLink');
+      sinon.spy(isolated.ctrl.externalLinkService, 'launchExternalLink');
       var noteLink = element.find('div.text-title a');
       noteLink.click();
-      expect(isolated.ctrl.launchExternalLink.calledOnce).to.equal(true);
-      isolated.ctrl.launchExternalLink.restore();
+      expect(isolated.ctrl.externalLinkService.launchExternalLink.calledOnce).to.equal(true);
+      isolated.ctrl.externalLinkService.launchExternalLink.restore();
     });
 
     it('should call window.open with the proper arguments', function () {
