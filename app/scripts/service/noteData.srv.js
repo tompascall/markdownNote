@@ -69,6 +69,10 @@ angular.module('simpleNote')
       return angular.fromJson(window.localStorage.simpleNotes);
     },
 
+    loadStringNotesFromStorage: function () {
+      return window.localStorage.simpleNotes;
+    },
+
     confirmDeleteNote: function () {
       return window.confirm('Are you sure you want to remove this note?');
     },
@@ -106,6 +110,15 @@ angular.module('simpleNote')
 
     setHtmlText: function (note) {
       note.htmlText = markdown.convertMarkdownToHTML(note.text);
+    },
+
+    saveBackupDataToStorage: function (backupData) {
+      window.localStorage.simpleNotes = backupData;
+    },
+
+    backupNotesFromBackupData: function (backupData) {
+      this.saveBackupDataToStorage(backupData);
+      this.initNotes();
     },
 
     welcomeNote: {

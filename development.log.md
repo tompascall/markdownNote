@@ -3198,3 +3198,829 @@ controller.handleLinkClicked = function (event) {
   }
 };
 ```
+
+##11. STORY: Export notes
+
+###11.1. USER STORY
+
+>AS I customer I WANT to be able to export my notes to JSON SO THAT I can move the data to an other device on android platform.
+
+###11.2. ACCEPTANCE CRITERIA
+
+GIVEN I am a user
+WHEN I tap on the title in the header
+THEN I can see a pop up modal called Extras
+
+GIVEN I am a user
+WHEN I tap on the title in the header
+THEN I can see a SAVE TO DEVICE button and a BACKUP FROM DEVICE button
+
+GIVEN I am a user
+WHEN I push the SAVE TO DEVICE button
+THEN I can see if the writing is succeeded or failed
+
+GIVEN I am a user
+WHEN I push the BACKUP FROM DEVICE button
+THEN I can see a warning message if I really want to overwrite data
+
+GIVEN I am a user
+WHEN I push the BACKUP FROM DEVICE button
+THEN I can see the updated notes
+
+###11.3. TODOS
+
+- Create Extras modal 
+- Connect Extras modal to header title
+- Create SAVE TO DEVICE logic
+- Create BACKUP FROM DEVICE logic
+
+###11.4. Create Extras modal 
+
+This modal pops up when the user taps the header title. It contains two buttons: 1. `Save to device` and `Backup from device` button. It also as a `Cancel` and a `Done` button. It is similar to `addNotes` and `editNotes` modal.
+
+####11.4.1. Test: Create Extras modal in appHeader directive
+
+```js
+describe('testing extrasModal', function () {
+
+    var modalElement;
+
+    beforeEach(function () {
+      modalElement = extrasModal.$el;
+    });
+
+    describe('Add extrasModal', function () {
+      it('should be an $ionicModal', function () {
+        extrasModal.show();
+        expect(extrasModal.isShown()).to.equal(true);
+        extrasModal.hide();
+        expect(extrasModal.isShown()).to.equal(false);
+        extrasModal.remove();
+      });
+    });
+
+    describe('Show and hide extrasModal', function () {
+      it('should show and hide modal', function () {
+        isolated.ctrl.showModal(extrasModal);
+        expect(extrasModal.isShown()).to.equal(true);
+        isolated.ctrl.hideModal(extrasModal);
+        expect(extrasModal.isShown()).to.equal(false);
+        extrasModal.remove();
+      });
+    });
+
+    describe('Add elements to extrasModal', function () {
+
+      it('should have a modal class', function () {
+        expect(modalElement.find('div')).to.have.class('modal');
+      });
+
+      it('should contain ion-header-bar', function () {
+        var headerBar = modalElement.find('ion-header-bar');
+        expect(headerBar).to.have.class('secondary');
+        expect(headerBar.children('h1')).to.have.class('title');
+        expect(headerBar.children('h1').text())
+          .to.contain('Extras');
+        expect(headerBar.children('button'))
+          .to.have.class('button button-clear button-positive');
+      });
+
+      it('should have Save to Device button', function () {
+        var saveToDeviceButton = modalElement.find('ion-content form div.list button.saveToDeviceButton');
+         expect(saveToDeviceButton.text()).to.equal('Save Notes to simpleNotes.json');
+      });
+
+      it('should have Backup from Device button', function () {
+        var backupFromDeviceButton = modalElement.find('ion-content form div.list button.backupFromDeviceButton');
+         expect(backupFromDeviceButton.text()).to.equal('Backup Notes from simpleNotes.json');
+      });
+
+      it('should have a padding area', function () {
+        var button = modalElement.find('ion-content form div.padding button');
+        expect(button).to.have.attr('type', 'submit');
+        expect(button.text()).to.contain('Done');
+      });
+    });
+  });
+```
+
+####11.4.2. Create Extras modal in appHeader directive
+
+```js
+$ionicModal.fromTemplateUrl('scripts/modal/extras-modal.html', {
+    scope: $scope
+  })
+.then(function (modal) {
+  controller.extrasModal = modal;
+});
+```
+
+And the template:
+
+```html
+<!-- extras-modal.html -->
+
+<div class="modal">
+  <!-- Modal header bar -->
+  <ion-header-bar class="secondary" align-title="center">
+    <h1 class="title">Extras</h1>
+    <button id="extras-modal-cancel-button" class="button button-clear button-positive">Cancel</button>
+  </ion-header-bar>
+  <!-- Modal content area -->
+  <ion-content>
+    <form name="extrasModalForm">
+      <div class="list">
+        <button class="item saveToDeviceButton button button-block button-positive">Save Notes to simpleNotes.json</button>
+        <button class="item backupFromDeviceButton button button-block button-positive">Backup Notes from simpleNotes.json</button>
+      </div>
+      <div class="padding">
+        <button id="doneExtrasButton" type="submit" class="button button-block button-positive">Done</button>
+      </div>
+    </form>
+  </ion-content>
+</div>
+```
+
+###11.5. Connect Extras modal to header title
+
+When you tap on the title of the header, the modal pops up.
+
+####11.5.1. Test: Connect Extras modal to header title
+
+```js
+describe('Add tap handler to header title', function () {
+  it('should show the modal', function () {
+    element.find('h1#notes-header').click();
+      expect(extrasModal.isShown()).to.equal(true);
+      extrasModal.remove();
+  });
+});
+
+describe('Add tap handler to Cancel button', function () {
+  it('should hide the modal', function () {
+    element.find('h1#notes-header').click();
+    expect(extrasModal.isShown()).to.equal(true);
+    modalElement.find('#extras-modal-cancel-button').click();
+    expect(extrasModal.isShown()).to.equal(false);
+    newNoteModal.remove();
+  });
+});
+```
+
+####11.5.2. Connect Extras modal to header title
+
+In th appHeader template:
+
+```html
+<h1 id="notes-header" class="title" ng-click="ctrl.showModal(ctrl.extrasModal)">simpleNotes</h1>
+```
+
+And the modal template:
+
+```html
+<button id="extras-modal-cancel-button" class="button button-clear button-positive" ng-click="ctrl.hideModal(ctrl.extrasModal)">Cancel</button>
+```
+
+###11.6. Create SAVE TO DEVICE logic
+
+I'm Using [spike-file](https://github.com/tompascall/spikeFile) project for logic.
+
+####11.6.1. Test: Create fileService
+
+```js
+// fileService.srv.spec.js
+
+'use strict';
+
+var device;
+var cordova = window.cordova || {};
+cordova.file = { // mocking cordova global variables
+  externalRootDirectory: 'externalRootDirectory',
+  applicationStorageDirectory: 'applicationStorageDirectory'
+};
+
+describe('Service: fileService', function () {
+  var fileService;
+
+  beforeEach(function () {
+    module('simpleNote');
+    module('templates');
+  });
+
+  beforeEach(inject(function ($injector) {
+    fileService = $injector.get('fileService');
+  }));
+
+  describe('Check fileService initialization', function () {
+
+    beforeEach(function () {
+      device = {};
+    });
+
+    it('deviceReady should be false at the beginning', function () {
+      expect(fileService.deviceReady).to.equal(false);
+    });
+
+    it('should set deviceReady to true', function () {
+      fileService.setDeviceReady();
+      expect(fileService.deviceReady).to.equal(true);
+    });
+
+    it('should set platform using cordova device plugin', function () {
+      device.platform = 'Android';
+      fileService.setPlatform();
+      expect(fileService.platform).to.equal('Android');
+
+      device.platform = 'iOS';
+      fileService.setPlatform();
+      expect(fileService.platform).to.equal('iOS');
+
+      device.platform = 'notSupported';
+      expect(fileService.setPlatform).to.throw(Error);
+    });
+
+    it('should set rootDirectory', function () {
+
+      fileService.platform = 'Android';
+      fileService.setRootDirectory();
+      expect(fileService.rootDirectory).to.equal('externalRootDirectory');
+
+      fileService.platform = 'iOS';
+      fileService.setRootDirectory();
+      expect(fileService.rootDirectory).to.equal('applicationStorageDirectory');
+    });
+
+    it('should set file path', function () {
+      fileService.platform = 'Android';
+      fileService.setFilePath();
+      expect(fileService.filePath).to.equal('download/simpleNotes.json');
+
+      fileService.platform = 'iOS';
+      fileService.setFilePath();
+      expect(fileService.filePath).to.equal('Library/simpleNotes.json');
+    });
+
+    it('should set up fileSevice', function () {
+      device.platform = 'Android';
+      sinon.spy(fileService, 'setDeviceReady');
+      sinon.spy(fileService, 'setPlatform');
+      sinon.spy(fileService, 'setRootDirectory');
+      sinon.spy(fileService, 'setFilePath');
+
+      fileService.setupFileService();
+
+      expect(fileService.setDeviceReady.called).to.equal(true);
+      expect(fileService.setPlatform.called).to.equal(true);
+      expect(fileService.setRootDirectory.called).to.equal(true);
+      expect(fileService.setFilePath.called).to.equal(true);
+
+      fileService.setDeviceReady.restore();
+      fileService.setPlatform.restore();
+      fileService.setRootDirectory.restore();
+      fileService.setFilePath.restore();
+    });
+
+    it('should call setupFileService when device is ready', function () {
+      device.platform = 'Android';
+      sinon.spy(fileService, 'setDeviceReady');
+      sinon.spy(fileService, 'setPlatform');
+      sinon.spy(fileService, 'setRootDirectory');
+      sinon.spy(fileService, 'setFilePath');
+
+      $(document).trigger('deviceready');// cordova event
+      // **NOTE** I could't spy setupFileService with sinon
+
+      expect(fileService.setDeviceReady.called).to.equal(true);
+      expect(fileService.setPlatform.called).to.equal(true);
+      expect(fileService.setRootDirectory.called).to.equal(true);
+      expect(fileService.setFilePath.called).to.equal(true);
+
+      fileService.setDeviceReady.restore();
+      fileService.setPlatform.restore();
+      fileService.setRootDirectory.restore();
+      fileService.setFilePath.restore();
+    });
+  });
+});
+```
+
+
+####11.6.2. Create fileService
+
+```js
+// fileService.srv.js
+
+'use strict';
+
+function fileService () {
+  var fileService = {
+    deviceReady: false,
+    supportedPlatforms: ['Android', 'iOS']
+  };
+
+  fileService.setDeviceReady = function () {
+    fileService.deviceReady = true;
+  };
+
+  fileService.setPlatform = function () {
+    if (fileService.supportedPlatforms.indexOf(device.platform) !== -1) {
+      fileService.platform = device.platform;
+      return;
+    }
+    throw new Error(device.platform + ' platform is not supported');
+  };
+
+  fileService.setRootDirectory = function () {
+    switch (fileService.platform) {
+      case 'Android':
+        fileService.rootDirectory = cordova.file.externalRootDirectory;
+        break;
+      case 'iOS':
+        fileService.rootDirectory = cordova.file.applicationStorageDirectory;
+        break;
+      default:
+        fileService.rootDirectory = 'platform not supported'
+    }
+  };
+
+  fileService.setFilePath = function () {
+    switch (fileService.platform) {
+      case 'Android':
+        fileService.filePath = 'download/simpleNotes.json';
+        break;
+      case 'iOS':
+        fileService.filePath = 'Library/simpleNotes.json';
+        break;
+      default:
+        fileService.filePath = 'platform not supported'
+    }
+  };
+
+  fileService.setupFileService = function () {
+    fileService.setDeviceReady();
+    fileService.setPlatform();
+    fileService.setRootDirectory();
+    fileService.setFilePath();
+  };
+
+  $(document).on('deviceready', fileService.setupFileService);
+
+  return fileService;
+}
+
+angular.module('simpleNote').factory('fileService', fileService);
+```
+
+
+###11.7. Create BACKUP FROM DEVICE logic
+
+####11.7.1. Test: Create saveFile directive
+
+```js
+// saveFile.drv.spec.js
+
+'use strict';
+
+describe('Directive: saveFile', function () {
+  var $compile;
+  var scope;
+  var element;
+  var isolated;
+  var fileService;
+
+  beforeEach(module('simpleNote'));
+
+  beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
+
+  beforeEach(function () {
+    inject(function ($injector) {
+      $compile = $injector.get('$compile');
+      scope = $injector.get('$rootScope').$new();
+      fileService = $injector.get('fileService');
+    });
+
+    element = $compile('<save-file></save-file>')(scope);
+    scope.$digest();
+    isolated = element.isolateScope();
+    angular.element(document).find('body').append(element); // for rendering css
+  });
+
+  describe('Test element components', function () {
+    var backupDeviceReady;
+
+    it('should call saveText', function (done) {
+      sinon.spy(isolated.ctrl, 'saveText');
+      element.find('button.saveToDeviceButton').click();
+      setTimeout(function () {
+        expect(isolated.ctrl.saveText.called).to.equal(true);
+        isolated.ctrl.saveText.restore();
+        done();
+      },0);
+    });
+
+    it('should call onDeviceReady() if device is ready', function () {
+      fileService.deviceReady = false;
+      sinon.stub(isolated.ctrl, 'onDeviceReady');
+      isolated.ctrl.saveText();
+      expect(isolated.ctrl.onDeviceReady.called).to.equal(false);
+      fileService.deviceReady = true;
+      isolated.ctrl.saveText();
+      expect(isolated.ctrl.onDeviceReady.called).to.equal(true);
+      isolated.ctrl.onDeviceReady.restore();
+    });
+
+    it('should call onDeviceReady with fileService.rootDirectory', function () {
+      fileService.deviceReady = true;
+      var mock = sinon.mock(isolated.ctrl);
+      fileService.rootDirectory = 'root';
+      mock.expects('onDeviceReady').withExactArgs('root');
+      isolated.ctrl.saveText();
+      expect(mock.verify()).to.equal(true);
+    });
+
+    it('onDeviceReady should call window.resolveLocalFileSystemURL with ' +
+      'rootDirectory, controller.onResolveSuccess, controller.fail', function () {
+        window.resolveLocalFileSystemURL = function () {}; // mock this function
+        var mock = sinon.mock(window);
+        mock.expects('resolveLocalFileSystemURL').withExactArgs('root',
+          isolated.ctrl.onResolveSuccess, isolated.ctrl.fail);
+        isolated.ctrl.onDeviceReady('root');
+        expect(mock.verify()).to.equal(true);
+        window.resolveLocalFileSystemURL = undefined;
+    });
+
+    it('onResolveSuccess should call  directoryEntry.getFile with ' +
+      'fileService.filePath, {create: true, exclusive: false}, ' +
+      'controller.gotFileEntry, controller.fail', function () {
+        var directoryEntry = { // mock object
+          getFile: function () {}
+        };
+        var mock = sinon.mock(directoryEntry);
+        mock.expects('getFile').withExactArgs(fileService.filePath,
+          {create: true, exclusive: false}, isolated.ctrl.gotFileEntry,
+          isolated.ctrl.fail);
+        isolated.ctrl.onResolveSuccess(directoryEntry);
+        expect(mock.verify()).to.equal(true);
+    });
+
+    it('gotFileEntry should call fileEntry.createWriter with' +
+      'controller.gotFileWriter, controller.fail', function () {
+      var fileEntry = {
+        createWriter: function () {} // mock
+      };
+      var mock = sinon.mock(fileEntry);
+      mock.expects('createWriter').withExactArgs(isolated.ctrl.gotFileWriter,
+        isolated.ctrl.fail);
+      isolated.ctrl.gotFileEntry(fileEntry);
+      expect(mock.verify()).to.equal(true);
+    });
+
+    it('gotFileWriter should call  writer.write', function () {
+      var writer = {
+        write: function () {}
+      };
+      var mock = sinon.mock(writer);
+      mock.expects('write').once();
+      isolated.ctrl.gotFileWriter(writer);
+      expect(mock.verify()).to.equal(true);
+    });
+
+    it('controller.fail should log error', function () {
+      var error = {
+        code: 42
+      };
+      var mock = sinon.mock(window.console);
+      mock.expects('log').withArgs('ERROR: ' + error.code);
+      isolated.ctrl.fail(error);
+      expect(mock.verify()).to.equal(true);
+    });
+  });
+});
+
+
+```
+
+####11.7.2. Create saveFile directive
+
+```js
+// saveFile.drv.js
+
+'use strict';
+
+function saveFile (fileService) {
+
+  function saveFileController () {
+
+    // only testing purpose to trigger deviceready event, must be delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //$(document).trigger('deviceready');
+
+   /*jshint validthis: true */
+    var controller = this;
+
+    controller.fail = function (error) {
+      console.log('ERROR: ' + error.code);
+    };
+
+    controller.gotFileWriter = function (writer) {
+      writer.write('some sample text from simpleNotes.json, ' +
+        'saved to ' + fileService.filePath + ' at ' + new Date().toString());
+
+      writer.onwrite = function(evt) {
+        console.log('write success');
+      };
+    };
+
+    controller.gotFileEntry = function (fileEntry) {
+      fileEntry.createWriter(controller.gotFileWriter, controller.fail);
+    };
+
+    controller.onResolveSuccess = function (directoryEntry) {
+      directoryEntry.getFile(fileService.filePath,
+        {create: true, exclusive: false}, controller.gotFileEntry, controller.fail);
+    };
+
+    controller.onDeviceReady = function (rootDirectory) {
+      window.resolveLocalFileSystemURL(rootDirectory, controller.onResolveSuccess, controller.fail);
+    };
+
+    controller.saveText = function () {
+      if (fileService.deviceReady) {
+        controller.onDeviceReady(fileService.rootDirectory);
+      }
+    };
+  }
+
+  return {
+    restrict: 'E',
+    controller: saveFileController,
+    controllerAs: 'ctrl',
+    scope: {},
+    bindToController: true,
+    templateUrl: 'scripts/directive/save-file.drv.html'
+  };
+}
+
+angular.module('simpleNote').directive('saveFile', saveFile);
+```
+
+And the template:
+
+```html
+<!-- save-file.drv.html -->
+
+<button class="item saveToDeviceButton button button-full button-balanced" ng-click="ctrl.saveText()">Save Notes to simpleNotes.json</button>
+```
+
+###11.8. Create backup from device logic
+
+####11.8.1. Test: Create loadFile directive
+
+```js
+// saveFile.drv.spec.js
+
+'use strict';
+
+describe('Directive: loadFile', function () {
+  var $compile;
+  var scope;
+  var element;
+  var isolated;
+  var fileService;
+  var noteData;
+
+  beforeEach(module('simpleNote'));
+
+  beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
+
+  beforeEach(function () {
+    inject(function ($injector) {
+      $compile = $injector.get('$compile');
+      scope = $injector.get('$rootScope').$new();
+      fileService = $injector.get('fileService');
+      noteData = $injector.get('noteData');
+    });
+
+    element = $compile('<load-file></load-file>')(scope);
+    scope.$digest();
+    isolated = element.isolateScope();
+    angular.element(document).find('body').append(element); // for rendering css
+  });
+
+  describe('Test element components', function () {
+
+    it('should call loadText', function (done) {
+      sinon.spy(isolated.ctrl, 'loadText');
+      element.find('button.backupFromDeviceButton').click();
+      setTimeout(function () {
+        expect(isolated.ctrl.loadText.called).to.equal(true);
+        isolated.ctrl.loadText.restore();
+        done();
+      },0);
+    });
+
+    it('should call onDeviceReady() if device is ready ' +
+      'and backuping has been confirmed', function () {
+      fileService.deviceReady = false;
+      sinon.stub(isolated.ctrl, 'onDeviceReady');
+      isolated.ctrl.loadText();
+      expect(isolated.ctrl.onDeviceReady.called).to.equal(false);
+
+      fileService.deviceReady = true;
+      sinon.stub(isolated.ctrl, 'confirmBackuping', function () {
+        return true;
+      });
+      isolated.ctrl.loadText();
+      expect(isolated.ctrl.onDeviceReady.called).to.equal(true);
+      isolated.ctrl.onDeviceReady.restore();
+      isolated.ctrl.confirmBackuping.restore();
+    });
+
+    it('should call onDeviceReady with fileService.rootDirectory', function () {
+      fileService.deviceReady = true;
+      sinon.stub(isolated.ctrl, 'confirmBackuping', function () {
+        return true;
+      });
+      var mock = sinon.mock(isolated.ctrl);
+      fileService.rootDirectory = 'root';
+      mock.expects('onDeviceReady').withExactArgs('root');
+      isolated.ctrl.loadText();
+      expect(mock.verify()).to.equal(true);
+      isolated.ctrl.confirmBackuping.restore();
+    });
+
+    it('onDeviceReady should call window.resolveLocalFileSystemURL with ' +
+      'rootDirectory, controller.onResolveSuccess, controller.fail', function () {
+        window.resolveLocalFileSystemURL = function () {}; // mock this function
+        var mock = sinon.mock(window);
+        mock.expects('resolveLocalFileSystemURL').withExactArgs('root',
+          isolated.ctrl.onResolveSuccess, isolated.ctrl.fail);
+        isolated.ctrl.onDeviceReady('root');
+        expect(mock.verify()).to.equal(true);
+        window.resolveLocalFileSystemURL = undefined;
+    });
+
+    it('onResolveSuccess should call  directoryEntry.getFile with ' +
+      'fileService.filePath, null, ' +
+      'controller.gotFileEntry, controller.fail', function () {
+        var directoryEntry = { // mock object
+          getFile: function () {}
+        };
+        var mock = sinon.mock(directoryEntry);
+        mock.expects('getFile').withExactArgs(fileService.filePath,
+          null, isolated.ctrl.gotFileEntry,
+          isolated.ctrl.fail);
+        isolated.ctrl.onResolveSuccess(directoryEntry);
+        expect(mock.verify()).to.equal(true);
+    });
+
+    it('gotFileEntry should call fileEntry.file with' +
+      'controller.readAsText, controller.fail', function () {
+      var fileEntry = {
+        file: function () {} // mock
+      };
+      var mock = sinon.mock(fileEntry);
+      mock.expects('file').withExactArgs(isolated.ctrl.readAsText,
+        isolated.ctrl.fail);
+      isolated.ctrl.gotFileEntry(fileEntry);
+      expect(mock.verify()).to.equal(true);
+    });
+
+    it('should call readAsText mehod of a FileReader instance', function () {
+      window.FileReader = function () {};
+      window.FileReader.prototype = {
+        readAsText: function () {}
+      };
+      var file = {};
+      var mock = sinon.mock(window.FileReader.prototype);
+      mock.expects('readAsText').withArgs(file);
+      isolated.ctrl.readAsText(file);
+      expect(mock.verify()).to.equal(true);
+      window.FileReader = undefined;
+    });
+
+    it('readAsText method of FileReader instance should call ' +
+      'onloadend method, and the latter one should call ' +
+      'noteData.backupNotesFromBackupData(backupData) method', function () {
+
+      window.FileReader = function () {};
+
+      var evt = {
+        target: {
+          result: 'text from file'
+        }
+      };
+
+      window.FileReader.prototype = {
+        onloadend: function () {}, // it will be overwritten by the instance
+        readAsText: function () {
+          this.onloadend(evt);
+        }
+      };
+
+      var file = {};
+      var mock = sinon.mock(noteData);
+      mock.expects('backupNotesFromBackupData').withExactArgs(evt.target.result);
+      isolated.ctrl.readAsText(file);
+      expect(mock.verify()).to.equal(true);
+      window.FileReader = undefined;
+    });
+
+    it('controller.fail should log error', function () {
+      var error = {
+        code: 42
+      };
+      var mock = sinon.mock(window.console);
+      mock.expects('log').withArgs('ERROR: ' + error.code);
+      isolated.ctrl.fail(error);
+      expect(mock.verify()).to.equal(true);
+    });
+  });
+});
+```
+
+####11.8.2. Create loadFile directive
+
+```js
+// loadFile.drv.js
+
+'use strict';
+
+function loadFile (fileService, noteData) {
+
+  function loadFileController ($scope) {
+
+    // only testing purpose to trigger deviceready event, must be delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //$(document).trigger('deviceready');
+
+   /*jshint validthis: true */
+    var controller = this;
+    controller.fileService = fileService;
+
+    controller.fail = function (error) {
+      console.log('ERROR: ' + error.code);
+    };
+
+    controller.readAsText = function (file) {
+      var reader = new FileReader();
+
+      reader.onloadend = function (evt) {
+        $scope.$apply(function () {
+          controller.fileService.loadMessage = 'Your notes has been updated from simpleNotes.json file';
+          noteData.backupNotesFromBackupData(evt.target.result);
+        });
+      };
+
+      reader.readAsText(file);
+    };
+
+    controller.gotFileEntry = function (fileEntry) {
+      fileEntry.file(controller.readAsText, controller.fail);
+    };
+
+    controller.onResolveSuccess = function (directoryEntry) {
+      directoryEntry.getFile(fileService.filePath,
+        null, controller.gotFileEntry, controller.fail);
+    };
+
+    controller.onDeviceReady = function (rootDirectory) {
+      window.resolveLocalFileSystemURL(rootDirectory, controller.onResolveSuccess, controller.fail);
+    };
+
+    controller.confirmBackuping = function () {
+      return confirm('You are about to update your notes from simpleNotes.json file. ' +
+        'It can result in losing some data if data of your notes are newer ' +
+        'than the data in the backup file. Are you sure you want to backup data?');
+    };
+
+    controller.loadText = function () {
+      if (fileService.deviceReady) {
+        if (controller.confirmBackuping()) {
+          controller.onDeviceReady(fileService.rootDirectory);
+        }
+      }
+    };
+  }
+
+  return {
+    restrict: 'E',
+    controller: loadFileController,
+    controllerAs: 'ctrl',
+    scope: {},
+    bindToController: true,
+    templateUrl: 'scripts/directive/load-file.drv.html'
+  };
+}
+
+angular.module('simpleNote').directive('loadFile', loadFile);
+```
+
+The directive`s template:
+
+```html
+<!-- load-file.drv.html -->
+
+<button class="item backupFromDeviceButton button button-full button-assertive" ng-click="ctrl.loadText()">Backup notes from simpleNote.json</button>
+<div ng-bind="ctrl.fileService.loadMessage"></div>
+```
+
+

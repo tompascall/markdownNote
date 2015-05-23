@@ -1,0 +1,22 @@
+<!-- extras-modal.html -->
+
+<div class="modal">
+  <!-- Modal header bar -->
+  <ion-header-bar class="secondary bar-stable" align-title="center">
+    <h1 class="title">Extras</h1>
+    <button id="extras-modal-cancel-button" class="button button-clear button-positive" ng-click="ctrl.hideModal(ctrl.extrasModal)">Cancel</button>
+  </ion-header-bar>
+  <!-- Modal content area -->
+  <ion-content>
+    <form name="extrasModalForm">
+      <div class="list">
+          <save-file></save-file>
+          <load-file></load-file>
+          <about></about>
+      </div>
+      <div class="padding">
+        <button id="doneExtrasButton" type="submit" class="button button-block button-balanced" ng-click="ctrl.hideModal(ctrl.extrasModal)">Done</button>
+      </div>
+    </form>
+  </ion-content>
+</div>

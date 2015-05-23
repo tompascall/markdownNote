@@ -5,7 +5,7 @@
 function noteList () {
 
 
-  function noteListCtrl (noteData, $ionicModal, $scope, searchNote) {
+  function noteListCtrl (noteData, $ionicModal, $scope, searchNote, $ionicScrollDelegate) {
 
     /*jshint validthis: true */
     var controller = this;
@@ -23,6 +23,7 @@ function noteList () {
 
     controller.toggleNoteState = function (note) {
       note.opened = !note.opened;
+      $ionicScrollDelegate.resize();
     };
 
     controller.showModal = function (modal) {
