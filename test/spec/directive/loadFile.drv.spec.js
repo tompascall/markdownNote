@@ -40,24 +40,34 @@ describe('Directive: loadFile', function () {
       },0);
     });
 
-    it('should call onDeviceReady() if device is ready', function () {
+    it('should call onDeviceReady() if device is ready ' +
+      'and backuping has been confirmed', function () {
       fileService.deviceReady = false;
       sinon.stub(isolated.ctrl, 'onDeviceReady');
       isolated.ctrl.loadText();
       expect(isolated.ctrl.onDeviceReady.called).to.equal(false);
+
       fileService.deviceReady = true;
+      sinon.stub(isolated.ctrl, 'confirmBackuping', function () {
+        return true;
+      });
       isolated.ctrl.loadText();
       expect(isolated.ctrl.onDeviceReady.called).to.equal(true);
       isolated.ctrl.onDeviceReady.restore();
+      isolated.ctrl.confirmBackuping.restore();
     });
 
     it('should call onDeviceReady with fileService.rootDirectory', function () {
       fileService.deviceReady = true;
+      sinon.stub(isolated.ctrl, 'confirmBackuping', function () {
+        return true;
+      });
       var mock = sinon.mock(isolated.ctrl);
       fileService.rootDirectory = 'root';
       mock.expects('onDeviceReady').withExactArgs('root');
       isolated.ctrl.loadText();
       expect(mock.verify()).to.equal(true);
+      isolated.ctrl.confirmBackuping.restore();
     });
 
     it('onDeviceReady should call window.resolveLocalFileSystemURL with ' +

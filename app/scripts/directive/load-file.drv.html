@@ -1,4 +1,5 @@
 <!-- load-file.drv.html -->
 
 <button class="item backupFromDeviceButton button button-full button-assertive" ng-click="ctrl.loadText()">Backup notes from simpleNotes.json</button>
-<div ng-bind="ctrl.loadedText"></div>
+<div ng-bind="ctrl.fileService.loadMessage"></div>
+

@@ -286,6 +286,24 @@ describe('Service: noteData', function () {
     });
   });
 
+  describe('Save data to file from storage', function () {
+    var backupData = angular.toJson([
+      {
+        title: 'mockNote',
+        text: 'mockText',
+        tags: ['mockTag']
+      }
+    ]);
+
+    it('should load notes from storage as string', function () {
+      var temp = window.localStorage.simpleNotes;
+      window.localStorage.simpleNotes = angular.fromJson(backupData);
+      var stringNotes = noteData.loadStringNotesFromStorage();
+      expect(stringNotes).to.equal(window.localStorage.simpleNotes);
+      window.localStorage.simpleNotes = temp;
+    });
+  });
+
   describe('Backup data', function () {
     var backupData = angular.toJson([
       {

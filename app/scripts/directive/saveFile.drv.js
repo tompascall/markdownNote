@@ -2,7 +2,7 @@
 
 'use strict';
 
-function saveFile (fileService) {
+function saveFile (fileService, noteData) {
 
   function saveFileController () {
 
@@ -17,11 +17,10 @@ function saveFile (fileService) {
     };
 
     controller.gotFileWriter = function (writer) {
-      writer.write('some sample text from simpleNotes.json, ' +
-        'saved to ' + fileService.filePath + ' at ' + new Date().toString());
+      writer.write(noteData.loadStringNotesFromStorage());
 
       writer.onwrite = function(evt) {
-        console.log('write success');
+        console.log('write succeeded');
       };
     };
 

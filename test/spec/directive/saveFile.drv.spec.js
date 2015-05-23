@@ -8,6 +8,7 @@ describe('Directive: saveFile', function () {
   var element;
   var isolated;
   var fileService;
+  var noteData;
 
   beforeEach(module('simpleNote'));
 
@@ -18,6 +19,7 @@ describe('Directive: saveFile', function () {
       $compile = $injector.get('$compile');
       scope = $injector.get('$rootScope').$new();
       fileService = $injector.get('fileService');
+      noteData = $injector.get('noteData');
     });
 
     element = $compile('<save-file></save-file>')(scope);
@@ -97,13 +99,26 @@ describe('Directive: saveFile', function () {
     });
 
     it('gotFileWriter should call  writer.write', function () {
+
+      var backupData = angular.toJson([
+        {
+          title: 'mockNote',
+          text: 'mockText',
+          tags: ['mockTag']
+        }
+      ]);
+
+      var temp = window.localStorage.simpleNotes;
       var writer = {
         write: function () {}
       };
       var mock = sinon.mock(writer);
-      mock.expects('write').once();
+      window.localStorage.simpleNotes = angular.fromJson(backupData);
+      var notesString = noteData.loadStringNotesFromStorage();
+      mock.expects('write').once().withExactArgs(notesString);
       isolated.ctrl.gotFileWriter(writer);
       expect(mock.verify()).to.equal(true);
+      window.localStorage.simpleNotes = temp;
     });
 
     it('controller.fail should log error', function () {

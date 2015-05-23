@@ -69,6 +69,10 @@ angular.module('simpleNote')
       return angular.fromJson(window.localStorage.simpleNotes);
     },
 
+    loadStringNotesFromStorage: function () {
+      return window.localStorage.simpleNotes;
+    },
+
     confirmDeleteNote: function () {
       return window.confirm('Are you sure you want to remove this note?');
     },

@@ -11,6 +11,7 @@ function loadFile (fileService, noteData) {
 
    /*jshint validthis: true */
     var controller = this;
+    controller.fileService = fileService;
 
     controller.fail = function (error) {
       console.log('ERROR: ' + error.code);
@@ -21,7 +22,7 @@ function loadFile (fileService, noteData) {
 
       reader.onloadend = function (evt) {
         $scope.$apply(function () {
-          controller.loadedText = evt.target.result;
+          controller.fileService.loadMessage = 'Your notes has been updated from simpleNotes.json file';
           noteData.backupNotesFromBackupData(evt.target.result);
         });
       };
@@ -42,9 +43,17 @@ function loadFile (fileService, noteData) {
       window.resolveLocalFileSystemURL(rootDirectory, controller.onResolveSuccess, controller.fail);
     };
 
+    controller.confirmBackuping = function () {
+      return confirm('You are about to update your notes from simpleNotes.json file. ' +
+        'It can result in losing some data if data of your notes are newer ' +
+        'than the data in the backup file. Are you sure you want to backup data?');
+    };
+
     controller.loadText = function () {
       if (fileService.deviceReady) {
-        controller.onDeviceReady(fileService.rootDirectory);
+        if (controller.confirmBackuping()) {
+          controller.onDeviceReady(fileService.rootDirectory);
+        }
       }
     };
   }

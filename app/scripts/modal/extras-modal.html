@@ -11,10 +11,10 @@
     <form name="extrasModalForm">
       <div class="list">
           <save-file></save-file>
-          <load-file></load-file>
+          <load-file loadedText="ctrl.loadedText"></load-file>
       </div>
       <div class="padding">
-        <button id="doneExtrasButton" type="submit" class="button button-block button-positive">Done</button>
+        <button id="doneExtrasButton" type="submit" class="button button-block button-positive" ng-click="ctrl.hideModal(ctrl.extrasModal)">Done</button>
       </div>
     </form>
   </ion-content>
