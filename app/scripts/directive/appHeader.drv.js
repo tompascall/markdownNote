@@ -5,11 +5,11 @@
 function appHeaderDirective () {
 
   function appHeaderController ($scope,
-    $ionicModal, noteData, searchNote, fileService, aboutService) {
+    $ionicModal, noteData, searchNote, fileService, messageService) {
     /*jshint validthis: true */
     var controller = this;
     controller.fileService = fileService;
-    controller.aboutService = aboutService;
+    controller.messageService = messageService;
 
     $ionicModal.fromTemplateUrl('scripts/modal/new-note-modal.html', {
         scope: $scope,
@@ -31,10 +31,9 @@ function appHeaderDirective () {
     };
 
     controller.hideModal = function (modal) {
-      //if (modal === controller.extrasModal) {
-        controller.fileService.loadMessage = '';
-        controller.aboutService.showAboutMessage = false;
-      //}
+      if (modal === controller.extrasModal) {
+        controller.messageService.clearExtrasModalMessages();
+      }
       modal.hide();
     };
 

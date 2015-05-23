@@ -2,17 +2,26 @@
 
 'use strict';
 
-function saveFile (fileService, noteData) {
+function saveFile (fileService, noteData, messageService) {
 
-  function saveFileController () {
+  function saveFileController ($scope) {
 
     // only testing purpose to trigger deviceready event, must be delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //$(document).trigger('deviceready');
 
    /*jshint validthis: true */
     var controller = this;
+    controller.messageService = messageService;
+
+    controller.setMessage = function (message) {
+      $scope.$apply(function () {
+        controller.messageService.saveMessage = message;
+        controller.messageService.loadMessage = false;
+      });
+    };
 
     controller.fail = function (error) {
+      controller.setMessage('ERROR: ' + error.code);
       console.log('ERROR: ' + error.code);
     };
 
@@ -20,6 +29,7 @@ function saveFile (fileService, noteData) {
       writer.write(noteData.loadStringNotesFromStorage());
 
       writer.onwrite = function(evt) {
+        controller.setMessage('Write succeeded');
         console.log('write succeeded');
       };
     };

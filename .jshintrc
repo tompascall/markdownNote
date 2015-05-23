@@ -22,6 +22,8 @@
     "angular": false,
     "cordova": false,
     "StatusBar": false,
-    "Markdown": false
+    "Markdown": false,
+    "device": false,
+    "$": false
   }
 }

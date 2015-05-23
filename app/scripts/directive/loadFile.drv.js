@@ -2,7 +2,7 @@
 
 'use strict';
 
-function loadFile (fileService, noteData) {
+function loadFile (fileService, noteData, messageService) {
 
   function loadFileController ($scope) {
 
@@ -12,19 +12,25 @@ function loadFile (fileService, noteData) {
    /*jshint validthis: true */
     var controller = this;
     controller.fileService = fileService;
+    controller.messageService = messageService;
+
+    controller.setMessage = function (message) {
+      $scope.$apply(function () {
+        controller.messageService.loadMessage = message;
+        controller.messageService.saveMessage = false;
+      });
+    };
 
     controller.fail = function (error) {
-      console.log('ERROR: ' + error.code);
+      controller.setMessage('ERROR: ' + error.code);
     };
 
     controller.readAsText = function (file) {
       var reader = new FileReader();
 
       reader.onloadend = function (evt) {
-        $scope.$apply(function () {
-          controller.fileService.loadMessage = 'Your notes has been updated from simpleNotes.json file';
-          noteData.backupNotesFromBackupData(evt.target.result);
-        });
+        controller.setMessage('Your notes has been updated from simpleNotes.json file');
+        noteData.backupNotesFromBackupData(evt.target.result);
       };
 
       reader.readAsText(file);

@@ -5,7 +5,6 @@
 function fileService () {
   var fileService = {
     deviceReady: false,
-    loadMessage: ''
   };
 
   fileService.setDeviceReady = function () {

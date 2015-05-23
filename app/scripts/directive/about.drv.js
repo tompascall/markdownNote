@@ -2,16 +2,16 @@
 
 'use strict';
 
-function aboutDirective (aboutService, externalLinkService) {
+function aboutDirective (messageService, externalLinkService) {
 
   function aboutController () {
 
     var controller = this;
-    controller.aboutService = aboutService;
+    controller.messageService = messageService;
     controller.externalLinkService = externalLinkService;
 
     controller.toggleAboutMessage = function () {
-      controller.aboutService.showAboutMessage = !controller.aboutService.showAboutMessage;
+      controller.messageService.showAboutMessage = !controller.messageService.showAboutMessage;
     };
   }
 
