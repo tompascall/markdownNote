@@ -1,7 +1,7 @@
 <!-- about.drv.html -->
 
 <button class="item aboutButton button button-full button-royal" ng-click="ctrl.toggleAboutMessage()">About simpleNote</button>
-<div class="aboutMessage card" ng-show="ctrl.showMessage">
+<div class="aboutMessage card" ng-show="ctrl.aboutService.showAboutMessage">
   <div class="item item-text-wrap">
     This is a basic Card which contains an item that has wrapping text.
   </div>

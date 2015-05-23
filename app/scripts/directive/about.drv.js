@@ -2,15 +2,15 @@
 
 'use strict';
 
-function aboutDirective () {
+function aboutDirective (aboutService) {
 
   function aboutController () {
 
     var controller = this;
-    controller.showMessage = false;
+    controller.aboutService = aboutService;
 
     controller.toggleAboutMessage = function () {
-      controller.showMessage = !controller.showMessage;
+      controller.aboutService.showAboutMessage = !controller.aboutService.showAboutMessage;
     };
   }
 
