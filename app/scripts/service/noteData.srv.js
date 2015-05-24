@@ -174,6 +174,15 @@ angular.module('simpleNote')
             'Term 2\n' +
             ':   Definition 2\n\n' +
             '---\n\n' +
+            '###Tables\n\n' +
+
+            '| Fruit     | Value | Qty |\n' +
+            '| --------- | ----- | --  |\n' +
+            '| Orange    | $0.50 | 5   |\n' +
+            '| Apple     | $0.30 | 4   |\n' +
+            '| Pear      | $0.40 | 3   |\n' +
+
+
             '###Images\n\n' +
             '![colibri](images/colibri.jpg)\n\n',
       tags: 'markdown, keep it simple',
