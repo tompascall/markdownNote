@@ -30,7 +30,7 @@ function saveFile (fileService, noteData, messageService) {
 
       writer.onwrite = function(evt) {
         controller.setMessage('Write succeeded');
-        console.log('write succeeded');
+        console.log('write succeeded: ' + evt.toString());
       };
     };
 

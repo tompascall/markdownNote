@@ -3,6 +3,7 @@
 'use strict';
 
 function fileService () {
+  /*jshint -W004 */  // to skip 'fileService is already defined' jshint message
   var fileService = {
     deviceReady: false,
   };

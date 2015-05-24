@@ -5,7 +5,7 @@
 function aboutDirective (messageService, externalLinkService) {
 
   function aboutController () {
-
+    /*jshint validthis: true */
     var controller = this;
     controller.messageService = messageService;
     controller.externalLinkService = externalLinkService;

@@ -24,6 +24,8 @@
     "StatusBar": false,
     "Markdown": false,
     "device": false,
-    "$": false
+    "$": false,
+    "confirm": false
+
   }
 }
