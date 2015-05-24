@@ -124,12 +124,14 @@ angular.module('simpleNote')
     welcomeNote: {
       title: 'Welcome!',
       text: '###Welcome to simpleNotes!\n\n'  +
-        'This is a simple app ' +
+        'This is a lightweight, simple app ' +
         'to manage your notes.\n\n' +
-        'You can **store** your notes locally, you can **update** the content of notes' +
+        'You can **store** your notes locally, you can **update** of their content' +
         ', and you can **filter** them by any keyword.\n\n' +
         'You can also use **markdown language** to style' +
         ' and structure the body of your notes.\n\n' +
+        'If you tap on simpleNote in the header, you can save your notes ' +
+        'to your file system and you can backup your data or sync with another device.\n\n' +
         'Enjoy it!',
       tags: ['Welcome note', 'enjoy'],
       opened: true
@@ -138,15 +140,15 @@ angular.module('simpleNote')
     markdownNote: {
       title: 'Markdown tools for styling the body of your note',
       text: '###Headers\n\n' +
-            '#h1\n' +
-            '##h2\n' +
-            '###h3\n' +
-            '####h4\n' +
-            '#####h5\n' +
-            '######h6\n\n' +
+            '#Organize your ideas\n' +
+            '##Find your tools\n' +
+            '###Keep it simple\n' +
+            '####Use simpleNote\n' +
+            '#####Structure the text\n' +
+            '######Use markdown\n\n' +
             '---\n\n' +
             '###Link\n\n' +
-            '[Pagedown Extra](https://github.com/jmcmanus/pagedown-extra)\n\n' +
+            '[Markdown](http://en.wikipedia.org/wiki/Markdown)\n\n' +
             '###Bold\n\n' +
             '**bold**\n\n' +
             '---\n\n' +
@@ -173,8 +175,8 @@ angular.module('simpleNote')
             ':   Definition 2\n\n' +
             '---\n\n' +
             '###Images\n\n' +
-            '![grumpy dog](http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/grumpy-dog-11.jpg)\n\n',
-      tags: 'markdown',
+            '![colibri](images/colibri.jpg)\n\n',
+      tags: 'markdown, keep it simple',
       opened: false
     }
   };
