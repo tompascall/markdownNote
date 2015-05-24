@@ -147,12 +147,20 @@ describe('Directive: loadFile', function () {
       window.FileReader = undefined;
     });
 
+    it('setMessage should set fileService.loadMessage', function () {
+      var temp = isolated.ctrl.messageService.loadMessage;
+      var message = 'Hey there!';
+      isolated.ctrl.setMessage(message);
+      expect(isolated.ctrl.messageService.loadMessage).to.equal(message);
+      isolated.ctrl.messageService.loadMessage = temp;
+    });
+
     it('controller.fail should log error', function () {
       var error = {
         code: 42
       };
-      var mock = sinon.mock(window.console);
-      mock.expects('log').withArgs('ERROR: ' + error.code);
+      var mock = sinon.mock(isolated.ctrl);
+      mock.expects('setMessage').withArgs('ERROR: ' + error.code);
       isolated.ctrl.fail(error);
       expect(mock.verify()).to.equal(true);
     });

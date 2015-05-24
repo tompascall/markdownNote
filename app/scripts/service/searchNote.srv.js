@@ -2,12 +2,13 @@
 
 'use strict';
 
-function searchNote() {
+function searchNote($ionicScrollDelegate) {
   return {
     searchTerm: '',
     opened: false,
     toggleSearchInput: function () {
       this.opened = !this.opened;
+      $ionicScrollDelegate.scrollTop();
     }
   };
 }

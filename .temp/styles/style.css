@@ -44,7 +44,7 @@ div.text-title h2 {
   font-size: 28px;
 }
 
-div.text-title a {
+a {
   text-decoration: none;
   color: red;
 }

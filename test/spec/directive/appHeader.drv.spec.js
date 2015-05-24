@@ -298,8 +298,8 @@ describe('Directive: appHeader', function () {
         expect(aboutButton.text()).to.equal('About simpleNote');
       });
 
-      it('should have a padding area', function () {
-        var button = modalElement.find('ion-content form div.padding button');
+      it('should have a done button', function () {
+        var button = modalElement.find('ion-content form div button#doneExtrasButton');
         expect(button).to.have.attr('type', 'submit');
         expect(button.text()).to.contain('Done');
       });

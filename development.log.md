@@ -4023,4 +4023,8 @@ The directive`s template:
 <div ng-bind="ctrl.fileService.loadMessage"></div>
 ```
 
+##12. TODOS
+
+- Show message in extras modal if platform is not supported (and not to throw error)
+
 

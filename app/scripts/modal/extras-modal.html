@@ -9,13 +9,11 @@
   <!-- Modal content area -->
   <ion-content>
     <form name="extrasModalForm">
-      <div class="list">
-          <save-file></save-file>
-          <load-file></load-file>
-          <about></about>
-      </div>
-      <div class="padding">
-        <button id="doneExtrasButton" type="submit" class="button button-block button-balanced" ng-click="ctrl.hideModal(ctrl.extrasModal)">Done</button>
+      <div class="list padding">
+        <save-file></save-file>
+        <load-file></load-file>
+        <about></about>
+        <button id="doneExtrasButton" type="submit" class="button button-full button-balanced" ng-click="ctrl.hideModal(ctrl.extrasModal)">Done</button>
       </div>
     </form>
   </ion-content>
