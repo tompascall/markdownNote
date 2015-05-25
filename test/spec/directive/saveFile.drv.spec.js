@@ -108,17 +108,17 @@ describe('Directive: saveFile', function () {
         }
       ]);
 
-      var temp = window.localStorage.simpleNotes;
+      var temp = window.localStorage.simpleNote;
       var writer = {
         write: function () {}
       };
       var mock = sinon.mock(writer);
-      window.localStorage.simpleNotes = angular.fromJson(backupData);
+      window.localStorage.simpleNote = angular.fromJson(backupData);
       var notesString = noteData.loadStringNotesFromStorage();
       mock.expects('write').once().withExactArgs(notesString);
       isolated.ctrl.gotFileWriter(writer);
       expect(mock.verify()).to.equal(true);
-      window.localStorage.simpleNotes = temp;
+      window.localStorage.simpleNote = temp;
     });
 
     it('controller.fail should log error', function () {

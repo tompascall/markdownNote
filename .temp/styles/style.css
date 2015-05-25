@@ -4,6 +4,10 @@
   font-size: 30px;
 }
 
+code {
+  font-family: 'Droid Sans Mono', Courier;
+}
+
 .note-title-container {  /* OLD - iOS 6-, Safari 3.1-6, BB7 */  /* TWEENER - IE 10 */
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */

@@ -62,15 +62,15 @@ angular.module('simpleNote')
     },
 
     saveNotesToLocalStorage: function () {
-      window.localStorage.simpleNotes = angular.toJson(this.notes);
+      window.localStorage.simpleNote = angular.toJson(this.notes);
     },
 
     loadNotesFromStorage: function () {
-      return angular.fromJson(window.localStorage.simpleNotes);
+      return angular.fromJson(window.localStorage.simpleNote);
     },
 
     loadStringNotesFromStorage: function () {
-      return window.localStorage.simpleNotes;
+      return window.localStorage.simpleNote;
     },
 
     confirmDeleteNote: function () {
@@ -113,7 +113,7 @@ angular.module('simpleNote')
     },
 
     saveBackupDataToStorage: function (backupData) {
-      window.localStorage.simpleNotes = backupData;
+      window.localStorage.simpleNote = backupData;
     },
 
     backupNotesFromBackupData: function (backupData) {
@@ -123,7 +123,7 @@ angular.module('simpleNote')
 
     welcomeNote: {
       title: 'Welcome!',
-      text: '###Welcome to simpleNotes!\n\n'  +
+      text: '###Welcome to simpleNote!\n\n'  +
         'This is a lightweight, simple app ' +
         'to manage your notes.\n\n' +
         'You can **store** your notes locally, you can **update** of their content' +

@@ -109,31 +109,31 @@ describe('Service: noteData', function () {
     it('should save notes to storage', function () {
       noteData.addNote(note);
       noteData.saveNotesToLocalStorage();
-      var notes = angular.fromJson(window.localStorage.simpleNotes);
+      var notes = angular.fromJson(window.localStorage.simpleNote);
       expect(notes[0].title).to.equal(note.title);
     });
 
     it('should save note to localStorage when add a new note', function () {
-      window.localStorage.removeItem('simpleNotes');
+      window.localStorage.removeItem('simpleNote');
       noteData.initNotes();
       noteData.addNote(note);
-      var notes = angular.fromJson(window.localStorage.simpleNotes);
+      var notes = angular.fromJson(window.localStorage.simpleNote);
       expect(notes[0].title).to.equal(note.title);
     });
 
     it('should initialize localStorage if simleNote field does note exist', function () {
-      window.localStorage.removeItem('simpleNotes');
+      window.localStorage.removeItem('simpleNote');
       noteData.initNotes();
-      var notes = angular.fromJson(window.localStorage.simpleNotes);
+      var notes = angular.fromJson(window.localStorage.simpleNote);
       expect(notes[0].title).to.equal('Welcome!');
     });
 
     it('should not put the Welcome note to the storage,' +
         ' if the simpleNote field exist', function () {
-      window.localStorage.simpleNotes = angular.toJson([]);
+      window.localStorage.simpleNote = angular.toJson([]);
       noteData.initNotes();
       noteData.addNote(note);
-      var notes = angular.fromJson(window.localStorage.simpleNotes);
+      var notes = angular.fromJson(window.localStorage.simpleNote);
       expect(notes.length).to.equal(1);
     });
   });
@@ -155,14 +155,14 @@ describe('Service: noteData', function () {
     });
 
     it('should load notes from storage to notesData service', function () {
-      window.localStorage.removeItem('simpleNotes');
+      window.localStorage.removeItem('simpleNote');
       noteData.addNote(note);
       noteData.notes = noteData.loadNotesFromStorage();
       expect(noteData.notes[0].title).to.equal('Title for testing purpose');
     });
 
     it('should init noteData.notes from localStorage', function () {
-      window.localStorage.simpleNotes = angular.toJson([]);
+      window.localStorage.simpleNote = angular.toJson([]);
       noteData.notes = [];
       noteData.addNote(note);
       noteData.notes = [];
@@ -296,11 +296,11 @@ describe('Service: noteData', function () {
     ]);
 
     it('should load notes from storage as string', function () {
-      var temp = window.localStorage.simpleNotes;
-      window.localStorage.simpleNotes = angular.fromJson(backupData);
+      var temp = window.localStorage.simpleNote;
+      window.localStorage.simpleNote = angular.fromJson(backupData);
       var stringNotes = noteData.loadStringNotesFromStorage();
-      expect(stringNotes).to.equal(window.localStorage.simpleNotes);
-      window.localStorage.simpleNotes = temp;
+      expect(stringNotes).to.equal(window.localStorage.simpleNote);
+      window.localStorage.simpleNote = temp;
     });
   });
 
@@ -314,19 +314,19 @@ describe('Service: noteData', function () {
     ]);
 
     it('should save backup data to localStorage', function () {
-      var temp = window.localStorage.simpleNotes;
+      var temp = window.localStorage.simpleNote;
       noteData.saveBackupDataToStorage(backupData);
-      expect(angular.fromJson(window.localStorage.simpleNotes)[0].title)
+      expect(angular.fromJson(window.localStorage.simpleNote)[0].title)
         .to.equal('mockNote');
-      window.localStorage.simpleNotes = temp;
+      window.localStorage.simpleNote = temp;
     });
 
     it('should backup Notes from backupData', function () {
-      var tempStorage = window.localStorage.simpleNotes;
+      var tempStorage = window.localStorage.simpleNote;
       var tempNotes = noteData.notes;
       noteData.backupNotesFromBackupData(backupData);
       expect(noteData.notes[0].title).to.equal('mockNote');
-      window.localStorage.simpleNotes = tempStorage;
+      window.localStorage.simpleNote = tempStorage;
       noteData.notes = tempNotes;
     });
   });
