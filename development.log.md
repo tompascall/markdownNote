@@ -4023,7 +4023,15 @@ The directive`s template:
 <div ng-bind="ctrl.fileService.loadMessage"></div>
 ```
 
-##12. TODOS
+##.12. Adding custom icon and splash screen
+
+- create your icon template in 192 dp (check out [Photoshop icon template](http://code.ionicframework.com/resources/icon.psd))
+create your splash template in 2208 dp (check out [Photoshop splash screen template](http://code.ionicframework.com/resources/splash.psd))
+- generate your icon and splash screens using [Icon and Splash Screen Image Generation](http://ionicframework.com/docs/cli/icon-splashscreen.html)
+
+
+
+##13. TODOS
 
 - Show message in extras modal if platform is not supported (and not to throw error)
 
