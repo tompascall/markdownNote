@@ -74,6 +74,16 @@ div.text-title th {
     color: white;
 }
 
+div.text-title ul {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+div.text-title ol {
+  list-style-type: decimal;
+  list-style-position: inside;
+}
+
 .text-title-container, .note-close-container, .note-edit-container {
   display: -webkit-box;  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
   display: -ms-flexbox;  /* TWEENER - IE 10 */
