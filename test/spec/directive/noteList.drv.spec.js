@@ -97,18 +97,18 @@ describe('Directive: noteList', function () {
           var index = 0;
           var note = isolated.ctrl.noteData.notes[index];
           isolated.ctrl.toggleNoteState(note);
-          expect(isolated.ctrl.noteData.notes[index].opened).to.equal(true);
-          isolated.ctrl.toggleNoteState(note);
           expect(isolated.ctrl.noteData.notes[index].opened).to.equal(false);
+          isolated.ctrl.toggleNoteState(note);
+          expect(isolated.ctrl.noteData.notes[index].opened).to.equal(true);
         });
 
         it('should toggle state when note element is clicked', function () {
            var index = 0;
            var note = element.find('ion-list .note-item').eq(index);
            note.click();
-           expect(isolated.ctrl.noteData.notes[index].opened).to.equal(true);
-           note.click();
            expect(isolated.ctrl.noteData.notes[index].opened).to.equal(false);
+           note.click();
+           expect(isolated.ctrl.noteData.notes[index].opened).to.equal(true);
         });
       });
 
@@ -116,9 +116,9 @@ describe('Directive: noteList', function () {
         it('should add and remove .ng-hide class when when note element is clicked', function () {
           var note = element.find('ion-list .note-item').eq(0);
           var textAndTags = note.find('#note-text-and-tags');
-          expect(textAndTags).to.have.class('ng-hide');
-          note.click();
           expect(textAndTags).to.not.have.class('ng-hide');
+          note.click();
+          expect(textAndTags).to.have.class('ng-hide');
         });
       });
     });
