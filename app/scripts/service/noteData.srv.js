@@ -7,6 +7,7 @@ angular.module('simpleNote')
 .factory('noteData', function noteDataFactory(tagsFactory, markdown) {
   return {
     notes: [],
+    opened: {},
 
     prepareNote: function (noteInput) {
       var preparedNote = {};
@@ -21,10 +22,15 @@ angular.module('simpleNote')
       return preparedNote;
     },
 
+    setNotesStatus: function (id, opened) {
+      this.opened[id] = opened;
+    },
+
     addNote: function (note) {
       if (angular.isObject(note)) {
         note = this.prepareNote(note);
         this.saveNewNoteToNoteData(note);
+        this.setNotesStatus(this.notes[0].id, false);
       }
       else {
         throw new Error('You are about to inject bad data format');
@@ -47,7 +53,7 @@ angular.module('simpleNote')
         text: note.text,
         htmlText: note.htmlText,
         tags: note.tags,
-        opened: note.opened,
+        //opened: note.opened,
         id: this.createId()
       });
     },

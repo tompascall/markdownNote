@@ -92,23 +92,40 @@ describe('Directive: noteList', function () {
     describe('Add tap handler to noteList directive', function () {
 
       describe('Tap handler to toggle the state of a note', function () {
+        var note = {
+          title: 'Title for testing purpose',
+          text: 'Lorem ipsum dolor sit amet...',
+          tags: ['first note', 'testing purpose']
+        };
+
+        beforeEach(function () {
+          noteData.notes = [];
+        });
+
+        afterEach(function () {
+          noteData.notes = [];
+        });
 
         it('should toggle state', function () {
-          var index = 0;
-          var note = isolated.ctrl.noteData.notes[index];
-          isolated.ctrl.toggleNoteState(note);
-          expect(isolated.ctrl.noteData.notes[index].opened).to.equal(false);
-          isolated.ctrl.toggleNoteState(note);
-          expect(isolated.ctrl.noteData.notes[index].opened).to.equal(true);
+          noteData.addNote(note);
+          var actualNote = noteData.notes[0];
+          var id = actualNote.id;
+          var status = isolated.ctrl.noteData.opened[id];
+
+          isolated.ctrl.toggleNoteState(actualNote);
+          expect(isolated.ctrl.noteData.opened[id]).to.equal(!status);
+          isolated.ctrl.toggleNoteState(actualNote);
+          expect(isolated.ctrl.noteData.opened[id]).to.equal(status);
         });
 
         it('should toggle state when note element is clicked', function () {
            var index = 0;
            var note = element.find('ion-list .note-item').eq(index);
+           var actualNote = noteData.notes[index];
            note.click();
-           expect(isolated.ctrl.noteData.notes[index].opened).to.equal(false);
+           expect(isolated.ctrl.noteData.opened[actualNote.id]).to.equal(false);
            note.click();
-           expect(isolated.ctrl.noteData.notes[index].opened).to.equal(true);
+           expect(isolated.ctrl.noteData.opened[actualNote.id]).to.equal(true);
         });
       });
 
