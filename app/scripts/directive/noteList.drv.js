@@ -24,7 +24,7 @@ function noteList () {
 
     controller.toggleNoteState = function (note) {
       note.opened = !note.opened;
-      $ionicScrollDelegate.scrollTop();
+      $ionicScrollDelegate.resize();
     };
 
     controller.showModal = function (modal) {
