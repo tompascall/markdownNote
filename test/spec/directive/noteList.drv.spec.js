@@ -92,25 +92,12 @@ describe('Directive: noteList', function () {
     describe('Add tap handler to noteList directive', function () {
 
       describe('Tap handler to toggle the state of a note', function () {
-        var note = {
-          title: 'Title for testing purpose',
-          text: 'Lorem ipsum dolor sit amet...',
-          tags: ['first note', 'testing purpose']
-        };
-
-        beforeEach(function () {
-          noteData.notes = [];
-        });
-
-        afterEach(function () {
-          noteData.notes = [];
-        });
 
         it('should toggle state', function () {
-          noteData.addNote(note);
+
           var actualNote = noteData.notes[0];
           var id = actualNote.id;
-          var status = isolated.ctrl.noteData.opened[id];
+          var status = isolated.ctrl.noteData.opened[id] = false;
 
           isolated.ctrl.toggleNoteState(actualNote);
           expect(isolated.ctrl.noteData.opened[id]).to.equal(!status);
@@ -122,10 +109,11 @@ describe('Directive: noteList', function () {
            var index = 0;
            var note = element.find('ion-list .note-item').eq(index);
            var actualNote = noteData.notes[index];
-           note.click();
-           expect(isolated.ctrl.noteData.opened[actualNote.id]).to.equal(false);
+           isolated.ctrl.noteData.opened[actualNote.id] = false;
            note.click();
            expect(isolated.ctrl.noteData.opened[actualNote.id]).to.equal(true);
+           note.click();
+           expect(isolated.ctrl.noteData.opened[actualNote.id]).to.equal(false);
         });
       });
 
@@ -133,9 +121,9 @@ describe('Directive: noteList', function () {
         it('should add and remove .ng-hide class when when note element is clicked', function () {
           var note = element.find('ion-list .note-item').eq(0);
           var textAndTags = note.find('#note-text-and-tags');
-          expect(textAndTags).to.not.have.class('ng-hide');
-          note.click();
           expect(textAndTags).to.have.class('ng-hide');
+          note.click();
+          expect(textAndTags).to.not.have.class('ng-hide');
         });
       });
     });
@@ -189,12 +177,6 @@ describe('Directive: noteList', function () {
 
         it('should have tags icon', function () {
           expect(tagsRow.find('p i')).to.have.class('icon ion-pricetag');
-        });
-      });
-
-      describe('Add transition for open and close note', function () {
-        it('should have an animate-show class', function () {
-          expect(textAndTags).to.have.class('animate-show');
         });
       });
     });

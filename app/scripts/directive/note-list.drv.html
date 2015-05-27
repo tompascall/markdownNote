@@ -12,7 +12,7 @@
         <a class="button button-icon icon icon-right ion-ios-close-outline note-close" ng-click="ctrl.noteData.deleteNote(note, $event)"><i></i></a>
       </div>
     </div>
-    <div id="note-text-and-tags" class="animate-show" ng-show="note.opened">
+    <div id="note-text-and-tags" ng-show="ctrl.noteData.opened[note.id]">
       <div class="text-title-container">
         <div class="text-title text-title-wordwrap" ng-bind-html="note.htmlText" ng-click="ctrl.externalLinkService.handleLinkClicked($event)"></div>
       </div>

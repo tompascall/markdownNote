@@ -46,7 +46,6 @@ function appHeaderDirective () {
         title: controller.title,
         text: controller.text,
         tags: controller.tags,
-        opened: true
       };
 
       noteData.addNote(newNote);

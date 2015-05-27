@@ -12,25 +12,26 @@ angular.module('simpleNote')
     prepareNote: function (noteInput) {
       var preparedNote = {};
       preparedNote.title = noteInput.title;
-      preparedNote.text = noteInput.text;
+      preparedNote.text = noteInput.text || '';
       if (angular.isArray(noteInput.tags)) {
         noteInput.tags = noteInput.tags.join(',');
       }
       preparedNote.tags = tagsFactory.filterTagsString(noteInput.tags);
-      preparedNote.opened = noteInput.opened || false;
-      this.setHtmlText(preparedNote);
+      this.setNoteHtmlText(preparedNote);
       return preparedNote;
     },
 
-    setNotesStatus: function (id, opened) {
-      this.opened[id] = opened;
+    setNotesOpenedStatus: function (id, openedStatus) {
+      if (openedStatus === 'opened') {openedStatus = true};
+      if (openedStatus === 'closed') {openedStatus = false};
+      this.opened[id] = openedStatus;
     },
 
-    addNote: function (note) {
+    addNote: function (note, opened) {
       if (angular.isObject(note)) {
         note = this.prepareNote(note);
         this.saveNewNoteToNoteData(note);
-        this.setNotesStatus(this.notes[0].id, false);
+        this.setNotesOpenedStatus(this.notes[0].id, opened || true);
       }
       else {
         throw new Error('You are about to inject bad data format');
@@ -42,8 +43,8 @@ angular.module('simpleNote')
       this.notes = this.loadNotesFromStorage();
       if (!this.notes) {
         this.notes = [];
-        this.addNote(this.markdownNote);
-        this.addNote(this.welcomeNote);
+        this.addNote(this.markdownNote, 'closed');
+        this.addNote(this.welcomeNote, 'opened');
       }
     },
 
@@ -53,7 +54,6 @@ angular.module('simpleNote')
         text: note.text,
         htmlText: note.htmlText,
         tags: note.tags,
-        //opened: note.opened,
         id: this.createId()
       });
     },
@@ -114,7 +114,7 @@ angular.module('simpleNote')
       this.saveNotesToLocalStorage();
     },
 
-    setHtmlText: function (note) {
+    setNoteHtmlText: function (note) {
       note.htmlText = markdown.convertMarkdownToHTML(note.text);
     },
 
@@ -136,11 +136,10 @@ angular.module('simpleNote')
         ', and you can **filter** them by any keyword.\n\n' +
         'You can also use **markdown language** to style' +
         ' and structure the body of your notes.\n\n' +
-        'If you tap on simpleNote in the header, you can save your notes ' +
-        'to your file system and you can backup your data or sync with another device.\n\n' +
+        'If you **tap on simpleNote** in the header, you can **save your notes** ' +
+        'to your file system and you can **backup your data** or sync with another device.\n\n' +
         'Enjoy it!',
-      tags: ['Welcome note', 'enjoy'],
-      opened: true
+      tags: ['Welcome note', 'enjoy']
     },
 
     markdownNote: {
@@ -191,8 +190,7 @@ angular.module('simpleNote')
 
             '###Images\n\n' +
             '![colibri](images/colibri.jpg)\n\n',
-      tags: 'markdown, keep it simple',
-      opened: false
+      tags: 'markdown, keep it simple'
     }
   };
 });
