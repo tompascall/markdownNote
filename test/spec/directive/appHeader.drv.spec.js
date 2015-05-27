@@ -184,7 +184,6 @@ describe('Directive: appHeader', function () {
           text: 'test text',
           htmlText: '<p>test text</p>',
           tags: ['test tag1', 'test tag2'],
-          opened: false,
           id: id
         }
         isolated.ctrl.addNewNote();

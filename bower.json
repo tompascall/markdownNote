@@ -2,7 +2,7 @@
   "name": "SimpleNote",
   "version": "0.0.0",
   "dependencies": {
-    "ionic": "v1.0.0-rc.5",
+    "ionic": "~1.0.0",
     "ngCordova": "0.1.12-alpha",
     "pagedown": "~1.1.0",
     "pagedown-extra": "*",

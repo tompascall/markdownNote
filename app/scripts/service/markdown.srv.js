@@ -1,6 +1,8 @@
 // markdown.srv.js
 // dependency: install pagedown
 // https://code.google.com/p/pagedown/wiki/PageDown
+// install pagedown-extra
+// https://github.com/jmcmanus/pagedown-extra
 
 'use strict';
 

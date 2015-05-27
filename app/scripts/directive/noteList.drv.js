@@ -23,8 +23,8 @@ function noteList () {
     });
 
     controller.toggleNoteState = function (note) {
-      note.opened = !note.opened;
-      $ionicScrollDelegate.scrollTop();
+      controller.noteData.opened[note.id] = !controller.noteData.opened[note.id];
+      $ionicScrollDelegate.resize();
     };
 
     controller.showModal = function (modal) {

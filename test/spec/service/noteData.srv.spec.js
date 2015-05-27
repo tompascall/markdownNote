@@ -21,18 +21,19 @@ describe('Service: noteData', function () {
       tags: 'test tag1, test tag2'
     };
 
-    it('should give back an object with title', function () {
+    beforeEach(function () {
       preparedNote = noteData.prepareNote(note);
+    });
+
+    it('should give back an object with title', function () {
       expect(preparedNote.title).to.equal('test title');
     });
 
     it('should give back an object with text', function () {
-      preparedNote = noteData.prepareNote(note);
       expect(preparedNote.text).to.equal('test text');
     });
 
     it('should give back tags array', function () {
-      preparedNote = noteData.prepareNote(note);
       expect(preparedNote.tags).to.deep.equal(['test tag1', 'test tag2']);
     });
   });
@@ -74,7 +75,6 @@ describe('Service: noteData', function () {
       expect(noteData.notes[0].title).to.equal('Title for testing purpose');
       expect(noteData.notes[0].text).to.equal('Lorem ipsum dolor sit amet...');
       expect(noteData.notes[0].tags).to.deep.equal(['first note', 'testing purpose']);
-      expect(noteData.notes[0].opened).to.equal(false);
       expect(noteData.notes[0].id).to.equal(0);
 
       var note2 = {
@@ -87,6 +87,34 @@ describe('Service: noteData', function () {
       expect(noteData.notes.length).to.equal(2);
       expect(noteData.notes[0].title).to.equal('Second note');
       expect(noteData.notes[0].id).to.equal(1);
+    });
+  });
+
+  describe('Add notesStatus object to noteData service to store opened/cosed status', function () {
+    var note = {
+      title: 'Title for testing purpose',
+      text: 'Lorem ipsum dolor sit amet...',
+      tags: ['first note', 'testing purpose']
+    };
+
+    beforeEach(function () {
+      noteData.notes = [];
+    });
+
+    afterEach(function () {
+      noteData.notes = [];
+    });
+
+    it('should set opened object', function () {
+      noteData.addNote(note); // note.id = 0
+      var id = '0';
+      noteData.setNotesOpenedStatus(id, false);
+      expect(noteData.opened['0']).to.equal(false);
+    });
+
+    it('should set opened object to false when add note', function () {
+      noteData.addNote(note);
+      expect(noteData.opened['0']).to.equal(true);
     });
   });
 
@@ -121,7 +149,7 @@ describe('Service: noteData', function () {
       expect(notes[0].title).to.equal(note.title);
     });
 
-    it('should initialize localStorage if simleNote field does note exist', function () {
+    it('should initialize localStorage if simpleNote field does note exist', function () {
       window.localStorage.removeItem('simpleNote');
       noteData.initNotes();
       var notes = angular.fromJson(window.localStorage.simpleNote);
@@ -256,13 +284,13 @@ describe('Service: noteData', function () {
 
     it('should call markdown.convertMarkdownToHTML', function () {
       sinon.spy(markdown, 'convertMarkdownToHTML');
-      noteData.setHtmlText(note);
+      noteData.setNoteHtmlText(note);
       expect(markdown.convertMarkdownToHTML.calledOnce).to.equal(true);
       markdown.convertMarkdownToHTML.restore();
     });
 
     it('should set HtmlText of note', function () {
-      noteData.setHtmlText(note);
+      noteData.setNoteHtmlText(note);
       expect(note.htmlText).to.equal('<h2>Test</h2>');
     });
 

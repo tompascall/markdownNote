@@ -94,21 +94,26 @@ describe('Directive: noteList', function () {
       describe('Tap handler to toggle the state of a note', function () {
 
         it('should toggle state', function () {
-          var index = 0;
-          var note = isolated.ctrl.noteData.notes[index];
-          isolated.ctrl.toggleNoteState(note);
-          expect(isolated.ctrl.noteData.notes[index].opened).to.equal(true);
-          isolated.ctrl.toggleNoteState(note);
-          expect(isolated.ctrl.noteData.notes[index].opened).to.equal(false);
+
+          var actualNote = noteData.notes[0];
+          var id = actualNote.id;
+          var status = isolated.ctrl.noteData.opened[id] = false;
+
+          isolated.ctrl.toggleNoteState(actualNote);
+          expect(isolated.ctrl.noteData.opened[id]).to.equal(!status);
+          isolated.ctrl.toggleNoteState(actualNote);
+          expect(isolated.ctrl.noteData.opened[id]).to.equal(status);
         });
 
         it('should toggle state when note element is clicked', function () {
            var index = 0;
            var note = element.find('ion-list .note-item').eq(index);
+           var actualNote = noteData.notes[index];
+           isolated.ctrl.noteData.opened[actualNote.id] = false;
            note.click();
-           expect(isolated.ctrl.noteData.notes[index].opened).to.equal(true);
+           expect(isolated.ctrl.noteData.opened[actualNote.id]).to.equal(true);
            note.click();
-           expect(isolated.ctrl.noteData.notes[index].opened).to.equal(false);
+           expect(isolated.ctrl.noteData.opened[actualNote.id]).to.equal(false);
         });
       });
 
@@ -172,12 +177,6 @@ describe('Directive: noteList', function () {
 
         it('should have tags icon', function () {
           expect(tagsRow.find('p i')).to.have.class('icon ion-pricetag');
-        });
-      });
-
-      describe('Add transition for open and close note', function () {
-        it('should have an animate-show class', function () {
-          expect(textAndTags).to.have.class('animate-show');
         });
       });
     });
