@@ -22,8 +22,8 @@ angular.module('simpleNote')
     },
 
     setNotesOpenedStatus: function (id, openedStatus) {
-      if (openedStatus === 'opened') {openedStatus = true};
-      if (openedStatus === 'closed') {openedStatus = false};
+      if (openedStatus === 'opened') {openedStatus = true;}
+      if (openedStatus === 'closed') {openedStatus = false;}
       this.opened[id] = openedStatus;
     },
 
