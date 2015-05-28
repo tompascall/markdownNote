@@ -55,6 +55,12 @@ function appHeaderDirective () {
       controller.hideModal(controller.newNoteModal);
     };
 
+    controller.addTestNotes = function (amount) {
+      for (var i = 0; i < amount; i++) {
+       controller.noteData.addNote(controller.noteData.welcomeNote);
+      }
+    };
+
     $scope.$on('$destroy', function() {
       controller.newNoteModal.remove();
       controller.extrasModal.remove();
