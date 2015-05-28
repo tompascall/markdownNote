@@ -8,13 +8,18 @@ code {
   font-family: 'Droid Sans Mono', Courier;
 }
 
+a {
+  text-decoration: none;
+  color: red;
+}
+
 .note-title-container {
   display: -webkit-box;  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
   display: -ms-flexbox;  /* TWEENER - IE 10 */
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
   align-items: center;
-  padding-top: 10px;
+  /*padding-top: 10px;*/
 }
 
 .note-title {
@@ -27,12 +32,12 @@ code {
   border-bottom: 4px #ccc groove;
 }
 .note-item h2 {
-  font-size: 16px
+  font-size: 18px
 }
 
 .wordwrap {
   white-space: normal;
-  line-height: 20px;
+  line-height: 25px;
 }
 
 .text-title-wordwrap {
@@ -45,14 +50,20 @@ code {
   width: 100%;
 }
 
+
+div.text-title p, div.text-title li, div.text-title code, div.text-title dt, div.text-title dd {
+  font-size: 18px;
+  line-height: 22px;
+}
+
+div.text-title p, div.text-title li {
+  margin-top: 10px;
+}
+
 div.text-title h2 {
   font-size: 28px;
 }
 
-a {
-  text-decoration: none;
-  color: red;
-}
 
 div.text-title em {
   font-style: italic;
@@ -61,12 +72,12 @@ div.text-title em {
 div.text-title table {
     border-collapse: collapse;
     border: 1px solid green;
-
 }
 
 div.text-title td, div.text-title th {
   border: 1px solid #98bf21;
   padding: 3px 7px 2px 7px;
+  font-size: 18px;
 }
 
 div.text-title th {
