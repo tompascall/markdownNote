@@ -1,7 +1,7 @@
 <!-- noteList.drv.html -->
 
 <ion-list>
-  <div class="note-item" ng-repeat="note in ctrl.noteData.notes | filter: ctrl.searchNote.searchTerm" ng-click="ctrl.toggleNoteState(note)">
+  <div class="note-item" ng-repeat="note in ctrl.noteData.notes | filter: ctrl.searchNote.searchTerm" ng-click="ctrl.toggleNoteState(note)" measure-time>
     <div class="row">
       <div class="note-title-container col col-80">
         <h2 class='note-title'>
