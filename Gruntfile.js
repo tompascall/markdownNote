@@ -44,7 +44,7 @@ module.exports = function (grunt) {
           ENV: {
             name: 'development',
             apiEndpoint: '',
-            pageSize: 10
+            pageSize: 100
           }
         }
       },

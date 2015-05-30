@@ -41,8 +41,11 @@ describe('Service: page', function () {
     });
 
     it('should count numberOfPages', function () {
-      ENV.pageSize = 10;
+      var tempSize = pageService.pageSize
+      pageService.pageSize = 10;
+      pageService.setNumberOfPages(noteData.notes);
       expect(pageService.numberOfPages).to.equal(4);
+      pageService.pageSize = tempSize;
     });
   });
 });

@@ -2,6 +2,6 @@
 
  angular.module('config', [])
 
-.constant('ENV', {name:'development',apiEndpoint:'',pageSize:10})
+.constant('ENV', {name:'development',apiEndpoint:'',pageSize:100})
 
 ;
