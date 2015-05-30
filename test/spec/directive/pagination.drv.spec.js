@@ -33,7 +33,7 @@ describe('Directive: pagination', function () {
     });
 
     it('should call setCurrentPage with arg -1', function () {
-      var mock = sinon.mock(isolated.ctrl);
+      var mock = sinon.mock(isolated.ctrl.pageService);
       mock.expects('setCurrentPage').withExactArgs(-1);
       var backwardButton = element.find('button.backwardButton');
       backwardButton.click();
@@ -41,7 +41,7 @@ describe('Directive: pagination', function () {
     });
 
     it('should call setCurrentPage with arg +1', function () {
-      var mock = sinon.mock(isolated.ctrl);
+      var mock = sinon.mock(isolated.ctrl.pageService);
       mock.expects('setCurrentPage').withExactArgs(1);
       var forwardButton = element.find('button.forwardButton');
       forwardButton.click();

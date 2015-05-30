@@ -2,7 +2,8 @@
 
 'use strict';
 
-function pageService (ENV, noteData) {
+function pageService (ENV) {
+  /*jshint -W004 */  // to skip 'pageService is already defined' jshint message
   var pageService = {
     currentPage: 0,
     pageSize: ENV.pageSize,
@@ -11,7 +12,21 @@ function pageService (ENV, noteData) {
     // console.log(noteData.notes.length, pageService.pageSize);
     pageService.numberOfPages = Math.ceil(displayedItems.length / pageService.pageSize);
   };
-  pageService.setNumberOfPages(noteData.notes);
+
+  pageService.setCurrentPage = function (offset) {
+    if (offset > 0) {
+      if (this.currentPage < this.numberOfPages) {
+        this.currentPage = this.currentPage + offset;
+      }
+    }
+    else {
+      if (this.currentPage > 0) {
+        this.currentPage = this.currentPage + offset;
+      }
+    }
+    console.log('current page: ' + this.currentPage);
+    console.log('number of pages: ' + this.numberOfPages);
+  };
   return pageService;
 }
 

@@ -5,7 +5,8 @@
 function noteList () {
 
 
-  function noteListCtrl (noteData, $ionicModal, $scope, searchNote, $ionicScrollDelegate, externalLinkService) {
+  function noteListCtrl (noteData, $ionicModal, $scope, searchNote,
+    $ionicScrollDelegate, externalLinkService, pageService) {
 
     /*jshint validthis: true */
     var controller = this;
@@ -13,6 +14,8 @@ function noteList () {
     controller.noteData = noteData;
     controller.searchNote = searchNote;
     controller.externalLinkService = externalLinkService;
+    controller.pageService = pageService;
+    pageService.setNumberOfPages(noteData.notes);
 
     $ionicModal.fromTemplateUrl('scripts/modal/edit-note-modal.html', {
         scope: $scope,

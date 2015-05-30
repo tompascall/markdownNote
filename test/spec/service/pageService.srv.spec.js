@@ -43,6 +43,6 @@ describe('Service: page', function () {
     it('should count numberOfPages', function () {
       ENV.pageSize = 10;
       expect(pageService.numberOfPages).to.equal(4);
-  });
+    });
   });
 });

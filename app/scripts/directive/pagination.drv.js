@@ -10,20 +10,6 @@ function pagination () {
    /*jshint validthis: true */
     var controller = this;
     controller.pageService = pageService;
-
-    controller.setCurrentPage = function (offset) {
-      var currentPage = controller.pageService.currentPage;
-      if (offset > 0) {
-        if (currentPage < controller.pageService.numberOfPages) {
-          controller.pageService.currentPage = currentPage + offset;
-        }
-      }
-      else {
-        if (currentPage > 0) {
-          controller.pageService.currentPage = currentPage + offset;
-        }
-      }
-    };
   }
 
   return {
