@@ -505,4 +505,13 @@ describe('Directive: noteList', function () {
       window.open.restore();
     });
   });
+
+  describe('Pagination', function () {
+    it('should contain pagination directive', function () {
+      expect(element.find('div.pagination button').eq(0))
+        .to.have.class('backwardButton');
+      expect(element.find('div.pagination button').eq(1))
+        .to.have.class('forwardButton');
+    });
+  });
 });
