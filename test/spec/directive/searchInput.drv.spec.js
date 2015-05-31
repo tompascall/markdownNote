@@ -12,15 +12,17 @@ describe('Directive: searchInput', function () {
   beforeEach(function () {
     module('simpleNote');
     module('templates');
-    inject(function (_$compile_, _$rootScope_, _searchNote_) {
-      $compile = _$compile_;
-      scope = _$rootScope_.$new();
-      element = $compile('<search-input></search-input>')(scope);
-      scope.$digest();
-      isolated = element.isolateScope();
-      angular.element(document).find('body').append(element); // for rendering css
-      searchNote = _searchNote_;
+
+    inject(function ($injector) {
+      $compile = $injector.get('$compile');
+      scope = $injector.get('$rootScope').$new();
+      searchNote = $injector.get('searchNote');
     });
+
+    element = $compile('<search-input></search-input>')(scope);
+    scope.$digest();
+    isolated = element.isolateScope();
+    angular.element(document).find('body').append(element); // for rendering css
   });
 
   describe('Testing input element', function () {
@@ -42,6 +44,18 @@ describe('Directive: searchInput', function () {
 
     it('should bind searchNote service to searchInput directive', function () {
       expect(isolated.ctrl.searchNote.searchTerm).to.equal(searchNote.searchTerm);
+    });
+  });
+
+  describe('Test watching inputfield', function () {
+    it('should call applySearchNotes if inputfield value is changed', function () {
+      sinon.spy(isolated.ctrl, 'applySearchNotes');
+      scope.$apply(function () {
+        element.find('input')
+          .val('Test').trigger('input');
+      });
+      expect(isolated.ctrl.applySearchNotes.called).to.equal(true);
+      isolated.ctrl.applySearchNotes.restore();
     });
   });
 });

@@ -23,9 +23,5 @@ describe('Service: searchNotesFilter', function () {
     it('should', function () {
       expect(searchNotesFilter(testArray,'apple')).to.deep.equal(['apple1','apple2']);
     });
-    // it('should give back a part of an array started from the given index', function () {
-    //   var startIndex = 2;
-    //   expect(startFromFilter(testArray, startIndex)).to.deep.equal([2,3,4,5]);
-    // });
   });
 });

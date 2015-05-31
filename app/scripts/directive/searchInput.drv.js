@@ -4,7 +4,21 @@
 
 function searchInputController (searchNote) {
   /*jshint validthis: true */
-  this.searchNote = searchNote;
+  var controller = this;
+  controller.searchNote = searchNote;
+
+  controller.applySearchNotes = function () {
+    console.log('in applySearchNotes');
+  };
+}
+
+function link (scope) {
+  scope.$watch('ctrl.searchNote.searchTerm', function (newValue, oldValue) {
+    if (newValue !== oldValue) {
+      scope.ctrl.applySearchNotes();
+    }
+    else {console.log('nothing is changed');}
+  });
 }
 
 function searchInput () {
@@ -14,7 +28,8 @@ function searchInput () {
     scope: {},
     controller: searchInputController,
     controllerAs: 'ctrl',
-    bindToController: true
+    bindToController: true,
+    link: link
   };
 }
 
