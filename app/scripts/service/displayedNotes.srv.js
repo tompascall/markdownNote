@@ -12,6 +12,6 @@ function displayedNotes () {
       this.notes = referencedNotes.slice(); // clone array
     }
   };
-};
+}
 
 angular.module('simpleNote').factory('displayedNotes', displayedNotes);

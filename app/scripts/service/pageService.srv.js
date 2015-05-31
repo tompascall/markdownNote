@@ -2,7 +2,7 @@
 
 'use strict';
 
-function pageService (ENV) {
+function pageService (ENV, displayedNotes) {
   /*jshint -W004 */  // to skip 'pageService is already defined' jshint message
   var pageService = {
     currentPage: 0,
@@ -26,6 +26,7 @@ function pageService (ENV) {
     }
     console.log('current page: ' + this.currentPage);
     console.log('number of pages: ' + this.numberOfPages);
+    console.log('displayedNotes.notes.length: ' + displayedNotes.notes.length);
   };
   return pageService;
 }

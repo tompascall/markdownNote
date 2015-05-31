@@ -9,11 +9,13 @@ describe('Service: noteData', function () {
     var markdown;
     var noteList;
     var scope;
+    var displayedNotes;
 
   beforeEach(inject(function ($injector) {
     noteData = $injector.get('noteData');
     markdown = $injector.get('markdown');
     scope = $injector.get('$rootScope');
+    displayedNotes = $injector.get('displayedNotes');
     //noteList = $injector.get('noteList');
   }));
 
@@ -399,31 +401,32 @@ describe('Service: noteData', function () {
     });
   });
 
-  // describe('Update displayedNotes when add or remove notes', function () {
-  //   var tempNotes;
-  //   var tempStorage;
-  //   var testNotes = [{
-  //       title: 'mockNote',
-  //       text: 'mockText',
-  //       tags: ['mockTag'],
-  //       id: 12
-  //     }];
+  describe('Update displayedNotes when add or remove notes', function () {
+    var tempNotes;
+    var tempStorage;
+    var testNote = {
+        title: 'mockNote',
+        text: 'mockText',
+        tags: ['mockTag'],
+        id: 12
+      };
 
-  //   beforeEach(function () {
-  //     tempNotes = noteData.notes.slice();
-  //     noteData.notes = testNotes;
-  //     tempStorage = window.localStorage.simpleNote;
-  //     window.localStorage.simpleNote = angular.toJson(testNotes);
-  //     //noteList.init();
-  //   });
+    beforeEach(function () {
+      tempNotes = noteData.notes.slice();
+      noteData.notes = [];
+      tempStorage = window.localStorage.simpleNote;
+      window.localStorage.simpleNote = angular.toJson([]);
+      //noteList.init();
+    });
 
-  //   afterEach(function () {
-  //     noteData.notes = tempNotes.slice();
-  //     window.localStorage.simpleNote = tempStorage;
-  //   });
+    afterEach(function () {
+      noteData.notes = tempNotes.slice();
+      window.localStorage.simpleNote = tempStorage;
+    });
 
-  //   it('should update displayedNotes after add note', function () {
-
-  //   });
-  // });
+    it('should update displayedNotes after add note', function () {
+      noteData.addNote(testNote);
+      expect(displayedNotes.notes[0].title).to.equal('mockNote');
+    });
+  });
 });
