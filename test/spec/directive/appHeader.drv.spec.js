@@ -171,6 +171,21 @@ describe('Directive: appHeader', function () {
     describe('Add newNote method to addHeader directive', function () {
       var note;
 
+      var tempNotes;
+      var tempStorage;
+
+      beforeEach(function () {
+        tempNotes = noteData.notes.slice();
+        noteData.notes = [];
+        tempStorage = window.localStorage.simpleNote;
+        window.localStorage.simpleNote = angular.toJson([]);
+      });
+
+      afterEach(function () {
+        noteData.notes = tempNotes.slice();
+        window.localStorage.simpleNote = tempStorage;
+      });
+
       beforeEach(function () {
         isolated.ctrl.title = 'test title';
         isolated.ctrl.text = 'test text';
@@ -192,6 +207,20 @@ describe('Directive: appHeader', function () {
     });
 
     describe('Test: Create tap handler to Create Note button', function () {
+      var tempNotes;
+      var tempStorage;
+
+      beforeEach(function () {
+        tempNotes = noteData.notes.slice();
+        noteData.notes = [];
+        tempStorage = window.localStorage.simpleNote;
+        window.localStorage.simpleNote = angular.toJson([]);
+      });
+
+      afterEach(function () {
+        noteData.notes = tempNotes.slice();
+        window.localStorage.simpleNote = tempStorage;
+      });
 
       beforeEach(function () {
         isolated.ctrl.title = 'test title';

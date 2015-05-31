@@ -6,24 +6,30 @@ function noteList () {
 
 
   function noteListCtrl (noteData, $ionicModal, $scope, searchNote,
-    $ionicScrollDelegate, externalLinkService, pageService) {
+    $ionicScrollDelegate, externalLinkService, pageService, displayedNotes) {
 
     /*jshint validthis: true */
     var controller = this;
-    noteData.initNotes();
-    controller.noteData = noteData;
-    controller.searchNote = searchNote;
-    controller.externalLinkService = externalLinkService;
-    controller.pageService = pageService;
-    pageService.setNumberOfPages(noteData.notes);
+    controller.init = function () {
+      noteData.initNotes();
+      controller.noteData = noteData;
+      controller.searchNote = searchNote;
+      controller.externalLinkService = externalLinkService;
+      controller.pageService = pageService;
+      pageService.setNumberOfPages(noteData.notes);
+      controller.displayedNotes = displayedNotes;
+      displayedNotes.setDisplayedNotes(noteData.notes);
 
-    $ionicModal.fromTemplateUrl('scripts/modal/edit-note-modal.html', {
+      $ionicModal.fromTemplateUrl('scripts/modal/edit-note-modal.html', {
         scope: $scope,
         focusFirstInput: false
       })
-    .then(function (modal) {
-      controller.editNoteModal = modal;
-    });
+      .then(function (modal) {
+        controller.editNoteModal = modal;
+      });
+    };
+
+    controller.init();
 
     controller.toggleNoteState = function (note) {
       controller.noteData.opened[note.id] = !controller.noteData.opened[note.id];

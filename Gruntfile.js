@@ -44,7 +44,7 @@ module.exports = function (grunt) {
           ENV: {
             name: 'development',
             apiEndpoint: '',
-            pageSize: 100
+            pageSize: 30
           }
         }
       },
@@ -339,6 +339,7 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/<%= yeoman.scripts %>/app.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/configuration.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
+          '<%= yeoman.test %>/spec/testConfig.spec.js',
           '<%= yeoman.test %>/mock/**/*.js',
           '<%= yeoman.test %>/spec/**/*.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.html',
