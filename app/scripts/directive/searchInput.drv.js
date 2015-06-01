@@ -13,12 +13,12 @@ function searchInputController (searchNote) {
 }
 
 function link (scope) {
-  scope.$watch('ctrl.searchNote.searchTerm', function (newValue, oldValue) {
+  scope.$watch('ctrl.searchNote.searchTerm.$', function (newValue, oldValue) {
     if (newValue !== oldValue) {
       scope.ctrl.applySearchNotes();
     }
     else {console.log('nothing is changed');}
-  });
+  }, true);
 }
 
 function searchInput () {
