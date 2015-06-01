@@ -4034,5 +4034,6 @@ create your splash template in 2208 dp (check out [Photoshop splash screen templ
 ##13. TODOS
 
 - Show message in extras modal if platform is not supported (and not to throw error)
+- check if searchTerm starts with any cache entry name, in this case you should filter based on displayedNotes, otherwise have to filter based on noteData.notes
 
 

@@ -52,7 +52,7 @@ describe('Directive: pagination', function () {
       pageService.currentPage = 1;
       var backwardButton = element.find('button.backwardButton');
       backwardButton.click();
-        expect(pageService.currentPage).to.equal(0);
+      expect(pageService.currentPage).to.equal(0);
     });
 
     it('should leave currentPage to 0 if currentpage is 0 and' +
@@ -73,11 +73,11 @@ describe('Directive: pagination', function () {
 
     it('should leave currentPage if currentpage is equal to numberOfPages and' +
       'setCurrentPage was called with 1', function () {
-      pageService.currentPage = 4;
-      pageService.numberOfPages = 4;
+      pageService.currentPage = 0;
+      pageService.numberOfPages = 1;
       var forwardButton = element.find('button.forwardButton');
       forwardButton.click();
-      expect(pageService.currentPage).to.equal(4);
+      expect(pageService.currentPage).to.equal(0);
     });
   });
 });

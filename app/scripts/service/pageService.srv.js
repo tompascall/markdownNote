@@ -28,6 +28,12 @@ function pageService (ENV, displayedNotes) {
     console.log('number of pages: ' + this.numberOfPages);
     console.log('displayedNotes.notes.length: ' + displayedNotes.notes.length);
   };
+
+  pageService.updatePages = function (displayedItems) {
+    this.setNumberOfPages(displayedItems);
+    this.currentPage = 1;
+  };
+
   return pageService;
 }
 

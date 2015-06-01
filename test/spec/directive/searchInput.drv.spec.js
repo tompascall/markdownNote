@@ -8,6 +8,10 @@ describe('Directive: searchInput', function () {
   var element;
   var isolated;
   var searchNote;
+  var displayedNotes;
+  var searchNotesFilter;
+  var noteData;
+  var pageService;
 
   beforeEach(function () {
     module('simpleNote');
@@ -17,6 +21,10 @@ describe('Directive: searchInput', function () {
       $compile = $injector.get('$compile');
       scope = $injector.get('$rootScope').$new();
       searchNote = $injector.get('searchNote');
+      displayedNotes = $injector.get('displayedNotes');
+      searchNotesFilter = $injector.get('searchNotesFilter');
+      noteData = $injector.get('noteData');
+      pageService = $injector.get('pageService');
     });
 
     element = $compile('<search-input></search-input>')(scope);
@@ -56,6 +64,60 @@ describe('Directive: searchInput', function () {
       });
       expect(isolated.ctrl.applySearchNotes.called).to.equal(true);
       isolated.ctrl.applySearchNotes.restore();
+    });
+
+    it('should call applySearchNotes with searchTerm if inputfield value is changed', function () {
+      var mock = sinon.mock(isolated.ctrl);
+      var searchTerm = 'Test';
+      mock.expects('applySearchNotes').withArgs(searchTerm);
+      scope.$apply(function () {
+        element.find('input')
+          .val(searchTerm).trigger('input');
+      });
+      expect(mock.verify()).to.equal(true);
+    });
+
+    it('applySearchNotes should update displayedNotes', function () {
+      var tempNoteData = noteData.notes.slice();
+      var tempDisplayedNotes = displayedNotes.notes.slice();
+      noteData.notes = [
+        {
+          title: 'testTitle1 testTitle',
+          text: 'Text1',
+          tags: ['testTag1']
+        },
+        {
+          title: 'testTitle2 testTitle',
+          text: 'Text2 testText',
+          tags: ['testTag2']
+        },
+        {
+          title: 'testTitle3 testTitle',
+          text: 'Text3 testText',
+          tags: ['testTag3']
+        }
+      ];
+      displayedNotes.notes = noteData.notes.slice();
+
+      isolated.ctrl.applySearchNotes('testTitle1');
+      expect(displayedNotes.notes.length).to.equal(1);
+      expect(displayedNotes.notes[0].title).to.equal('testTitle1 testTitle');
+
+      isolated.ctrl.applySearchNotes('');
+      expect(displayedNotes.notes.length).to.equal(3);
+
+      noteData.notes = tempNoteData.slice();
+      displayedNotes.notes = tempDisplayedNotes.slice();
+    });
+
+    it('should recalculate number of pages when apply searching', function () {
+      var tempCurrentPage = pageService.currentPage;
+      pageService.currentPage = 12;
+      var mock = sinon.mock(pageService);
+      mock.expects('setNumberOfPages').withArgs(displayedNotes.notes);
+      isolated.ctrl.applySearchNotes('testTitle1');
+      expect(pageService.currentPage).to.equal(0);
+      expect(mock.verify()).to.equal(true);
     });
   });
 });

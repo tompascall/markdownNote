@@ -48,4 +48,20 @@ describe('Service: page', function () {
       pageService.pageSize = tempSize;
     });
   });
+
+  describe('Updating', function () {
+    it('should update number of pages and current page', function () {
+      var tempNumberOfPages = pageService.numberOfPages;
+      var tempCurrentPage = pageService.currentPage;
+      var mockData = Array(100);
+      pageService.updatePages(mockData);
+
+      expect(pageService.currentPage).to.equal(0);
+      expect(pageService.numberOfPages)
+      .to.equal(Math.ceil(mockData.length / pageService.pageSize));
+
+      pageService.numberOfPages = tempNumberOfPages;
+      pageService.currentPage = tempCurrentPage;
+    });
+  });
 });

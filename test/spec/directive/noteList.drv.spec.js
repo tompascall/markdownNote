@@ -419,58 +419,6 @@ describe('Directive: noteList', function () {
     });
   });
 
-  describe('Test: Create filter in `noteList` directive using `searchNote.searchTerm`', function () {
-    var tempStorage;
-    var tempNotes;
-
-    beforeEach(function () {
-      tempStorage = window.localStorage.simpleNote;
-      tempNotes = noteData.notes.slice();
-      noteData.notes = [
-        {
-          title: 'testTitle1 testTitle',
-          text: 'Text1',
-          tags: ['testTag1']
-        },
-        {
-          title: 'testTitle2 testTitle',
-          text: 'Text2 testText',
-          tags: ['testTag2']
-        },
-        {
-          title: 'testTitle3 testTitle',
-          text: 'Text3 testText',
-          tags: ['testTag3']
-        }
-      ];
-      noteData.updateDisplayedNotes();
-      noteData.saveNotesToLocalStorage();
-    });
-
-    afterEach(function () {
-      noteData.notes = tempNotes.slice();
-      window.localStorage.simpleNote = tempStorage;
-    });
-
-    it('should get filter title', function () {
-      searchNote.searchTerm = 'testTitle1';
-      scope.$digest();
-      expect(element.find('div.note-item').length).to.equal(1);
-    });
-
-    it('should filter text', function () {
-      searchNote.searchTerm = 'testText';
-      scope.$digest();
-      expect(element.find('div.note-item').length).to.equal(2);
-    });
-
-    it('should filter tags', function () {
-      searchNote.searchTerm = 'testTag3';
-      scope.$digest();
-      expect(element.find('div.note-item').length).to.equal(1);
-    });
-  });
-
   describe('Populate note.htmlText property via ngBindHtml', function () {
 
     var tempStorage;
