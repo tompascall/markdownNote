@@ -4,7 +4,7 @@
 
 angular.module('simpleNote')
 
-.factory('noteData', function noteDataFactory(tagsFactory, markdown, displayedNotes) {
+.factory('noteData', function noteDataFactory(tagsFactory, markdown, displayedNotes, pageService) {
   return {
     notes: [],
     opened: {},
@@ -47,6 +47,7 @@ angular.module('simpleNote')
         this.addNote(this.markdownNote, 'closed');
         this.addNote(this.welcomeNote, 'opened');
       }
+      this.updateDisplayedNotes();
     },
 
     saveNewNoteToNoteData: function (note) {
@@ -61,6 +62,7 @@ angular.module('simpleNote')
 
     updateDisplayedNotes: function () {
       displayedNotes.notes = this.notes;
+      pageService.updatePages(displayedNotes.notes);
     },
 
     createId: function () {

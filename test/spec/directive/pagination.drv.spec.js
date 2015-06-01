@@ -29,7 +29,7 @@ describe('Directive: pagination', function () {
   describe('Test backward and forward buttons', function () {
 
     it('should have two buttons', function () {
-      expect(element.find('button').length).to.equal(2);
+      expect(element.find('button').length).to.equal(4);
     });
 
     it('should call setCurrentPage with arg -1', function () {

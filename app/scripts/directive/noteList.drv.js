@@ -18,7 +18,6 @@ function noteList () {
       controller.pageService = pageService;
       pageService.setNumberOfPages(noteData.notes);
       controller.displayedNotes = displayedNotes;
-      displayedNotes.setDisplayedNotes(noteData.notes);
 
       $ionicModal.fromTemplateUrl('scripts/modal/edit-note-modal.html', {
         scope: $scope,
