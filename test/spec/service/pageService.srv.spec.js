@@ -37,7 +37,7 @@ describe('Service: page', function () {
 
     it('should init pageSize and currentPage value', function () {
       expect(pageService.pageSize).to.equal(ENV.pageSize);
-      expect(pageService.currentPage).to.equal(0);
+      expect(pageService.currentPage).to.equal(1);
     });
 
     it('should count numberOfPages', function () {
@@ -56,7 +56,7 @@ describe('Service: page', function () {
       var mockData = Array(100);
       pageService.updatePages(mockData);
 
-      expect(pageService.currentPage).to.equal(0);
+      expect(pageService.currentPage).to.equal(1);
       expect(pageService.numberOfPages)
       .to.equal(Math.ceil(mockData.length / pageService.pageSize));
 

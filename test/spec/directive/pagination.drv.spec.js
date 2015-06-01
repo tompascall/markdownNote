@@ -49,35 +49,35 @@ describe('Directive: pagination', function () {
     });
 
     it('should decrement currentpage number if setCurrentPage was called with -1', function () {
-      pageService.currentPage = 1;
+      pageService.currentPage = 2;
       var backwardButton = element.find('button.backwardButton');
       backwardButton.click();
-      expect(pageService.currentPage).to.equal(0);
+      expect(pageService.currentPage).to.equal(1);
     });
 
     it('should leave currentPage to 0 if currentpage is 0 and' +
       'setCurrentPage was called with -1', function () {
-      pageService.currentPage = 0;
+      pageService.currentPage = 1;
       var backwardButton = element.find('button.backwardButton');
       backwardButton.click();
-      expect(pageService.currentPage).to.equal(0);
+      expect(pageService.currentPage).to.equal(1);
     });
 
     it('should increment currentpage number if setCurrentPage was called with 1', function () {
-      pageService.currentPage = 0;
+      pageService.currentPage = 1;
       pageService.numberOfPages = 4;
       var forwardButton = element.find('button.forwardButton');
       forwardButton.click();
-      expect(pageService.currentPage).to.equal(1);
+      expect(pageService.currentPage).to.equal(2);
     });
 
     it('should leave currentPage if currentpage is equal to numberOfPages and' +
       'setCurrentPage was called with 1', function () {
-      pageService.currentPage = 0;
+      pageService.currentPage = 1;
       pageService.numberOfPages = 1;
       var forwardButton = element.find('button.forwardButton');
       forwardButton.click();
-      expect(pageService.currentPage).to.equal(0);
+      expect(pageService.currentPage).to.equal(1);
     });
   });
 });

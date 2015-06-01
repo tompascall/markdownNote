@@ -5,7 +5,7 @@
 function pageService (ENV, displayedNotes) {
   /*jshint -W004 */  // to skip 'pageService is already defined' jshint message
   var pageService = {
-    currentPage: 0,
+    currentPage: 1,
     pageSize: ENV.pageSize,
   };
   pageService.setNumberOfPages = function (displayedItems) {
@@ -20,7 +20,7 @@ function pageService (ENV, displayedNotes) {
       }
     }
     else {
-      if (this.currentPage > 0) {
+      if (this.currentPage > 1) {
         this.currentPage = this.currentPage + offset;
       }
     }

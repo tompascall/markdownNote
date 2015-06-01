@@ -116,7 +116,7 @@ describe('Directive: searchInput', function () {
       var mock = sinon.mock(pageService);
       mock.expects('setNumberOfPages').withArgs(displayedNotes.notes);
       isolated.ctrl.applySearchNotes('testTitle1');
-      expect(pageService.currentPage).to.equal(0);
+      expect(pageService.currentPage).to.equal(1);
       expect(mock.verify()).to.equal(true);
     });
   });
