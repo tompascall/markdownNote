@@ -32,6 +32,16 @@ describe('Directive: noteList', function () {
     angular.element(document).find('body').append(element); // for rendering css
   });
 
+  beforeEach(function () { // open the first note
+    element.find('ion-list .note-item').eq(0).click();
+    scope.$digest();
+  });
+
+  afterEach(function () { // close the first note
+    element.find('ion-list .note-item').eq(0).click();
+    scope.$digest();
+  });
+
   describe('Create a list of notes', function () {
 
     it('contains the appropriate content', function () {
@@ -119,13 +129,17 @@ describe('Directive: noteList', function () {
         });
       });
 
-      describe('Connect tap handler with ng-show', function () {
-        it('should add and remove .ng-hide class when when note element is clicked', function () {
+      describe('Connect tap handler with ng-if', function () {
+        it('should add and remove text and tag elements when when note element is clicked', function () {
           var note = element.find('ion-list .note-item').eq(0);
+          note.click(); // close note
+          scope.$digest();
           var textAndTags = note.find('#note-text-and-tags');
-          expect(textAndTags).to.have.class('ng-hide');
-          note.click();
-          expect(textAndTags).to.not.have.class('ng-hide');
+          expect(textAndTags).to.not.exist;
+          note.click(); // open note
+          scope.$digest();
+          textAndTags = note.find('#note-text-and-tags');
+          expect(textAndTags).to.exist;
         });
       });
     });
@@ -140,11 +154,9 @@ describe('Directive: noteList', function () {
       });
 
       describe('Place text to a paragraph', function () {
-        beforeEach(function () {
-          text = textAndTags.find('.text-title');
-        });
 
         it('text should be in a p element', function () {
+          text = textAndTags.find('.text-title');
           expect(text.html()).to.contain(noteData.notes[0].text);
         });
       });
@@ -233,6 +245,7 @@ describe('Directive: noteList', function () {
   });
 
   describe('Create a button for editing note', function () {
+
     it('should have class button button-icon icon icon-right ion-edit note-edit', function () {
      var button = element.find('div.note-edit-container a');
      expect(button).to.have.class('button button-icon icon icon-right ion-edit note-edit');
