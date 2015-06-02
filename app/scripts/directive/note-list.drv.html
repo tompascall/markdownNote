@@ -1,10 +1,6 @@
 <!-- noteList.drv.html -->
 
 <ion-list>
-  <!--
-  <div class="note-item" ng-repeat="note in ctrl.noteData.notes | filter: ctrl.searchNote.searchTerm" ng-click="ctrl.toggleNoteState(note)" measure-time>
-  -->
-
   <div class="note-item" ng-repeat="note in ctrl.displayedNotes.notes | startFrom: (ctrl.pageService.currentPage - 1) * ctrl.pageService.pageSize | limitTo: ctrl.pageService.pageSize" ng-click="ctrl.toggleNoteState(note)" measure-time>
 
     <div class="row">
