@@ -2,16 +2,13 @@
 
 'use strict';
 
-function searchInputController (searchNote, searchNotesFilter, displayedNotes, pageService) {
+function searchInputController (searchNote, searchNotesFilter, displayedNotes, pageService, noteData) {
   /*jshint validthis: true */
   var controller = this;
   controller.searchNote = searchNote;
 
   controller.applySearchNotes = function (searchTerm) {
-    if (!searchNote.hasCacheEntry(searchTerm)) {
-      searchNote.createCacheEntry(searchTerm);
-    }
-    displayedNotes.notes = searchNote.searchNotesCache[searchTerm];
+    displayedNotes.notes = searchNotesFilter(noteData.notes, searchTerm);
     pageService.updatePages(displayedNotes.notes);
   };
 }
