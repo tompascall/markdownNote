@@ -34,6 +34,11 @@ function appHeaderDirective () {
       if (modal === controller.extrasModal) {
         controller.messageService.clearExtrasModalMessages();
       }
+      if (modal === controller.newNoteModal) {
+        controller.title = '';
+        controller.text = '';
+        controller.tags = '';
+      }
       modal.hide();
     };
 
@@ -49,9 +54,6 @@ function appHeaderDirective () {
       };
 
       noteData.addNote(newNote);
-      controller.title = '';
-      controller.text = '';
-      controller.tags = '';
       controller.hideModal(controller.newNoteModal);
     };
 
