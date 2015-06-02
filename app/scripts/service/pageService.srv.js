@@ -2,7 +2,7 @@
 
 'use strict';
 
-function pageService (ENV, displayedNotes) {
+function pageService (ENV, $ionicScrollDelegate) {
   /*jshint -W004 */  // to skip 'pageService is already defined' jshint message
   var pageService = {
     currentPage: 1,
@@ -24,14 +24,33 @@ function pageService (ENV, displayedNotes) {
         this.currentPage = this.currentPage + offset;
       }
     }
-    console.log('current page: ' + this.currentPage);
-    console.log('number of pages: ' + this.numberOfPages);
-    console.log('displayedNotes.notes.length: ' + displayedNotes.notes.length);
+    // console.log('current page: ' + this.currentPage);
+    // console.log('number of pages: ' + this.numberOfPages);
+    // console.log('displayedNotes.notes.length: ' + displayedNotes.notes.length);
+    $ionicScrollDelegate.scrollBottom();
   };
 
   pageService.updatePages = function (displayedItems) {
     this.setNumberOfPages(displayedItems);
     this.currentPage = 1;
+  };
+
+  pageService.backToStart = function () {
+    this.currentPage = 1;
+    $ionicScrollDelegate.scrollBottom();
+  };
+
+  pageService.forwardToEnd = function () {
+    this.currentPage = this.numberOfPages;
+    $ionicScrollDelegate.scrollBottom();
+  };
+
+  pageService.onTheFirstPage = function () {
+    return this.currentPage === 1;
+  };
+
+  pageService.onTheLastPage = function () {
+    return this.currentPage === this.numberOfPages;
   };
 
   return pageService;

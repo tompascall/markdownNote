@@ -28,7 +28,7 @@ describe('Directive: pagination', function () {
 
   describe('Test backward and forward buttons', function () {
 
-    it('should have two buttons', function () {
+    it('should have four buttons', function () {
       expect(element.find('button').length).to.equal(4);
     });
 
@@ -48,36 +48,20 @@ describe('Directive: pagination', function () {
       expect(mock.verify()).to.equal(true);
     });
 
-    it('should decrement currentpage number if setCurrentPage was called with -1', function () {
-      pageService.currentPage = 2;
-      var backwardButton = element.find('button.backwardButton');
-      backwardButton.click();
-      expect(pageService.currentPage).to.equal(1);
+    it('should call pageService.forwardToEnd()', function () {
+      sinon.spy(isolated.ctrl.pageService, 'forwardToEnd');
+      var forwardToEndButton = element.find('button.forwardToEndButton');
+      forwardToEndButton.click();
+      expect(isolated.ctrl.pageService.forwardToEnd.called).to.equal(true);
+      isolated.ctrl.pageService.forwardToEnd.restore();
     });
 
-    it('should leave currentPage to 0 if currentpage is 0 and' +
-      'setCurrentPage was called with -1', function () {
-      pageService.currentPage = 1;
-      var backwardButton = element.find('button.backwardButton');
-      backwardButton.click();
-      expect(pageService.currentPage).to.equal(1);
-    });
-
-    it('should increment currentpage number if setCurrentPage was called with 1', function () {
-      pageService.currentPage = 1;
-      pageService.numberOfPages = 4;
-      var forwardButton = element.find('button.forwardButton');
-      forwardButton.click();
-      expect(pageService.currentPage).to.equal(2);
-    });
-
-    it('should leave currentPage if currentpage is equal to numberOfPages and' +
-      'setCurrentPage was called with 1', function () {
-      pageService.currentPage = 1;
-      pageService.numberOfPages = 1;
-      var forwardButton = element.find('button.forwardButton');
-      forwardButton.click();
-      expect(pageService.currentPage).to.equal(1);
+    it('should call pageService.backToStart()', function () {
+      sinon.spy(isolated.ctrl.pageService, 'backToStart');
+      var backToStartButton = element.find('button.backToStartButton');
+      backToStartButton.click();
+      expect(isolated.ctrl.pageService.backToStart.called).to.equal(true);
+      isolated.ctrl.pageService.backToStart.restore();
     });
   });
 });

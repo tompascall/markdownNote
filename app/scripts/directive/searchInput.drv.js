@@ -8,7 +8,6 @@ function searchInputController (searchNote, searchNotesFilter, displayedNotes, p
   controller.searchNote = searchNote;
 
   controller.applySearchNotes = function (searchTerm) {
-    console.log('in applySearchNotes, searchTerm: ' + searchTerm);
     if (!searchNote.hasCacheEntry(searchTerm)) {
       searchNote.createCacheEntry(searchTerm);
     }
@@ -22,8 +21,7 @@ function link (scope) {
     if (newValue !== oldValue) {
       scope.ctrl.applySearchNotes(newValue);
     }
-    else {console.log('nothing is changed');}
-  }, true);
+  });
 }
 
 function searchInput () {
