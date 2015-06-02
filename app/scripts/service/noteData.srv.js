@@ -4,7 +4,7 @@
 
 angular.module('simpleNote')
 
-.factory('noteData', function noteDataFactory(tagsFactory, markdown) {
+.factory('noteData', function noteDataFactory(tagsFactory, markdown, displayedNotes, pageService) {
   return {
     notes: [],
     opened: {},
@@ -31,6 +31,7 @@ angular.module('simpleNote')
       if (angular.isObject(note)) {
         note = this.prepareNote(note);
         this.saveNewNoteToNoteData(note);
+        this.updateDisplayedNotes();
         this.setNotesOpenedStatus(this.notes[0].id, opened || true);
       }
       else {
@@ -46,6 +47,7 @@ angular.module('simpleNote')
         this.addNote(this.markdownNote, 'closed');
         this.addNote(this.welcomeNote, 'opened');
       }
+      this.updateDisplayedNotes();
     },
 
     saveNewNoteToNoteData: function (note) {
@@ -56,6 +58,11 @@ angular.module('simpleNote')
         tags: note.tags,
         id: this.createId()
       });
+    },
+
+    updateDisplayedNotes: function () {
+      displayedNotes.notes = this.notes;
+      pageService.updatePages(displayedNotes.notes);
     },
 
     createId: function () {
@@ -88,6 +95,7 @@ angular.module('simpleNote')
       if (this.confirmDeleteNote()) {
         index = this.getIndex(note);
         this.notes.splice(index, 1);
+        this.updateDisplayedNotes();
         this.saveNotesToLocalStorage();
       }
       if (event) {

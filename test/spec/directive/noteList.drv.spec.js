@@ -10,6 +10,7 @@ describe('Directive: noteList', function () {
   var noteData;
   var timeout;
   var searchNote;
+  var displayedNotes;
 
   beforeEach(module('simpleNote'));
 
@@ -22,12 +23,23 @@ describe('Directive: noteList', function () {
       timeout = $injector.get('$timeout');
       noteData = $injector.get('noteData');
       searchNote = $injector.get('searchNote');
+      displayedNotes = $injector.get('displayedNotes');
     });
 
     element = $compile('<note-list></note-list>')(scope);
     scope.$digest();
     isolated = element.isolateScope();
     angular.element(document).find('body').append(element); // for rendering css
+  });
+
+  beforeEach(function () { // open the first note
+    element.find('ion-list .note-item').eq(0).click();
+    scope.$digest();
+  });
+
+  afterEach(function () { // close the first note
+    element.find('ion-list .note-item').eq(0).click();
+    scope.$digest();
   });
 
   describe('Create a list of notes', function () {
@@ -80,8 +92,8 @@ describe('Directive: noteList', function () {
 
       it('should contain all property of notes of noteData service', function () {
         var note = element.find('ion-list .note-item').eq(0);
-        expect(note).to.contain(noteData.notes[0].title);
-        expect(note).to.contain(noteData.notes[0].text);
+        expect(note.html()).to.contain(noteData.notes[0].title);
+        expect(note.html()).to.contain(noteData.notes[0].text);
         expect(note.html()).to.contain('ng-repeat="tag in note.tags"');
         if (noteData.notes[0].tags.length > 0) {
           expect(note).to.contain(noteData.notes[0].tags[0]);
@@ -117,13 +129,17 @@ describe('Directive: noteList', function () {
         });
       });
 
-      describe('Connect tap handler with ng-show', function () {
-        it('should add and remove .ng-hide class when when note element is clicked', function () {
+      describe('Connect tap handler with ng-if', function () {
+        it('should add and remove text and tag elements when when note element is clicked', function () {
           var note = element.find('ion-list .note-item').eq(0);
+          note.click(); // close note
+          scope.$digest();
           var textAndTags = note.find('#note-text-and-tags');
-          expect(textAndTags).to.have.class('ng-hide');
-          note.click();
-          expect(textAndTags).to.not.have.class('ng-hide');
+          expect(textAndTags).to.not.exist;
+          note.click(); // open note
+          scope.$digest();
+          textAndTags = note.find('#note-text-and-tags');
+          expect(textAndTags).to.exist;
         });
       });
     });
@@ -138,11 +154,9 @@ describe('Directive: noteList', function () {
       });
 
       describe('Place text to a paragraph', function () {
-        beforeEach(function () {
-          text = textAndTags.find('.text-title');
-        });
 
         it('text should be in a p element', function () {
+          text = textAndTags.find('.text-title');
           expect(text.html()).to.contain(noteData.notes[0].text);
         });
       });
@@ -191,25 +205,35 @@ describe('Directive: noteList', function () {
 
     describe('Connect `deleteNote` method to delete button with ng-click', function () {
       var stub;
+      var tempNotes;
+      var tempStorage;
 
       beforeEach(function () {
         stub = sinon.stub(window, 'confirm');
+        tempStorage = window.localStorage.simpleNote;
+        tempNotes = noteData.notes.slice();
+        noteData.notes = [];
       });
 
       afterEach(function () {
         stub.restore();
+        noteData.notes = tempNotes.slice();
+        window.localStorage.simpleNote = tempStorage;
       });
 
       it('should delete note', function () {
         var testNote = {
           title: 'Testnote',
           text: 'Test text',
-          tags: ['test tag'],
+          tags: ['test tag']
         };
+        var firstNote;
+
         isolated.ctrl.noteData.addNote(testNote);
         scope.$digest();
-        var firstNote = element.find('ion-list .note-item').eq(0);
+        firstNote = element.find('ion-list .note-item').eq(0);
         expect(firstNote.html()).to.contain('Testnote');
+
         var button = firstNote.find('div.note-close-container a');
         stub.returns(true); // Confirm deleting the note
         button.click();
@@ -221,6 +245,7 @@ describe('Directive: noteList', function () {
   });
 
   describe('Create a button for editing note', function () {
+
     it('should have class button button-icon icon icon-right ion-edit note-edit', function () {
      var button = element.find('div.note-edit-container a');
      expect(button).to.have.class('button button-icon icon icon-right ion-edit note-edit');
@@ -343,9 +368,14 @@ describe('Directive: noteList', function () {
     describe('Create updateNotes method', function () {
       var testNote;
       var noteInput;
+      var tempNotes;
+      var tempStorage;
 
       beforeEach(function () {
+        tempNotes = noteData.notes.slice();
         noteData.notes = [];
+        tempStorage = window.localStorage.simpleNote;
+        window.localStorage.simpleNote = angular.toJson([]);
 
         testNote = {
           title: 'Testnote',
@@ -363,10 +393,12 @@ describe('Directive: noteList', function () {
 
         noteData.addNote(testNote);
         isolated.ctrl.note = noteData.notes[0];
+
       });
 
       afterEach(function () {
-        noteData.notes = [];
+        noteData.notes = tempNotes.slice();
+        window.localStorage.simpleNote = tempStorage;
         isolated.ctrl.noteInput = '';
       });
 
@@ -400,52 +432,14 @@ describe('Directive: noteList', function () {
     });
   });
 
-  describe('Test: Create filter in `noteList` directive using `searchNote.searchTerm`', function () {
-    beforeEach(function () {
-      noteData.notes = [
-        {
-          title: 'testTitle1 testTitle',
-          text: 'Text1',
-          tags: ['testTag1']
-        },
-        {
-          title: 'testTitle2 testTitle',
-          text: 'Text2 testText',
-          tags: ['testTag2']
-        },
-        {
-          title: 'testTitle3 testTitle',
-          text: 'Text3 testText',
-          tags: ['testTag3']
-        }
-      ];
-    });
-
-    afterEach(function () {
-      noteData.notes = [];
-    });
-
-    it('should get filter title', function () {
-      searchNote.searchTerm = 'testTitle1';
-      scope.$digest();
-      expect(element.find('div.note-item').length).to.equal(1);
-    });
-
-    it('should filter text', function () {
-      searchNote.searchTerm = 'testText';
-      scope.$digest();
-      expect(element.find('div.note-item').length).to.equal(2);
-    });
-
-    it('should filter tags', function () {
-      searchNote.searchTerm = 'testTag3';
-      scope.$digest();
-      expect(element.find('div.note-item').length).to.equal(1);
-    });
-  });
-
   describe('Populate note.htmlText property via ngBindHtml', function () {
+
+    var tempStorage;
+    var tempNotes;
+
     beforeEach(function () {
+      tempStorage = window.localStorage.simpleNote;
+      tempNotes = noteData.notes.slice();
       noteData.notes = [
         {
           title: 'testTitle',
@@ -456,11 +450,14 @@ describe('Directive: noteList', function () {
           id: 0
         }
       ];
+      noteData.updateDisplayedNotes();
       scope.$digest();
+      noteData.saveNotesToLocalStorage();
     });
 
     afterEach(function () {
-      noteData.notes = [];
+      noteData.notes = tempNotes.slice();
+      window.localStorage.simpleNote = tempStorage;
     });
 
     it('should insert note.htmlText into a div element', function () {
@@ -470,7 +467,13 @@ describe('Directive: noteList', function () {
   });
 
   describe('Handle link element in the text of the note', function () {
+
+    var tempNotes;
+    var tempStorage;
+
     beforeEach(function () {
+      tempNotes = noteData.notes.slice();
+
       noteData.notes = [
         {
           title: 'testTitle',
@@ -481,11 +484,16 @@ describe('Directive: noteList', function () {
           id: 0
         }
       ];
+      noteData.updateDisplayedNotes();
       scope.$digest();
+
+      tempStorage = window.localStorage.simpleNote;
+      window.localStorage.simpleNote = angular.toJson([]);
     });
 
     afterEach(function () {
-      noteData.notes = [];
+      noteData.notes = tempNotes.slice();
+      window.localStorage.simpleNote = tempStorage;
     });
 
     it('should call launchExternalLink when click on a link', function () {
@@ -503,6 +511,42 @@ describe('Directive: noteList', function () {
       expect(window.open.calledWith('http://google.com/', '_system', 'location=yes'))
         .to.equal(true);
       window.open.restore();
+    });
+  });
+
+  describe('Pagination', function () {
+    it('should contain pagination directive', function () {
+      expect(element.find('div.pagination button').eq(0))
+        .to.have.class('backToStartButton');
+      expect(element.find('div.pagination button').eq(1))
+        .to.have.class('backwardButton');
+      expect(element.find('div.pagination button').eq(2))
+        .to.have.class('forwardButton');
+      expect(element.find('div.pagination button').eq(3))
+        .to.have.class('forwardToEndButton');
+    });
+  });
+
+  describe('Test displayedNotes service', function () {
+    var tempNotes;
+    var tempStorage;
+    var testNotes = [1,2,3,4,5];
+
+    beforeEach(function () {
+      tempNotes = noteData.notes.slice();
+      noteData.notes = testNotes;
+      tempStorage = window.localStorage.simpleNote;
+      window.localStorage.simpleNote = angular.toJson(testNotes);
+    });
+
+    afterEach(function () {
+      noteData.notes = tempNotes.slice();
+      window.localStorage.simpleNote = tempStorage;
+    });
+
+    it('displayedNotes.notes should deeply equal to noteData.notes after initialization', function () {
+      isolated.ctrl.init();
+      expect(displayedNotes.notes).to.deep.equal(testNotes);
     });
   });
 });

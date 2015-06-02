@@ -1,7 +1,12 @@
 <!-- noteList.drv.html -->
 
 <ion-list>
-  <div class="note-item" ng-repeat="note in ctrl.noteData.notes | filter: ctrl.searchNote.searchTerm" ng-click="ctrl.toggleNoteState(note)">
+  <!--
+  <div class="note-item" ng-repeat="note in ctrl.noteData.notes | filter: ctrl.searchNote.searchTerm" ng-click="ctrl.toggleNoteState(note)" measure-time>
+  -->
+
+  <div class="note-item" ng-repeat="note in ctrl.displayedNotes.notes | startFrom: (ctrl.pageService.currentPage - 1) * ctrl.pageService.pageSize | limitTo: ctrl.pageService.pageSize" ng-click="ctrl.toggleNoteState(note)" measure-time>
+
     <div class="row">
       <div class="note-title-container col col-80">
         <h2 class='note-title'>
@@ -9,10 +14,10 @@
         </h2>
       </div>
       <div class="col col-20 note-close-container">
-        <a class="button button-icon icon icon-right ion-ios-close-outline note-close" ng-click="ctrl.noteData.deleteNote(note, $event)"><i></i></a>
+        <a class="button button-icon icon icon-right ion-ios-close-outline note-close" ng-click="ctrl.noteData.deleteNote(note, $event)"></a>
       </div>
     </div>
-    <div id="note-text-and-tags" ng-show="ctrl.noteData.opened[note.id]">
+    <div id="note-text-and-tags" ng-if="ctrl.noteData.opened[note.id]">
       <div class="text-title-container">
         <div class="text-title text-title-wordwrap" ng-bind-html="note.htmlText" ng-click="ctrl.externalLinkService.handleLinkClicked($event)"></div>
       </div>
@@ -26,4 +31,5 @@
       </div>
     </div>
   </div>
+  <pagination></pagination>
 </ion-list>

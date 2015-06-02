@@ -7,10 +7,16 @@ describe('Service: noteData', function () {
   beforeEach(module('simpleNote'));
     var noteData;
     var markdown;
+    var noteList;
+    var scope;
+    var displayedNotes;
 
   beforeEach(inject(function ($injector) {
     noteData = $injector.get('noteData');
     markdown = $injector.get('markdown');
+    scope = $injector.get('$rootScope');
+    displayedNotes = $injector.get('displayedNotes');
+    //noteList = $injector.get('noteList');
   }));
 
   describe('Prepare note to add and edit', function () {
@@ -39,13 +45,21 @@ describe('Service: noteData', function () {
   });
 
   describe('Test noteData.notes and addNote method', function () {
+    var tempNotes;
+    var tempStorage;
 
     beforeEach(function () {
+      tempNotes = noteData.notes.slice();
       noteData.notes = [];
+      noteData.updateDisplayedNotes();
+      scope.$digest();
+      tempStorage = window.localStorage.simpleNote;
+      window.localStorage.simpleNote = angular.toJson([]);
     });
 
     afterEach(function () {
-      noteData.notes = [];
+      noteData.notes = tempNotes.slice();
+      window.localStorage.simpleNote = tempStorage;
     });
 
     it('should get noteData service', function () {
@@ -57,7 +71,7 @@ describe('Service: noteData', function () {
       var note = {
         title: 'Title for testing purpose',
         text: 'Lorem ipsum dolor sit amet...',
-        tags: ['first note', 'testing purpose']
+        tags: ['first note', 'testing purpose','gruff3']
       };
       expect(noteData.createId()).to.equal(0);
       noteData.addNote(note);
@@ -94,16 +108,24 @@ describe('Service: noteData', function () {
     var note = {
       title: 'Title for testing purpose',
       text: 'Lorem ipsum dolor sit amet...',
-      tags: ['first note', 'testing purpose']
+      tags: ['first note', 'testing purpose', 'gruff5']
     };
 
+    var tempNotes;
+    var tempStorage;
+
     beforeEach(function () {
+      tempNotes = noteData.notes.slice();
       noteData.notes = [];
+      tempStorage = window.localStorage.simpleNote;
+      window.localStorage.simpleNote = angular.toJson([]);
     });
 
     afterEach(function () {
-      noteData.notes = [];
+      noteData.notes = tempNotes.slice();
+      window.localStorage.simpleNote = tempStorage;
     });
+
 
     it('should set opened object', function () {
       noteData.addNote(note); // note.id = 0
@@ -121,17 +143,24 @@ describe('Service: noteData', function () {
   describe('Save notes to windows.localStorage.notes', function () {
     var note;
 
+    var tempNotes;
+    var tempStorage;
+
     beforeEach(function () {
+      tempNotes = noteData.notes.slice();
       noteData.notes = [];
+      tempStorage = window.localStorage.simpleNote;
+      window.localStorage.simpleNote = angular.toJson([]);
       note = {
         title: 'Title for testing purpose',
         text: 'Lorem ipsum dolor sit amet...',
-        tags: ['first note', 'testing purpose']
+        tags: ['first note', 'testing purpose','gruff1']
       };
     });
 
     afterEach(function () {
-      noteData.notes = [];
+      noteData.notes = tempNotes.slice();
+      window.localStorage.simpleNote = tempStorage;
     });
 
     it('should save notes to storage', function () {
@@ -168,19 +197,26 @@ describe('Service: noteData', function () {
 
   describe('Load notes from windows.localStorage.notes', function () {
     var note;
+    var tempNotes;
+    var tempStorage;
 
     beforeEach(function () {
+      tempNotes = noteData.notes.slice();
       noteData.notes = [];
+      tempStorage = window.localStorage.simpleNote;
+      window.localStorage.simpleNote = angular.toJson([]);
       note = {
         title: 'Title for testing purpose',
         text: 'Lorem ipsum dolor sit amet...',
-        tags: ['first note', 'testing purpose']
+        tags: ['first note', 'testing purpose','gruff2']
       };
     });
 
     afterEach(function () {
-      noteData.notes = [];
+      noteData.notes = tempNotes.slice();
+      window.localStorage.simpleNote = tempStorage;
     });
+
 
     it('should load notes from storage to notesData service', function () {
       window.localStorage.removeItem('simpleNote');
@@ -273,13 +309,19 @@ describe('Service: noteData', function () {
       text: '##Test',
       tags: ['markdown']
     };
+    var tempNotes;
+    var tempStorage;
 
     beforeEach(function () {
+      tempNotes = noteData.notes.slice();
       noteData.notes = [];
+      tempStorage = window.localStorage.simpleNote;
+      window.localStorage.simpleNote = angular.toJson([]);
     });
 
-    afterEach( function () {
-      noteData.notes = [];
+    afterEach(function () {
+      noteData.notes = tempNotes.slice();
+      window.localStorage.simpleNote = tempStorage;
     });
 
     it('should call markdown.convertMarkdownToHTML', function () {
@@ -356,6 +398,35 @@ describe('Service: noteData', function () {
       expect(noteData.notes[0].title).to.equal('mockNote');
       window.localStorage.simpleNote = tempStorage;
       noteData.notes = tempNotes;
+    });
+  });
+
+  describe('Update displayedNotes when add or remove notes', function () {
+    var tempNotes;
+    var tempStorage;
+    var testNote = {
+        title: 'mockNote',
+        text: 'mockText',
+        tags: ['mockTag'],
+        id: 12
+      };
+
+    beforeEach(function () {
+      tempNotes = noteData.notes.slice();
+      noteData.notes = [];
+      tempStorage = window.localStorage.simpleNote;
+      window.localStorage.simpleNote = angular.toJson([]);
+      //noteList.init();
+    });
+
+    afterEach(function () {
+      noteData.notes = tempNotes.slice();
+      window.localStorage.simpleNote = tempStorage;
+    });
+
+    it('should update displayedNotes after add note', function () {
+      noteData.addNote(testNote);
+      expect(displayedNotes.notes[0].title).to.equal('mockNote');
     });
   });
 });

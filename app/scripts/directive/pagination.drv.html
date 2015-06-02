@@ -1,0 +1,18 @@
+<!-- pagination.drv.html -->
+
+<div class="pagination">
+  <div class="row">
+    <div class="col col-20">
+      <button class="backToStartButton button button-block" ng-class="{'button-positive': !ctrl.pageService.onTheFirstPage()}" ng-click="ctrl.pageService.backToStart()"><i class="icon ion-ios-arrow-left"></i><i class="icon ion-ios-arrow-left"></i></button>
+    </div>
+    <div class="col">
+      <button class="backwardButton button button-block icon ion-ios-arrow-left" ng-class="{'button-positive': ctrl.pageService.currentPage > 1}" ng-click="ctrl.pageService.setCurrentPage(-1)"></button>
+    </div>
+    <div class="col">
+      <button class="forwardButton button button-block icon ion-ios-arrow-right" ng-class="{'button-positive': ctrl.pageService.currentPage < ctrl.pageService.numberOfPages}" ng-click="ctrl.pageService.setCurrentPage(1)"></button>
+    </div>
+    <div class="col col-20">
+      <button class="forwardToEndButton button button-block" ng-class="{'button-positive': !ctrl.pageService.onTheLastPage()}" ng-click="ctrl.pageService.forwardToEnd()"><i class="icon ion-ios-arrow-right"></i><i class="icon ion-ios-arrow-right"></i></button>
+    </div>
+  </div>
+</div>

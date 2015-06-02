@@ -43,7 +43,8 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'development',
-            apiEndpoint: 'http://dev.yoursite.com:10000/'
+            apiEndpoint: '',
+            pageSize: 30
           }
         }
       },
@@ -51,7 +52,8 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'production',
-            apiEndpoint: 'http://api.yoursite.com/'
+            apiEndpoint: '',
+            pageSize: 50
           }
         }
       }
@@ -334,7 +336,10 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/bower_components/ionic/release/js/ionic-angular.js',
           '<%= yeoman.app %>/bower_components/pagedown/*.js',
           '<%= yeoman.app %>/bower_components/ngCordova/dist/ng-cordova.js',
+          '<%= yeoman.app %>/<%= yeoman.scripts %>/app.js',
+          '<%= yeoman.app %>/<%= yeoman.scripts %>/configuration.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
+          '<%= yeoman.test %>/spec/testConfig.spec.js',
           '<%= yeoman.test %>/mock/**/*.js',
           '<%= yeoman.test %>/spec/**/*.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.html',

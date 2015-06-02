@@ -2,9 +2,26 @@
 
 'use strict';
 
-function searchInputController (searchNote) {
+function searchInputController (searchNote, searchNotesFilter, displayedNotes, pageService) {
   /*jshint validthis: true */
-  this.searchNote = searchNote;
+  var controller = this;
+  controller.searchNote = searchNote;
+
+  controller.applySearchNotes = function (searchTerm) {
+    if (!searchNote.hasCacheEntry(searchTerm)) {
+      searchNote.createCacheEntry(searchTerm);
+    }
+    displayedNotes.notes = searchNote.searchNotesCache[searchTerm];
+    pageService.updatePages(displayedNotes.notes);
+  };
+}
+
+function link (scope) {
+  scope.$watch('ctrl.searchNote.searchTerm.$', function (newValue, oldValue) {
+    if (newValue !== oldValue) {
+      scope.ctrl.applySearchNotes(newValue);
+    }
+  });
 }
 
 function searchInput () {
@@ -14,7 +31,8 @@ function searchInput () {
     scope: {},
     controller: searchInputController,
     controllerAs: 'ctrl',
-    bindToController: true
+    bindToController: true,
+    link: link
   };
 }
 
