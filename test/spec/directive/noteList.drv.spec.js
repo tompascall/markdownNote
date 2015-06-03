@@ -45,7 +45,7 @@ describe('Directive: noteList', function () {
   describe('Create a list of notes', function () {
 
     it('contains the appropriate content', function () {
-      expect(element.html()).to.contain('ng-repeat="note in ctrl.noteData.notes');
+      expect(element.html()).to.contain('ng-repeat="note in ctrl.displayedNotes.notes');
     });
 
     it('should inject the noteData service', function () {

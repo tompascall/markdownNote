@@ -1,11 +1,21 @@
 
+@font-face {
+    font-family: Khadija;
+    src: url(../fonts/khadija/khadija/Khadija.ttf);
+}
+
+@font-face {
+    font-family: Bitstream;
+    src: url(../fonts/bitstream-vera-sans-mono/Bitstream_Vera_Sans_Mono_Roman.ttf);
+}
+
 #notes-header {
-  font-family: 'Gochi Hand', cursive;
-  font-size: 30px;
+  font-family: Khadija, cursive;
+  font-size: 28px;
 }
 
 code {
-  font-family: 'Droid Sans Mono', Courier;
+  font-family: Bitstream, Courier;
 }
 
 a {
@@ -18,8 +28,11 @@ a {
   display: -ms-flexbox;  /* TWEENER - IE 10 */
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
   align-items: center;
-  /*padding-top: 10px;*/
+  padding-top: 10px;
 }
 
 .note-title {
@@ -100,6 +113,9 @@ div.text-title ol {
   display: -ms-flexbox;  /* TWEENER - IE 10 */
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
   align-items: center;
 }
 
@@ -113,6 +129,7 @@ div.text-title ol {
   align-items: center;
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
+  padding-top: 15px;
 }
 
 .tag-title {

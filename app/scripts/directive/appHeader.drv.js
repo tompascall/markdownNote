@@ -57,11 +57,13 @@ function appHeaderDirective () {
       controller.hideModal(controller.newNoteModal);
     };
 
+    /* just for testing purpose - add amount of welcomeNote to noteData
     controller.addTestNotes = function (amount) {
       for (var i = 0; i < amount; i++) {
        controller.noteData.addNote(controller.noteData.welcomeNote);
       }
     };
+    */
 
     $scope.$on('$destroy', function() {
       controller.newNoteModal.remove();
