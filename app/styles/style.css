@@ -1,4 +1,8 @@
 
+.scroll-bar-indicator {
+  display: none;
+}
+
 @font-face {
     font-family: Khadija;
     src: url(../fonts/khadija/khadija/Khadija.ttf);
@@ -29,15 +33,16 @@ a {
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
   -webkit-box-align: center;
-  -webkit-align-items: center;
   -ms-flex-align: center;
+  -webkit-align-items: center;
   align-items: center;
-  padding-top: 10px;
 }
 
 .note-title {
   color: rgb(255, 0, 0);
   font-weight: 300;
+  vertical-align: middle;
+  margin: 0;
 }
 
 .note-item {
@@ -114,8 +119,8 @@ div.text-title ol {
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
   -webkit-box-align: center;
-  -webkit-align-items: center;
   -ms-flex-align: center;
+  -webkit-align-items: center;
   align-items: center;
 }
 
@@ -126,10 +131,11 @@ div.text-title ol {
 #tag-container {
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;
+  -webkit-align-items: center;
   align-items: center;
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
-  padding-top: 15px;
+  margin: 0;
 }
 
 .tag-title {
