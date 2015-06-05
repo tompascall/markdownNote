@@ -1,3 +1,6 @@
+ion-header-bar.bar-subheader {
+    padding: 0;
+}
 
 .scroll-bar-indicator {
   display: none;

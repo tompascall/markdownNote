@@ -61,13 +61,14 @@
     <script type="text/javascript" src="scripts/service/startFromFilter.srv.js"></script>
     <script type="text/javascript" src="scripts/service/displayedNotes.srv.js"></script>
     <script type="text/javascript" src="scripts/service/searchNotesFilter.srv.js"></script>
+    <script type="text/javascript" src="scripts/directive/addSearchNote.drv.js"></script>
     <!-- endbuild -->
   </head>
   <body ng-app="simpleNote">
     <ion-pane>
       <ion-header-bar app-header class="bar-dark" align-title="center"></ion-header-bar>
-      <ion-content>
-        <search-input></search-input>
+      <search-input class="bar-subheader"></search-input>
+      <ion-content add-search-note ng-class="{'has-subheader': addSearchNoteCtrl.searchNote.opened}" >
         <note-list></note-list>
       </ion-content>
     </ion-pane>

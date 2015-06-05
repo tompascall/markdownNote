@@ -221,6 +221,25 @@ describe('Directive: noteList', function () {
         window.localStorage.simpleNote = tempStorage;
       });
 
+      it('should call noteData.deleteNote method', function () {
+        var testNote = {
+          title: 'Testnote',
+          text: 'Test text',
+          tags: ['test tag']
+        };
+        var firstNote;
+        isolated.ctrl.noteData.addNote(testNote);
+        scope.$digest();
+
+        var mock = sinon.mock(noteData);
+        mock.expects('deleteNote').withArgs(noteData.notes[0]);
+        firstNote = element.find('ion-list .note-item').eq(0);
+        var button = firstNote.find('div.note-close-container a');
+        stub.returns(true); // Confirm deleting the note
+        button.click();
+        expect(mock.verify()).to.equal(true);
+      });
+
       it('should delete note', function () {
         var testNote = {
           title: 'Testnote',
@@ -228,7 +247,6 @@ describe('Directive: noteList', function () {
           tags: ['test tag']
         };
         var firstNote;
-
         isolated.ctrl.noteData.addNote(testNote);
         scope.$digest();
         firstNote = element.find('ion-list .note-item').eq(0);

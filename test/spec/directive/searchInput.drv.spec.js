@@ -35,8 +35,12 @@ describe('Directive: searchInput', function () {
 
   describe('Testing input element', function () {
 
+    it('should have bar-subheader item-input-inset class', function () {
+      expect(element.find('ion-header-bar')).to.have.class('bar-subheader item-input-inset');
+    });
+
     it('should have item item-input class', function () {
-      expect(element.find('div label')).to.have.class('item item-input')
+      expect(element.find('label')).to.have.class('item item-input-wrapper')
     });
 
     it('should have input field', function () {
