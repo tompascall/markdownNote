@@ -31,12 +31,8 @@ a {
 }
 
 .note-title-container {
-  display: -webkit-box;  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
-  display: -ms-flexbox;  /* TWEENER - IE 10 */
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
 }
@@ -116,12 +112,8 @@ div.text-title ol {
 }
 
 .text-title-container, .note-close-container, .note-edit-container {
-  display: -webkit-box;  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
-  display: -ms-flexbox;  /* TWEENER - IE 10 */
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
 }
@@ -133,8 +125,10 @@ div.text-title ol {
 #tag-container {
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;
+
   -webkit-align-items: center;
   align-items: center;
+
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   margin: 0;
@@ -148,5 +142,6 @@ div.text-title ol {
   padding: 0 5px 0 5px;
   border-radius: 3px;
   line-height: 25px;
+  white-space: nowrap;
 }
 
