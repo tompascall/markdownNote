@@ -1,4 +1,4 @@
-// mock-data.spec.js
+// note-data.spec.js
 
 'use strict';
 
@@ -10,13 +10,16 @@ describe('Service: noteData', function () {
     var noteList;
     var scope;
     var displayedNotes;
+    var searchNote;
+    var pageService;
 
   beforeEach(inject(function ($injector) {
     noteData = $injector.get('noteData');
     markdown = $injector.get('markdown');
     scope = $injector.get('$rootScope');
     displayedNotes = $injector.get('displayedNotes');
-    //noteList = $injector.get('noteList');
+    searchNote = $injector.get('searchNote');
+    pageService = $injector.get('pageService');
   }));
 
   describe('Prepare note to add and edit', function () {
@@ -241,6 +244,7 @@ describe('Service: noteData', function () {
     var stub;
     var mockNote;
     var mockNote2;
+    var mockNote3;
     var backupNotes;
 
     beforeEach(function () {
@@ -255,6 +259,11 @@ describe('Service: noteData', function () {
         title: 'mockNote2',
         text: 'mockText2',
         tags: ['mockTag2']
+      };
+      mockNote3 = {
+        title: 'mockNote3',
+        text: 'mockText3',
+        tags: ['mockTag3']
       };
 
       backupNotes = noteData.loadNotesFromStorage();
@@ -300,6 +309,17 @@ describe('Service: noteData', function () {
 
       var StorageLengthAfterDeleteNote = noteData.loadNotesFromStorage().length;
       expect(StorageLengthAfterDeleteNote).to.equal(storageLengthAfterAddNote - 1);
+    });
+
+    it('should call updateDisplayedNotes when deleting notes', function () {
+      stub.returns(true);
+      var notesLength = 0;
+      noteData.addNote(mockNote);
+      sinon.spy(noteData, 'updateDisplayedNotes');
+      mockNote = noteData.notes[0];
+      noteData.deleteNote(mockNote);
+      expect(noteData.updateDisplayedNotes.called).to.equal(true);
+      noteData.updateDisplayedNotes.restore();
     });
   });
 
@@ -401,22 +421,94 @@ describe('Service: noteData', function () {
     });
   });
 
+  describe('Apply searchNote', function () {
+    var tempNoteData;
+    var tempDisplayedNotes;
+    var tempCurrentPage;
+
+    beforeEach(function () {
+      tempNoteData = noteData.notes.slice();
+      tempDisplayedNotes = displayedNotes.notes.slice();
+      tempCurrentPage = pageService.currentPage;
+
+      noteData.notes = [
+        {
+          title: 'testTitle1 testTitle',
+          text: 'Text1',
+          tags: ['testTag1']
+        },
+        {
+          title: 'testTitle2 testTitle',
+          text: 'Text2 testText',
+          tags: ['testTag2']
+        },
+        {
+          title: 'testTitle3 testTitle',
+          text: 'Text3 testText',
+          tags: ['testTag3']
+        }
+      ];
+      displayedNotes.notes = noteData.notes.slice();
+    });
+
+    afterEach(function () {
+      noteData.notes = tempNoteData.slice();
+      displayedNotes.notes = tempDisplayedNotes.slice();
+      pageService.currentPage = tempCurrentPage;
+    });
+
+    it('applySearchNotes should update displayedNotes', function (done) {
+
+      noteData.applySearchNotes('testTitle1');
+      setTimeout(function () {
+        expect(displayedNotes.notes.length).to.equal(1);
+        expect(displayedNotes.notes[0].title).to.equal('testTitle1 testTitle');
+        done();
+      },0);
+    });
+
+    it('should recalculate number of pages when apply searching', function (done) {
+      pageService.currentPage = 12;
+      sinon.spy(pageService, 'updatePages');
+      noteData.applySearchNotes('testTitle1');
+      setTimeout(function () {
+        expect(pageService.currentPage).to.equal(1);
+        expect(pageService.updatePages.called).to.equal(true);
+        pageService.updatePages.restore();
+        done();
+      },0);
+    });
+  });
+
   describe('Update displayedNotes when add or remove notes', function () {
     var tempNotes;
     var tempStorage;
-    var testNote = {
-        title: 'mockNote',
-        text: 'mockText',
-        tags: ['mockTag'],
+
+    var testNote1 = {
+        title: 'mockNote1',
+        text: 'mockText1',
+        tags: ['mockTag1','testUpdateWithFilter'],
         id: 12
-      };
+    };
+    var testNote2 = {
+        title: 'mockNote2',
+        text: 'mockText2',
+        tags: ['mockTag2','testUpdateWithFilter'],
+        id: 13
+    };
+
+    var testNote3 = {
+        title: 'mockNote3',
+        text: 'mockText3',
+        tags: ['mockTag3'],
+        id: 13
+    };
 
     beforeEach(function () {
       tempNotes = noteData.notes.slice();
       noteData.notes = [];
       tempStorage = window.localStorage.simpleNote;
       window.localStorage.simpleNote = angular.toJson([]);
-      //noteList.init();
     });
 
     afterEach(function () {
@@ -425,8 +517,29 @@ describe('Service: noteData', function () {
     });
 
     it('should update displayedNotes after add note', function () {
-      noteData.addNote(testNote);
-      expect(displayedNotes.notes[0].title).to.equal('mockNote');
+      noteData.addNote(testNote1);
+      expect(displayedNotes.notes[0].title).to.equal('mockNote1');
+    });
+
+    it('should update displayedNotes after removing note', function () {
+      noteData.addNote(testNote1);
+      noteData.addNote(testNote2);
+      expect(displayedNotes.notes[0].title).to.equal('mockNote2');
+      var stub = sinon.stub(window, 'confirm');
+      stub.returns(true); // confirm deleting
+      noteData.deleteNote(noteData.notes[0]);
+      expect(displayedNotes.notes[0].title).to.equal('mockNote1');
+    });
+
+    it('should take into account searchInput when updateing displayNotes', function () {
+      var tempSearchTerm = searchNote.searchTerm;
+      noteData.addNote(testNote1);
+      noteData.addNote(testNote2);
+      noteData.addNote(testNote3);
+      searchNote.searchTerm = 'testUpdateWithFilter';
+      noteData.applySearchNotes(searchNote.searchTerm);
+      expect(displayedNotes.notes.length).to.equal(2);
+      searchNote.searchTerm = tempSearchTerm;
     });
   });
 });

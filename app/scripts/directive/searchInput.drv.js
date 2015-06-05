@@ -2,14 +2,13 @@
 
 'use strict';
 
-function searchInputController (searchNote, searchNotesFilter, displayedNotes, pageService, noteData) {
+function searchInputController (searchNote, noteData) {
   /*jshint validthis: true */
   var controller = this;
   controller.searchNote = searchNote;
 
   controller.applySearchNotes = function (searchTerm) {
-    displayedNotes.notes = searchNotesFilter(noteData.notes, searchTerm);
-    pageService.updatePages(displayedNotes.notes);
+    noteData.applySearchNotes(searchTerm);
   };
 }
 

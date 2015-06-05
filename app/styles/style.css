@@ -1,10 +1,3 @@
-ion-header-bar.bar-subheader {
-    padding: 0;
-}
-
-.scroll-bar-indicator {
-  display: none;
-}
 
 @font-face {
     font-family: Khadija;
@@ -31,6 +24,7 @@ a {
 }
 
 .note-title-container {
+  display: -webkit-box;
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
   -webkit-align-items: center;
@@ -143,5 +137,13 @@ div.text-title ol {
   border-radius: 3px;
   line-height: 25px;
   white-space: nowrap;
+}
+
+ion-header-bar.bar-subheader {
+    padding: 0;
+}
+
+.scroll-bar-indicator {
+  display: none;
 }
 

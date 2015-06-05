@@ -4,7 +4,7 @@
 
 angular.module('simpleNote')
 
-.factory('noteData', function noteDataFactory(tagsFactory, markdown, displayedNotes, pageService) {
+.factory('noteData', function noteDataFactory(tagsFactory, markdown, displayedNotes, pageService, searchNotesFilter) {
   return {
     notes: [],
     opened: {},
@@ -101,6 +101,11 @@ angular.module('simpleNote')
       if (event) {
         event.stopPropagation();
       }
+    },
+
+    applySearchNotes: function (searchTerm) {
+      displayedNotes.notes = searchNotesFilter(this.notes, searchTerm);
+      pageService.updatePages(displayedNotes.notes);
     },
 
     getIndex: function (note) {

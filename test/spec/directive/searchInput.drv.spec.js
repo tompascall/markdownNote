@@ -50,9 +50,6 @@ describe('Directive: searchInput', function () {
   });
 
   describe('Bind `searchNote.searchTerm` property to `searchInput` directive', function () {
-    beforeEach(function () {
-      searchNote.searchTerm = 'hey';
-    });
 
     it('should bind searchNote service to searchInput directive', function () {
       expect(isolated.ctrl.searchNote.searchTerm).to.equal(searchNote.searchTerm);
@@ -70,57 +67,14 @@ describe('Directive: searchInput', function () {
       isolated.ctrl.applySearchNotes.restore();
     });
 
-    it('should call applySearchNotes with searchTerm if inputfield value is changed', function () {
-      var mock = sinon.mock(isolated.ctrl);
+    it('should call noteData.applySearchNotes with searchTerm if inputfield value is changed', function () {
+      var mock = sinon.mock(noteData);
       var searchTerm = 'Test';
       mock.expects('applySearchNotes').withArgs(searchTerm);
       scope.$apply(function () {
         element.find('input')
           .val(searchTerm).trigger('input');
       });
-      expect(mock.verify()).to.equal(true);
-    });
-
-    it('applySearchNotes should update displayedNotes', function () {
-      var tempNoteData = noteData.notes.slice();
-      var tempDisplayedNotes = displayedNotes.notes.slice();
-      noteData.notes = [
-        {
-          title: 'testTitle1 testTitle',
-          text: 'Text1',
-          tags: ['testTag1']
-        },
-        {
-          title: 'testTitle2 testTitle',
-          text: 'Text2 testText',
-          tags: ['testTag2']
-        },
-        {
-          title: 'testTitle3 testTitle',
-          text: 'Text3 testText',
-          tags: ['testTag3']
-        }
-      ];
-      displayedNotes.notes = noteData.notes.slice();
-
-      isolated.ctrl.applySearchNotes('testTitle1');
-      expect(displayedNotes.notes.length).to.equal(1);
-      expect(displayedNotes.notes[0].title).to.equal('testTitle1 testTitle');
-
-      isolated.ctrl.applySearchNotes('');
-      expect(displayedNotes.notes.length).to.equal(3);
-
-      noteData.notes = tempNoteData.slice();
-      displayedNotes.notes = tempDisplayedNotes.slice();
-    });
-
-    it('should recalculate number of pages when apply searching', function () {
-      var tempCurrentPage = pageService.currentPage;
-      pageService.currentPage = 12;
-      var mock = sinon.mock(pageService);
-      mock.expects('setNumberOfPages').withArgs(displayedNotes.notes);
-      isolated.ctrl.applySearchNotes('testTitle1');
-      expect(pageService.currentPage).to.equal(1);
       expect(mock.verify()).to.equal(true);
     });
   });

@@ -18,10 +18,10 @@
         <div class="text-title text-title-wordwrap" ng-bind-html="note.htmlText" ng-click="ctrl.externalLinkService.handleLinkClicked($event)"></div>
       </div>
       <div id="tags-row" class="row">
-        <div id="tag-container" class="col col-80">
+        <p id="tag-container" class="col col-80">
           <i class="icon ion-pricetag"></i>&nbsp;
           <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"></span>
-        </div>
+        </p>
         <div class="col col-20 note-edit-container">
           <a id="edit-button" class="button button-icon icon icon-right ion-edit note-edit" ng-click="ctrl.editNote(note, $event)"></a>
         </div>
