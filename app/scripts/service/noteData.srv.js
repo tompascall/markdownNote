@@ -210,7 +210,7 @@ angular.module('simpleNote')
 
             '###Images\n\n' +
             '![colibri](images/colibri.jpg)\n\n',
-      tags: 'markdown, keep it simple'
+      tags: 'markdown, keep it simple, tap on simpleNote'
     }
   };
 });

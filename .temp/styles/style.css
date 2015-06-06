@@ -135,7 +135,7 @@ div.text-title ol {
   padding: 0 5px 0 5px;
   border-radius: 3px;
   line-height: 25px;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 ion-header-bar.bar-subheader {
