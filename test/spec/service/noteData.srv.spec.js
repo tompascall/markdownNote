@@ -483,17 +483,18 @@ describe('Service: noteData', function () {
   describe('Update displayedNotes when add or remove notes', function () {
     var tempNotes;
     var tempStorage;
+    var stub;
 
     var testNote1 = {
-        title: 'mockNote1',
+        title: 'mockNote1 testUpdateWithFilter',
         text: 'mockText1',
-        tags: ['mockTag1','testUpdateWithFilter'],
+        tags: ['mockTag1'],
         id: 12
     };
     var testNote2 = {
-        title: 'mockNote2',
+        title: 'mockNote2 testUpdateWithFilter',
         text: 'mockText2',
-        tags: ['mockTag2','testUpdateWithFilter'],
+        tags: ['mockTag2'],
         id: 13
     };
 
@@ -509,29 +510,32 @@ describe('Service: noteData', function () {
       noteData.notes = [];
       tempStorage = window.localStorage.simpleNote;
       window.localStorage.simpleNote = angular.toJson([]);
+
+      stub = sinon.stub(window, 'confirm');
+      stub.returns(true); // confirm deleting
     });
 
     afterEach(function () {
       noteData.notes = tempNotes.slice();
       window.localStorage.simpleNote = tempStorage;
+
+      stub.restore();
     });
 
     it('should update displayedNotes after add note', function () {
       noteData.addNote(testNote1);
-      expect(displayedNotes.notes[0].title).to.equal('mockNote1');
+      expect(displayedNotes.notes[0].title).to.equal('mockNote1 testUpdateWithFilter');
     });
 
     it('should update displayedNotes after removing note', function () {
       noteData.addNote(testNote1);
       noteData.addNote(testNote2);
-      expect(displayedNotes.notes[0].title).to.equal('mockNote2');
-      var stub = sinon.stub(window, 'confirm');
-      stub.returns(true); // confirm deleting
+      expect(displayedNotes.notes[0].title).to.equal('mockNote2 testUpdateWithFilter');
       noteData.deleteNote(noteData.notes[0]);
-      expect(displayedNotes.notes[0].title).to.equal('mockNote1');
+      expect(displayedNotes.notes[0].title).to.equal('mockNote1 testUpdateWithFilter');
     });
 
-    it('should take into account searchInput when updateing displayNotes', function () {
+    it('should take into account searchInput when updating displayNotes', function () {
       var tempSearchTerm = searchNote.searchTerm;
       noteData.addNote(testNote1);
       noteData.addNote(testNote2);
@@ -539,6 +543,12 @@ describe('Service: noteData', function () {
       searchNote.searchTerm = 'testUpdateWithFilter';
       noteData.applySearchNotes(searchNote.searchTerm);
       expect(displayedNotes.notes.length).to.equal(2);
+      expect(displayedNotes.notes[0].title).to.equal('mockNote2 testUpdateWithFilter');
+
+      noteData.deleteNote(displayedNotes.notes[0]);
+
+      expect(displayedNotes.notes.length).to.equal(1);
+      expect(displayedNotes.notes[0].title).to.equal('mockNote1 testUpdateWithFilter');
       searchNote.searchTerm = tempSearchTerm;
     });
   });
