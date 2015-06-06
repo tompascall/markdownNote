@@ -111,7 +111,6 @@ angular.module('simpleNote')
 
     applySearchNotes: function (searchTerm) {
       displayedNotes.notes = searchNotesFilter(this.notes, searchTerm);
-      console.log(displayedNotes.notes);
       pageService.updatePages(displayedNotes.notes);
     },
 
