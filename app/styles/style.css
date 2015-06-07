@@ -24,11 +24,16 @@ a {
 }
 
 .note-title-container {
+  display: box;
   display: -webkit-box;
-  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
-  display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .note-title {
@@ -106,6 +111,7 @@ div.text-title ol {
 }
 
 .text-title-container, .note-close-container, .note-edit-container {
+  display: box;
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
   -webkit-align-items: center;
@@ -117,6 +123,7 @@ div.text-title ol {
 }
 
 #tag-container {
+  display: box;
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;
 
