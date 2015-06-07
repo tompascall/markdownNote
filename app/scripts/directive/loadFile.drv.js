@@ -29,7 +29,7 @@ function loadFile (fileService, noteData, messageService) {
       var reader = new FileReader();
 
       reader.onloadend = function (evt) {
-        controller.setMessage('Your notes has been updated from simpleNote.json file');
+        controller.setMessage('Your notes has been updated from markdownNote.json file');
         noteData.backupNotesFromBackupData(evt.target.result);
       };
 
@@ -50,7 +50,7 @@ function loadFile (fileService, noteData, messageService) {
     };
 
     controller.confirmBackuping = function () {
-      return confirm('You are about to update your notes from simpleNote.json file. ' +
+      return confirm('You are about to update your notes from markdownNote.json file. ' +
         'It can result in losing some data if data of your notes are newer ' +
         'than the data in the backup file. Are you sure you want to backup data?');
     };
@@ -74,4 +74,4 @@ function loadFile (fileService, noteData, messageService) {
   };
 }
 
-angular.module('simpleNote').directive('loadFile', loadFile);
+angular.module('markdownNote').directive('loadFile', loadFile);

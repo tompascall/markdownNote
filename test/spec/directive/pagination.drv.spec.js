@@ -9,7 +9,7 @@ describe('Directive: pagination', function () {
   var isolated;
   var pageService;
 
-  beforeEach(module('simpleNote'));
+  beforeEach(module('markdownNote'));
 
   beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
 

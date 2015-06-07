@@ -8,4 +8,4 @@ function startFromFilter () {
   };
 }
 
-angular.module('simpleNote').filter('startFrom', startFromFilter);
+angular.module('markdownNote').filter('startFrom', startFromFilter);

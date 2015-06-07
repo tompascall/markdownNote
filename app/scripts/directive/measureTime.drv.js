@@ -17,4 +17,4 @@ function measureTime ($timeout, $log) {
   };
 }
 
-angular.module('simpleNote').directive('measureTime', measureTime);
+angular.module('markdownNote').directive('measureTime', measureTime);

@@ -22,4 +22,4 @@ function pagination () {
   };
 }
 
-angular.module('simpleNote').directive('pagination', pagination);
+angular.module('markdownNote').directive('pagination', pagination);

@@ -69,4 +69,4 @@ function saveFile (fileService, noteData, messageService) {
   };
 }
 
-angular.module('simpleNote').directive('saveFile', saveFile);
+angular.module('markdownNote').directive('saveFile', saveFile);

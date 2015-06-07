@@ -32,4 +32,4 @@ function searchInput () {
   };
 }
 
-angular.module('simpleNote').directive('searchInput', searchInput);
+angular.module('markdownNote').directive('searchInput', searchInput);

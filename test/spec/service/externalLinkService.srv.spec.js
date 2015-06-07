@@ -6,7 +6,7 @@ describe('Service: externalLinkService', function () {
   var externalLinkService;
 
   beforeEach(function () {
-    module('simpleNote');
+    module('markdownNote');
 
     inject(function ($injector) {
       externalLinkService = $injector.get('externalLinkService');

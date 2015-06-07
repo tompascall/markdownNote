@@ -10,7 +10,7 @@ describe('Sample test for setting up development framework', function () {
     var scope;
     var element;
 
-    beforeEach(module('simpleNote'));
+    beforeEach(module('markdownNote'));
 
     beforeEach(module('templates'));
 

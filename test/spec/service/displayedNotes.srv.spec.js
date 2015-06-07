@@ -6,7 +6,7 @@ describe('Service: displayedNotes', function () {
   var displayedNotes;
 
   beforeEach(function () {
-    module('simpleNote');
+    module('markdownNote');
 
     inject(function ($injector) {
       displayedNotes = $injector.get('displayedNotes');

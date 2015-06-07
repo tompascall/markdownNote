@@ -14,7 +14,7 @@ describe('Directive: searchInput', function () {
   var pageService;
 
   beforeEach(function () {
-    module('simpleNote');
+    module('markdownNote');
     module('templates');
 
     inject(function ($injector) {

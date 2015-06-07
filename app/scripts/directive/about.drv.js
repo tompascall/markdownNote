@@ -25,4 +25,4 @@ function aboutDirective (messageService, externalLinkService) {
   };
 }
 
-angular.module('simpleNote').directive('about', aboutDirective);
+angular.module('markdownNote').directive('about', aboutDirective);

@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('simpleNote', ['config', 'ionic', 'ngSanitize', 'ngCordova'])
+angular.module('markdownNote', ['config', 'ionic', 'ngSanitize', 'ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

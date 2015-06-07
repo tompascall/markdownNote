@@ -7,4 +7,4 @@ function editNoteModalBody () {
   };
 }
 
-angular.module('simpleNote').directive('editNoteModalBody', editNoteModalBody);
+angular.module('markdownNote').directive('editNoteModalBody', editNoteModalBody);

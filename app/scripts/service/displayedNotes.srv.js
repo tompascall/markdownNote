@@ -14,4 +14,4 @@ function displayedNotes () {
   };
 }
 
-angular.module('simpleNote').factory('displayedNotes', displayedNotes);
+angular.module('markdownNote').factory('displayedNotes', displayedNotes);

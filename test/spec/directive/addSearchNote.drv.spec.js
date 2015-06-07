@@ -9,7 +9,7 @@ describe('Directive: addSearchNote', function () {
   var element;
 
   beforeEach(function () {
-    module('simpleNote');
+    module('markdownNote');
     module('templates');
 
     inject(function ($injector) {

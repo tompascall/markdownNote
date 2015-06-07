@@ -10,7 +10,7 @@ describe('Directive: loadFile', function () {
   var fileService;
   var noteData;
 
-  beforeEach(module('simpleNote'));
+  beforeEach(module('markdownNote'));
 
   beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
 
