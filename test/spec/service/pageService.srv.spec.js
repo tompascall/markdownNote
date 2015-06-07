@@ -9,7 +9,7 @@ describe('Service: page', function () {
   var $ionicScrollDelegate;
 
   beforeEach(function () {
-    module('simpleNote');
+    module('markdownNote');
 
     inject(function ($injector) {
       pageService = $injector.get('pageService');

@@ -21,4 +21,4 @@ function externalLinkService () {
   };
 }
 
-angular.module('simpleNote').factory('externalLinkService', externalLinkService);
+angular.module('markdownNote').factory('externalLinkService', externalLinkService);

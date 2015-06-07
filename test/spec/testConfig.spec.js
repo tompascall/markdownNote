@@ -11,7 +11,7 @@ describe('Configuring local storage before tests', function () {
     id: 0
   }];
 
-  window.localStorage.simpleNote = angular.toJson(testLocalStorage);
+  window.localStorage.markdownNote = angular.toJson(testLocalStorage);
 });
 
 

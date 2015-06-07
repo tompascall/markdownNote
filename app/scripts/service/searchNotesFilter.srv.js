@@ -8,4 +8,4 @@ function searchNotesFilter ($filter) {
   };
 }
 
-angular.module('simpleNote').filter('searchNotes', searchNotesFilter);
+angular.module('markdownNote').filter('searchNotes', searchNotesFilter);

@@ -15,4 +15,4 @@ function messageService () {
   };
 }
 
-angular.module('simpleNote').factory('messageService', messageService);
+angular.module('markdownNote').factory('messageService', messageService);

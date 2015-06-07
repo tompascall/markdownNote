@@ -16,11 +16,11 @@ function fileService () {
     fileService.supportedPlatforms = {
       'Android' : {
         rootDirectory: cordova.file.externalRootDirectory,
-        filePath: 'download/simpleNote.json'
+        filePath: 'download/markdownNote.json'
       },
       'iOS': {
         rootDirectory: cordova.file.applicationStorageDirectory,
-        filePath: 'Library/simpleNote.json'
+        filePath: 'Library/markdownNote.json'
       }
     };
   };
@@ -68,4 +68,4 @@ function fileService () {
   return fileService;
 }
 
-angular.module('simpleNote').factory('fileService', fileService);
+angular.module('markdownNote').factory('fileService', fileService);

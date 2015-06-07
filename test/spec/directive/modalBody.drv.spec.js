@@ -8,7 +8,7 @@ describe('Directive: modalBody', function () {
   var element;
 
   beforeEach(function () {
-    module('simpleNote');
+    module('markdownNote');
     module('templates');
     inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;

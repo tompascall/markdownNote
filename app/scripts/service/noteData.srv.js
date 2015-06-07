@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('simpleNote')
+angular.module('markdownNote')
 
 .factory('noteData', function noteDataFactory(tagsFactory, markdown,
     displayedNotes, pageService, searchNotesFilter, searchNote) {
@@ -81,15 +81,15 @@ angular.module('simpleNote')
     },
 
     saveNotesToLocalStorage: function () {
-      window.localStorage.simpleNote = angular.toJson(this.notes);
+      window.localStorage.markdownNote = angular.toJson(this.notes);
     },
 
     loadNotesFromStorage: function () {
-      return angular.fromJson(window.localStorage.simpleNote);
+      return angular.fromJson(window.localStorage.markdownNote);
     },
 
     loadStringNotesFromStorage: function () {
-      return window.localStorage.simpleNote;
+      return window.localStorage.markdownNote;
     },
 
     confirmDeleteNote: function () {
@@ -138,7 +138,7 @@ angular.module('simpleNote')
     },
 
     saveBackupDataToStorage: function (backupData) {
-      window.localStorage.simpleNote = backupData;
+      window.localStorage.markdownNote = backupData;
     },
 
     backupNotesFromBackupData: function (backupData) {
@@ -148,14 +148,14 @@ angular.module('simpleNote')
 
     welcomeNote: {
       title: 'Welcome!',
-      text: '###Welcome to simpleNote!\n\n'  +
+      text: '###Welcome to markdownNote!\n\n'  +
         'This is a lightweight, simple app ' +
         'to manage your notes.\n\n' +
         'You can **store** your notes locally, you can **update** of their content' +
         ', and you can **filter** them by any keyword.\n\n' +
         'You can also use **markdown language** to style' +
         ' and structure the body of your notes.\n\n' +
-        'If you **tap on simpleNote** in the header, you can **save your notes** ' +
+        'If you **tap on markdownNote** in the header, you can **save your notes** ' +
         'to your file system and you can **backup your data** or sync with another device.\n\n' +
         'Enjoy it!',
       tags: ['Welcome note', 'enjoy']
@@ -167,7 +167,7 @@ angular.module('simpleNote')
             '#Organize your ideas\n' +
             '##Find your tools\n' +
             '###Keep it simple\n' +
-            '####Use simpleNote\n' +
+            '####Use markdownNote\n' +
             '#####Structure the text\n' +
             '######Use markdown\n\n' +
             '---\n\n' +
@@ -209,7 +209,7 @@ angular.module('simpleNote')
 
             '###Images\n\n' +
             '![colibri](images/colibri.jpg)\n\n',
-      tags: 'markdown, keep it simple, tap on simpleNote'
+      tags: 'markdown, keep it simple, tap on markdownNote'
     }
   };
 });

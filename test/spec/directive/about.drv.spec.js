@@ -9,7 +9,7 @@ describe('Directive: about', function () {
   var isolated;
 
 
-  beforeEach(module('simpleNote'));
+  beforeEach(module('markdownNote'));
 
   beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
 

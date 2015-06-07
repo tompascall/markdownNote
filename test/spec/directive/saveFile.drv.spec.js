@@ -10,7 +10,7 @@ describe('Directive: saveFile', function () {
   var fileService;
   var noteData;
 
-  beforeEach(module('simpleNote'));
+  beforeEach(module('markdownNote'));
 
   beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
 
@@ -108,17 +108,17 @@ describe('Directive: saveFile', function () {
         }
       ]);
 
-      var temp = window.localStorage.simpleNote;
+      var temp = window.localStorage.markdownNote;
       var writer = {
         write: function () {}
       };
       var mock = sinon.mock(writer);
-      window.localStorage.simpleNote = angular.fromJson(backupData);
+      window.localStorage.markdownNote = angular.fromJson(backupData);
       var notesString = noteData.loadStringNotesFromStorage();
       mock.expects('write').once().withExactArgs(notesString);
       isolated.ctrl.gotFileWriter(writer);
       expect(mock.verify()).to.equal(true);
-      window.localStorage.simpleNote = temp;
+      window.localStorage.markdownNote = temp;
     });
 
     it('controller.fail should log error', function () {

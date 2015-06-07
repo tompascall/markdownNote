@@ -14,4 +14,4 @@ function searchNote($ionicScrollDelegate) {
   };
 }
 
-angular.module('simpleNote').factory('searchNote', searchNote);
+angular.module('markdownNote').factory('searchNote', searchNote);

@@ -11,7 +11,7 @@ describe('Directive: appHeader', function () {
   var searchNote;
   var extrasModal;
 
-  beforeEach(module('simpleNote'));
+  beforeEach(module('markdownNote'));
 
   beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
 
@@ -177,13 +177,13 @@ describe('Directive: appHeader', function () {
       beforeEach(function () {
         tempNotes = noteData.notes.slice();
         noteData.notes = [];
-        tempStorage = window.localStorage.simpleNote;
-        window.localStorage.simpleNote = angular.toJson([]);
+        tempStorage = window.localStorage.markdownNote;
+        window.localStorage.markdownNote = angular.toJson([]);
       });
 
       afterEach(function () {
         noteData.notes = tempNotes.slice();
-        window.localStorage.simpleNote = tempStorage;
+        window.localStorage.markdownNote = tempStorage;
       });
 
       beforeEach(function () {
@@ -213,13 +213,13 @@ describe('Directive: appHeader', function () {
       beforeEach(function () {
         tempNotes = noteData.notes.slice();
         noteData.notes = [];
-        tempStorage = window.localStorage.simpleNote;
-        window.localStorage.simpleNote = angular.toJson([]);
+        tempStorage = window.localStorage.markdownNote;
+        window.localStorage.markdownNote = angular.toJson([]);
       });
 
       afterEach(function () {
         noteData.notes = tempNotes.slice();
-        window.localStorage.simpleNote = tempStorage;
+        window.localStorage.markdownNote = tempStorage;
       });
 
       beforeEach(function () {
@@ -313,17 +313,17 @@ describe('Directive: appHeader', function () {
 
       it('should have Save to Device button', function () {
         var saveToDeviceButton = modalElement.find('ion-content form div.list button.saveToDeviceButton');
-         expect(saveToDeviceButton.text()).to.equal('Save Notes to simpleNote.json');
+         expect(saveToDeviceButton.text()).to.equal('Save notes to markdownNote.json');
       });
 
       it('should have Backup from Device button', function () {
         var backupFromDeviceButton = modalElement.find('ion-content form div.list button.backupFromDeviceButton');
-         expect(backupFromDeviceButton.text()).to.equal('Backup notes from simpleNote.json');
+         expect(backupFromDeviceButton.text()).to.equal('Backup notes from markdownNote.json');
       });
 
       it('should have an About button', function () {
         var aboutButton = modalElement.find('ion-content form div.list button.aboutButton');
-        expect(aboutButton.text()).to.equal('About simpleNote');
+        expect(aboutButton.text()).to.equal('About markdownNote');
       });
 
       it('should have a done button', function () {

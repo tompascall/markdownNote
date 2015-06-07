@@ -82,4 +82,4 @@ function appHeaderDirective () {
   };
 }
 
-angular.module('simpleNote').directive('appHeader', appHeaderDirective);
+angular.module('markdownNote').directive('appHeader', appHeaderDirective);

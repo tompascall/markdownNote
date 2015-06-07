@@ -13,7 +13,7 @@ describe('Service: fileService', function () {
   var fileService;
 
   beforeEach(function () {
-    module('simpleNote');
+    module('markdownNote');
     module('templates');
   });
 
@@ -65,11 +65,11 @@ describe('Service: fileService', function () {
       fileService.setSupportedPlatforms();
       device.platform = 'Android';
       fileService.setFilePath();
-      expect(fileService.filePath).to.equal('download/simpleNote.json');
+      expect(fileService.filePath).to.equal('download/markdownNote.json');
 
       device.platform = 'iOS';
       fileService.setFilePath();
-      expect(fileService.filePath).to.equal('Library/simpleNote.json');
+      expect(fileService.filePath).to.equal('Library/markdownNote.json');
     });
 
     it('should set up fileSevice', function () {

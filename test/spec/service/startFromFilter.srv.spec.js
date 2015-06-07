@@ -6,7 +6,7 @@ describe('Service: startFromFilter', function () {
   var startFromFilter;
 
   beforeEach(function () {
-    module('simpleNote');
+    module('markdownNote');
 
     inject(function ($injector) {
       startFromFilter = $injector.get('startFromFilter');

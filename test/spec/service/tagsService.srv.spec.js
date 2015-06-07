@@ -6,7 +6,7 @@ describe('Service: tags', function () {
   var tagsFactory;
 
   beforeEach(function () {
-    module('simpleNote');
+    module('markdownNote');
 
     inject(function ($injector) {
       tagsFactory = $injector.get('tagsFactory');

@@ -16,4 +16,4 @@ function markdown () {
   };
 }
 
-angular.module('simpleNote').factory('markdown', markdown);
+angular.module('markdownNote').factory('markdown', markdown);

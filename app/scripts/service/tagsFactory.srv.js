@@ -40,4 +40,4 @@ function tagsFactory () {
   };
 }
 
-angular.module('simpleNote').factory('tagsFactory', tagsFactory);
+angular.module('markdownNote').factory('tagsFactory', tagsFactory);

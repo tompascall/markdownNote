@@ -12,7 +12,7 @@ describe('Directive: noteList', function () {
   var searchNote;
   var displayedNotes;
 
-  beforeEach(module('simpleNote'));
+  beforeEach(module('markdownNote'));
 
   beforeEach(module('templates')); // from ngHtml2JsPreprocessor karma task
 
@@ -212,7 +212,7 @@ describe('Directive: noteList', function () {
 
       beforeEach(function () {
         stub = sinon.stub(window, 'confirm');
-        tempStorage = window.localStorage.simpleNote;
+        tempStorage = window.localStorage.markdownNote;
         tempNotes = noteData.notes.slice();
         noteData.notes = [];
       });
@@ -220,7 +220,7 @@ describe('Directive: noteList', function () {
       afterEach(function () {
         stub.restore();
         noteData.notes = tempNotes.slice();
-        window.localStorage.simpleNote = tempStorage;
+        window.localStorage.markdownNote = tempStorage;
       });
 
       it('should call noteData.deleteNote method', function () {
@@ -394,8 +394,8 @@ describe('Directive: noteList', function () {
       beforeEach(function () {
         tempNotes = noteData.notes.slice();
         noteData.notes = [];
-        tempStorage = window.localStorage.simpleNote;
-        window.localStorage.simpleNote = angular.toJson([]);
+        tempStorage = window.localStorage.markdownNote;
+        window.localStorage.markdownNote = angular.toJson([]);
 
         testNote = {
           title: 'Testnote',
@@ -418,7 +418,7 @@ describe('Directive: noteList', function () {
 
       afterEach(function () {
         noteData.notes = tempNotes.slice();
-        window.localStorage.simpleNote = tempStorage;
+        window.localStorage.markdownNote = tempStorage;
         isolated.ctrl.noteInput = '';
       });
 
@@ -458,7 +458,7 @@ describe('Directive: noteList', function () {
     var tempNotes;
 
     beforeEach(function () {
-      tempStorage = window.localStorage.simpleNote;
+      tempStorage = window.localStorage.markdownNote;
       tempNotes = noteData.notes.slice();
       noteData.notes = [
         {
@@ -477,7 +477,7 @@ describe('Directive: noteList', function () {
 
     afterEach(function () {
       noteData.notes = tempNotes.slice();
-      window.localStorage.simpleNote = tempStorage;
+      window.localStorage.markdownNote = tempStorage;
     });
 
     it('should insert note.htmlText into a div element', function () {
@@ -507,13 +507,13 @@ describe('Directive: noteList', function () {
       noteData.updateDisplayedNotes();
       scope.$digest();
 
-      tempStorage = window.localStorage.simpleNote;
-      window.localStorage.simpleNote = angular.toJson([]);
+      tempStorage = window.localStorage.markdownNote;
+      window.localStorage.markdownNote = angular.toJson([]);
     });
 
     afterEach(function () {
       noteData.notes = tempNotes.slice();
-      window.localStorage.simpleNote = tempStorage;
+      window.localStorage.markdownNote = tempStorage;
     });
 
     it('should call launchExternalLink when click on a link', function () {
@@ -555,13 +555,13 @@ describe('Directive: noteList', function () {
     beforeEach(function () {
       tempNotes = noteData.notes.slice();
       noteData.notes = testNotes;
-      tempStorage = window.localStorage.simpleNote;
-      window.localStorage.simpleNote = angular.toJson(testNotes);
+      tempStorage = window.localStorage.markdownNote;
+      window.localStorage.markdownNote = angular.toJson(testNotes);
     });
 
     afterEach(function () {
       noteData.notes = tempNotes.slice();
-      window.localStorage.simpleNote = tempStorage;
+      window.localStorage.markdownNote = tempStorage;
     });
 
     it('displayedNotes.notes should deeply equal to noteData.notes after initialization', function () {

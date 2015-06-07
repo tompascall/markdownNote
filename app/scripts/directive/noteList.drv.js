@@ -88,6 +88,6 @@ function noteList () {
   };
 }
 
-angular.module('simpleNote').directive('noteList', noteList);
+angular.module('markdownNote').directive('noteList', noteList);
 
 

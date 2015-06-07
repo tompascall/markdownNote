@@ -56,4 +56,4 @@ function pageService (ENV, $ionicScrollDelegate) {
   return pageService;
 }
 
-angular.module('simpleNote').factory('pageService', pageService);
+angular.module('markdownNote').factory('pageService', pageService);

@@ -15,4 +15,4 @@ function addSearchNote () {
   };
 }
 
-angular.module('simpleNote').directive('addSearchNote', addSearchNote);
+angular.module('markdownNote').directive('addSearchNote', addSearchNote);
