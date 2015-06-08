@@ -197,7 +197,7 @@ describe('Directive: appHeader', function () {
         var preparedNote = {
           title: 'test title',
           text: 'test text',
-          htmlText: '<p>test text</p>',
+          htmlText: '<p>test text</p>\n',
           tags: ['test tag1', 'test tag2'],
           id: id
         }
@@ -323,13 +323,13 @@ describe('Directive: appHeader', function () {
 
       it('should have an About button', function () {
         var aboutButton = modalElement.find('ion-content form div.list button.aboutButton');
-        expect(aboutButton.text()).to.equal('About markdownNote');
+        expect(aboutButton.text()).to.equal('About Markdown Note');
       });
 
       it('should have a done button', function () {
         var button = modalElement.find('ion-content form div button#doneExtrasButton');
         expect(button).to.have.attr('type', 'submit');
-        expect(button.text()).to.contain('Done');
+        expect(button.text()).to.contain('Back');
       });
     });
 

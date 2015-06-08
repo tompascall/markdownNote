@@ -353,18 +353,18 @@ describe('Service: noteData', function () {
 
     it('should set HtmlText of note', function () {
       noteData.setNoteHtmlText(note);
-      expect(note.htmlText).to.equal('<h2>Test</h2>');
+      expect(note.htmlText).to.equal('<h2 id="test">Test</h2>\n');
     });
 
     it('should prepare note using setHtmlText', function () {
       var preparedNote = noteData.prepareNote(note);
-      expect(preparedNote.htmlText).to.equal('<h2>Test</h2>');
+      expect(preparedNote.htmlText).to.equal('<h2 id="test">Test</h2>\n');
     });
 
     it('should save htmlText property to noteData.notes array', function () {
       note = noteData.prepareNote(note);
       noteData.saveNewNoteToNoteData(note);
-      expect(noteData.notes[0].htmlText).to.equal('<h2>Test</h2>');
+      expect(noteData.notes[0].htmlText).to.equal('<h2 id="test">Test</h2>\n');
     });
 
     it('should update htmlText property when update note', function () {
@@ -372,7 +372,7 @@ describe('Service: noteData', function () {
       noteData.saveNewNoteToNoteData(note);
       note.text = '###Updated text';
       noteData.updateNotes(noteData.notes[0], note);
-      expect(noteData.notes[0].htmlText).to.equal('<h3>Updated text</h3>');
+      expect(noteData.notes[0].htmlText).to.equal('<h3 id="updated-text">Updated text</h3>\n');
     });
   });
 
