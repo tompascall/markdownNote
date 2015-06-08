@@ -151,8 +151,10 @@ angular.module('markdownNote')
       text: '###Welcome to Markdown Note!\n\n'  +
         'This is a lightweight, simple app ' +
         'to manage your notes.\n\n' +
-        'You can **store** your notes locally, you can **update** of their content' +
-        ', and you can **filter** them by any keyword.\n\n' +
+        'You can \n\n' +
+        '- **store** your notes locally\n' +
+        '- easily **tag** your notes\n' +
+        '- **filter** them by any keyword.\n\n' +
         'You can also use **markdown language** to style' +
         ' and structure the body of your notes.\n\n' +
         'If you **tap on Markdown Note** in the header, you can **save your notes** ' +
@@ -171,8 +173,16 @@ angular.module('markdownNote')
             '#####Structure the text\n' +
             '######Use markdown\n\n' +
             '---\n\n' +
+            '###List\n\n' +
+            '- simple\n' +
+            '- note\n' +
+            '- manager\n' +
+            ' -- manage your ideas\n' +
+            ' -- manage your thoughts\n\n' +
+            '---\n\n' +
             '###Link\n\n' +
             '[Markdown](http://en.wikipedia.org/wiki/Markdown)\n\n' +
+            '---\n\n' +
             '###Bold\n\n' +
             '**bold**\n\n' +
             '---\n\n' +
@@ -209,7 +219,7 @@ angular.module('markdownNote')
 
             '###Images\n\n' +
             '![colibri](images/colibri.jpg)\n\n',
-      tags: 'markdown, keep it simple, tap on Markdown Note'
+      tags: 'markdown, keep it simple'
     }
   };
 });
