@@ -165,7 +165,9 @@ angular.module('markdownNote')
 
     markdownNote: {
       title: 'Markdown tools for styling the body of your note',
-      text: '###Headers\n\n' +
+      text: 'Just tap on the **edit button** at the bottom of this note,' +
+            ' and you can see how easy to form the text with markdown.\n\n' +
+            '###Headers\n\n' +
             '#Organize your ideas\n' +
             '##Find your tools\n' +
             '###Keep it simple\n' +
@@ -194,6 +196,7 @@ angular.module('markdownNote')
 
             '###Link\n\n' +
             '[Markdown](http://en.wikipedia.org/wiki/Markdown)\n\n' +
+            'http://en.wikipedia.org/wiki/Markdown\n\n' +
             '---\n\n' +
 
             '###Bold\n\n' +
@@ -209,7 +212,7 @@ angular.module('markdownNote')
             '> Markdown is a text-to-HTML conversion tool for web writers.' +
             ' Markdown allows you to write using an easy-to-read, easy-to-write' +
             ' plain text format, then convert it to structurally valid XHTML (or HTML).\n\n' +
-
+            'http://daringfireball.net/projects/markdown/\n\n' +
 
             '---\n\n' +
             '###Code\n\n' +
@@ -225,13 +228,6 @@ angular.module('markdownNote')
 
             '###Strike through\n\n' +
             '~~Deleted~~\n\n' +
-            '---\n\n' +
-
-            '###Definiton\n\n' +
-            'Term 1\n' +
-            ':   Definition 1\n\n' +
-            'Term 2\n' +
-            ':   Definition 2\n\n' +
             '---\n\n' +
 
             '###Tables\n\n' +
