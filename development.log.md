@@ -68,6 +68,17 @@ Watch for changes and run your tests, using ```karma```, ```mocha```, ```chai```
 
 - ```app/scripts/app.js```: changing the main module name (markdownNote), removing unwanted comments and adding ```'use strict'```
 - ```app/index.html```: adding title (Markdown Note), updating the module name and the header title
+- update `package.json` file (name & description)
+- update `ionic.project` file
+- update `config.xml` file (package id in widget tag ( id="com.tompascall.MarkdownNote"), name, description, author)
+- update `bower.json` file
+- check out [this description](http://forum.ionicframework.com/t/renaming-android-build-apk-from-cordovaapp-to-your-app-name/15416) and update the following files:
+  - `platforms/android/AndroidManifest.xml`
+  - `platforms/android/build.xml`
+  - `platforms/android/src/com/yourpackagename/appfolder/CordovaApp.java`
+  - and rename the package folder (considering the middle part of the package id in the config.xml file) `platforms/android/src/com/ionicframework` to your package name (for me: tompascall)
+
+**NOTE** It is recommended to add any platform to the project after (and not before) cleaning the project.
 
 ###1.6. Editorconfig
 

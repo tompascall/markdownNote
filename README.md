@@ -23,6 +23,8 @@ If you are curious about setting up the development framework, just check out th
 - Add platform: ```$ grunt platform:add:<platform>``` (ios / android)
 - Build the project from the project library: ```$ grunt build```
 
+As regards android platform you can find your built `.apk` in the `app/platforms/android/ant-build` folder.
+
 ##Run the app
 
 You can 
