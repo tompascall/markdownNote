@@ -1,10 +1,10 @@
-#simpleNote - a Simple Note Manager
+#Markdown Note - a Simple Note Manager
 
 In this project we'll develop a hybrid mobile app, using test-driven development approach, developing in [Ionic Framework](ionicframework.com).
 
 The app is a note manager. You can **store** your notes locally, you can **update** the content of notes and you can **filter** them by any keyword. You can also use **markdown language** to style and structure the body of your notes. As regards markdown editing we use the [Pagedown](https://code.google.com/p/pagedown/wiki/PageDown) library and [Pagedown-Extra plugin](https://github.com/jmcmanus/pagedown-extra).
 
-If you are curious about the development work flow, just check out the [**development.log.md**](https://github.com/tompascall/simpleNote/blob/master/development.log.md) file for the details.
+If you are curious about the development work flow, just check out the [**development.log.md**](https://github.com/tompascall/markdownNote/blob/master/development.log.md) file for the details.
 
 ##Prerequisites of building the app
 

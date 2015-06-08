@@ -1,6 +1,6 @@
 {
-  "name": "SimpleNote",
-  "version": "0.0.0",
+  "name": "Markdown Note",
+  "version": "0.1.0",
   "dependencies": {
     "ionic": "~1.0.0",
     "ngCordova": "0.1.12-alpha",

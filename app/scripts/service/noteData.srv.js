@@ -148,14 +148,14 @@ angular.module('markdownNote')
 
     welcomeNote: {
       title: 'Welcome!',
-      text: '###Welcome to markdownNote!\n\n'  +
+      text: '###Welcome to Markdown Note!\n\n'  +
         'This is a lightweight, simple app ' +
         'to manage your notes.\n\n' +
         'You can **store** your notes locally, you can **update** of their content' +
         ', and you can **filter** them by any keyword.\n\n' +
         'You can also use **markdown language** to style' +
         ' and structure the body of your notes.\n\n' +
-        'If you **tap on markdownNote** in the header, you can **save your notes** ' +
+        'If you **tap on Markdown Note** in the header, you can **save your notes** ' +
         'to your file system and you can **backup your data** or sync with another device.\n\n' +
         'Enjoy it!',
       tags: ['Welcome note', 'enjoy']
@@ -167,7 +167,7 @@ angular.module('markdownNote')
             '#Organize your ideas\n' +
             '##Find your tools\n' +
             '###Keep it simple\n' +
-            '####Use markdownNote\n' +
+            '####Use Markdown Note\n' +
             '#####Structure the text\n' +
             '######Use markdown\n\n' +
             '---\n\n' +
@@ -209,7 +209,7 @@ angular.module('markdownNote')
 
             '###Images\n\n' +
             '![colibri](images/colibri.jpg)\n\n',
-      tags: 'markdown, keep it simple, tap on markdownNote'
+      tags: 'markdown, keep it simple, tap on Markdown Note'
     }
   };
 });
