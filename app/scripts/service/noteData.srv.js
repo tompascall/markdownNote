@@ -173,21 +173,44 @@ angular.module('markdownNote')
             '#####Structure the text\n' +
             '######Use markdown\n\n' +
             '---\n\n' +
-            '###List\n\n' +
-            '- simple\n' +
-            '- note\n' +
-            '- manager\n' +
-            ' -- manage your ideas\n' +
-            ' -- manage your thoughts\n\n' +
+
+            '###Smart lists\n\n' +
+            '* plants\n' +
+            '* animals\n' +
+            '  1. Parazoa\n' +
+            '  2. Eumetazoa\n' +
+            '    * Radiata\n' +
+            '    * Bilateralia\n' +
+            '      1. Protostomia\n' +
+            '      2. Deuterostomia\n' +
+            '        * Chaetognatha\n' +
+            '        * Hemichordata\n' +
+            '        * Echinodermata\n' +
+            '        * Chordata\n' +
+            '           1. Urochordata\n' +
+            '           2. Cephalochordata\n' +
+            '           3. Vertebrata\n\n' +
             '---\n\n' +
+
             '###Link\n\n' +
             '[Markdown](http://en.wikipedia.org/wiki/Markdown)\n\n' +
             '---\n\n' +
+
             '###Bold\n\n' +
             '**bold**\n\n' +
+
             '---\n\n' +
             '###Italic\n\n' +
             '*italic*\n\n' +
+
+            '---\n\n' +
+            '###Blockquote\n\n' +
+
+            '> Markdown is a text-to-HTML conversion tool for web writers.' +
+            ' Markdown allows you to write using an easy-to-read, easy-to-write' +
+            ' plain text format, then convert it to structurally valid XHTML (or HTML).\n\n' +
+
+
             '---\n\n' +
             '###Code\n\n' +
             '```\n' +
@@ -199,23 +222,25 @@ angular.module('markdownNote')
             '});\n' +
             '```\n\n' +
             '---\n\n' +
+
             '###Strike through\n\n' +
             '~~Deleted~~\n\n' +
             '---\n\n' +
+
             '###Definiton\n\n' +
             'Term 1\n' +
             ':   Definition 1\n\n' +
             'Term 2\n' +
             ':   Definition 2\n\n' +
             '---\n\n' +
-            '###Tables\n\n' +
 
+            '###Tables\n\n' +
             '| Fruit     | Value | Qty |\n' +
             '| --------- | ----- | --  |\n' +
             '| Orange    | $0.50 | 5   |\n' +
             '| Apple     | $0.30 | 4   |\n' +
             '| Pear      | $0.40 | 3   |\n' +
-
+            '---\n\n' +
 
             '###Images\n\n' +
             '![colibri](images/colibri.jpg)\n\n',

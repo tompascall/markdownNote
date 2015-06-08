@@ -100,8 +100,34 @@ div.text-title ul {
   list-style-position: inside;
 }
 
+div.text-title ul ul {
+  list-style-type: circle;
+}
+
+div.text-title ul ul ul {
+  list-style-type: square;
+}
+
+div.text-title ul > li {
+  margin-left: 10px;
+}
+
+div.text-title ol > li {
+  margin-left: 10px;
+}
+
 div.text-title ol {
   list-style-type: decimal;
+  list-style-position: inside;
+}
+
+div.text-title ol ol {
+  list-style-type: lower-latin;
+  list-style-position: inside;
+}
+
+div.text-title ol ol ol {
+  list-style-type: lower-roman;
   list-style-position: inside;
 }
 
