@@ -60,7 +60,6 @@ a {
   width: 100%;
 }
 
-
 div.text-title p, div.text-title li, div.text-title code, div.text-title dt, div.text-title dd {
   font-size: 18px;
   line-height: 22px;
@@ -73,7 +72,6 @@ div.text-title p, div.text-title li {
 div.text-title h2 {
   font-size: 28px;
 }
-
 
 div.text-title em {
   font-style: italic;
@@ -173,5 +171,18 @@ ion-header-bar.bar-subheader {
 
 .scroll-bar-indicator {
   display: none;
+}
+
+textarea#edit-note-modal-text {
+  resize: vertical;
+  min-height: 10em;
+}
+
+@media only screen
+and (orientation: portrait)
+and (min-device-height: 20em) {
+  textarea#edit-note-modal-text {
+    min-height: 20em;
+  }
 }
 
