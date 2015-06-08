@@ -22,7 +22,7 @@
     "angular": false,
     "cordova": false,
     "StatusBar": false,
-    "Markdown": false,
+    "marked": false,
     "device": false,
     "$": false,
     "confirm": false
