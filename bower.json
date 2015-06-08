@@ -4,8 +4,6 @@
   "dependencies": {
     "ionic": "~1.0.0",
     "ngCordova": "0.1.12-alpha",
-    "pagedown": "~1.1.0",
-    "pagedown-extra": "*",
     "jquery": "~2.1.4",
     "marked": "~0.3.3"
   },
