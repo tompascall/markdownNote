@@ -164,7 +164,7 @@ angular.module('markdownNote')
     },
 
     markdownNote: {
-      title: 'Markdown tools for styling the body of your note',
+      title: 'Markdown tools for styling your note',
       text: 'Just tap on the **edit button** at the bottom of this note,' +
             ' and you can see how easy to form the text with markdown.\n\n' +
             '###Headers\n\n' +
