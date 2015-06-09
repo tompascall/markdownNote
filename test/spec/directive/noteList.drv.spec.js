@@ -67,7 +67,7 @@ describe('Directive: noteList', function () {
       var titleRow = element.find('.note-item div');
       expect(titleRow).to.have.class('row');
       var noteTitleContainer = titleRow.eq(0).children('div').eq(0);
-      expect(noteTitleContainer).to.have.class('note-title-container col col-80');
+      expect(noteTitleContainer).to.have.class('note-title-container col col-90');
       // expect(noteTitleContainer).to.have.css('display').match(/-webkit-flex|flex/);
       // unfortunately PhantomJS use an older flex standard (-webkit-box) whch is not
       // supported by the app
@@ -200,9 +200,9 @@ describe('Directive: noteList', function () {
 
   describe('Create a button for deleting note', function () {
 
-    it('should have class button button-icon icon icon-right ion-ios7-close-outline note-close', function () {
-     var button = element.find('div.note-close-container a');
-     expect(button).to.have.class('button button-icon icon icon-right ion-ios-close-outline note-close');
+    it('should have class icon icon-right ion-ios7-close-outline note-close', function () {
+     var button = element.find('div.note-close-container i');
+     expect(button).to.have.class('icon icon-right ion-ios-close-outline note-close');
     });
 
     describe('Connect `deleteNote` method to delete button with ng-click', function () {
@@ -236,7 +236,7 @@ describe('Directive: noteList', function () {
         var mock = sinon.mock(noteData);
         mock.expects('deleteNote').withArgs(noteData.notes[0]);
         firstNote = element.find('ion-list .note-item').eq(0);
-        var button = firstNote.find('div.note-close-container a');
+        var button = firstNote.find('div.note-close-container i');
         stub.returns(true); // Confirm deleting the note
         button.click();
         expect(mock.verify()).to.equal(true);
@@ -254,7 +254,7 @@ describe('Directive: noteList', function () {
         firstNote = element.find('ion-list .note-item').eq(0);
         expect(firstNote.html()).to.contain('Testnote');
 
-        var button = firstNote.find('div.note-close-container a');
+        var button = firstNote.find('div.note-close-container i');
         stub.returns(true); // Confirm deleting the note
         button.click();
         scope.$digest();
@@ -267,7 +267,7 @@ describe('Directive: noteList', function () {
   describe('Create a button for editing note', function () {
 
     it('should have class button button-icon icon icon-right ion-edit note-edit', function () {
-     var button = element.find('div.note-edit-container a');
+     var button = element.find('div.note-edit-container i');
      expect(button).to.have.class('button button-icon icon icon-right ion-edit note-edit');
     });
   });
