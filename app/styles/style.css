@@ -146,6 +146,10 @@ div.text-title ol ol ol {
   margin-left: auto;
 }
 
+.note-close {
+  font-size: 26px;
+}
+
 #tag-container {
   display: box;
   display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */

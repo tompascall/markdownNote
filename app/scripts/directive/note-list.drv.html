@@ -4,13 +4,13 @@
   <div class="note-item" ng-repeat="note in ctrl.displayedNotes.notes | startFrom: (ctrl.pageService.currentPage - 1) * ctrl.pageService.pageSize | limitTo: ctrl.pageService.pageSize" ng-click="ctrl.toggleNoteState(note)">
 
     <div class="row">
-      <div class="note-title-container col col-80">
+      <div class="note-title-container col col-90">
         <h2 class='note-title'>
           <span class="wordwrap" ng-bind="note.title"></span>
         </h2>
       </div>
-      <div class="col col-20 note-close-container">
-        <a class="button button-icon icon icon-right ion-ios-close-outline note-close" ng-click="ctrl.noteData.deleteNote(note, $event)"></a>
+      <div class="col col-10 note-close-container">
+        <i class="icon icon-right ion-ios-close-outline note-close" ng-click="ctrl.noteData.deleteNote(note, $event)"></i>
       </div>
     </div>
     <div id="note-text-and-tags" ng-if="ctrl.noteData.opened[note.id]">
@@ -23,7 +23,7 @@
           <span class="tag-title" ng-repeat="tag in note.tags" ng-bind="tag + ' '"></span>
         </p>
         <div class="col col-20 note-edit-container">
-          <a id="edit-button" class="button button-icon icon icon-right ion-edit note-edit" ng-click="ctrl.editNote(note, $event)"></a>
+          <i id="edit-button" class="button button-icon icon icon-right ion-edit note-edit" ng-click="ctrl.editNote(note, $event)"></i>
         </div>
       </div>
     </div>
