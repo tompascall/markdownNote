@@ -50,7 +50,7 @@ client.authenticate(function(error, client) {
     //
     // Don't forget to return from the callback, so you don't execute the code
     // that assumes everything went well.
-
+    console.log('authentication error');
     return showError(error);
   }
 
