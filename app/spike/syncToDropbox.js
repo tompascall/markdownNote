@@ -111,6 +111,19 @@ function writeFile (options, data) {
       return dropErrorHandlers[error.status].errorHandler();
     }
     console.log('The ' + fileName + ' file has been succesfully written');
+    readFile({fileName: 'markdownNote.json'});
+  });
+}
+
+function readFile (options) {
+  var fileName = options.fileName;
+
+  client.readFile(fileName, function(error, data) {
+    if (error) {
+      return dropErrorHandlers[error.status].errorHandler();
+    }
+    console.log('The ' + fileName + ' file has been succesfully read');
+    console.log(data);
   });
 }
 
