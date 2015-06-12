@@ -95,9 +95,22 @@ function doSomethingCool () {
       return  dropErrorHandlers[error.status].errorHandler();  // Something went wrong.
     }
     else {
+      var mockData = JSON.stringify({mockData: 'mockData'});
+      writeFile({fileName: 'markdownNote.json'}, mockData);
       window.alert('Hello, ' + accountInfo.name + '!');
       client.signOut();
     }
+  });
+}
+
+function writeFile (options, data) {
+  var fileName = options.fileName;
+
+  client.writeFile(fileName, data, function(error, stat) {
+    if (error) {
+      return dropErrorHandlers[error.status].errorHandler();
+    }
+    console.log('The ' + fileName + ' file has been succesfully written');
   });
 }
 
