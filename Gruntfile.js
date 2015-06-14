@@ -80,6 +80,10 @@ module.exports = function (grunt) {
       gruntfile: {
         files: ['Gruntfile.js'],
         tasks: ['ngconstant:development', 'newer:copy:app']
+      },
+      spike: {
+        files: ['<%= yeoman.app %>/spike/**/*.js'],
+        tasks: ['newer:jshint:spike']
       }
     },
 
@@ -119,7 +123,8 @@ module.exports = function (grunt) {
           jshintrc: 'test/.jshintrc'
         },
         src: ['test/unit/**/*.js']
-      }
+      },
+      spike: ['<%= yeoman.app %>/spike/*.js']
     },
 
     // Empties folders to start fresh
