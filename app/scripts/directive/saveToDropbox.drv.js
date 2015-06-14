@@ -2,7 +2,7 @@
 
 'use strict';
 
-function saveToDropbox () {
+function saveToDropbox (dropboxService) {
 
   function saveToDropboxController () {
 
@@ -16,8 +16,11 @@ function saveToDropbox () {
     //     controller.messageService.loadMessage = false;
     //   });
     // };
+    controller.isAuthenticated = function () {
+      return dropboxService.client.isAuthenticated();
+    };
 
-    controller.saveText = function () {
+    controller.save = function () {
       // if (fileService.deviceReady) {
 
       //   controller.onDeviceReady(fileService.rootDirectory);
