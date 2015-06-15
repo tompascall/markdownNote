@@ -51,8 +51,36 @@ describe('Directive: saveToDropbox', function () {
     });
 
     it('should start authentication process if not authenticated', function () {
-
+      var stub = sinon.stub(dropboxService.client, 'isAuthenticated');
+      stub.returns(false);
+      sinon.spy(isolated.ctrl, 'authentication');
+      isolated.ctrl.save();
+      expect(isolated.ctrl.authentication.called).to.equal(true);
+      stub.restore();
+      isolated.ctrl.authentication.restore();
     });
+
+    it('should call client.authenticate()', function () {
+      sinon.stub(dropboxService.client, 'authenticate');
+      isolated.ctrl.authentication();
+      expect(dropboxService.client.authenticate.called).to.equal(true);
+      dropboxService.client.authenticate.restore();
+    });
+
+    // it('should call INVALID_TOKEN errorhandler', function () {
+    //   var stub = sinon.stub(dropboxService.dropErrorHandlers,
+    //     Dropbox.ApiError.INVALID_TOKEN.toString());
+    //   var error = {
+    //     status: Dropbox.ApiError.INVALID_TOKEN,
+    //     authenticated: false
+    //   };
+    //   var client = {
+    //     authenticated: true
+    //   };
+    //   stub.yields(error, client);
+
+    //   stub.restore();
+    // });
   });
 });
 

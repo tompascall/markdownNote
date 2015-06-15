@@ -16,6 +16,12 @@ function saveToDropbox (dropboxService) {
     //     controller.messageService.loadMessage = false;
     //   });
     // };
+    controller.authentication = function () {
+      dropboxService.client.authenticate(function (error, client) {
+
+      });
+    };
+
     controller.isAuthenticated = function () {
       return dropboxService.client.isAuthenticated();
     };
@@ -25,6 +31,9 @@ function saveToDropbox (dropboxService) {
 
       //   controller.onDeviceReady(fileService.rootDirectory);
       // }
+      if (!controller.isAuthenticated()) {
+        controller.authentication();
+      }
     };
   }
 

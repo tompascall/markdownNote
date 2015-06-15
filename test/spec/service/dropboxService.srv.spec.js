@@ -35,7 +35,7 @@ describe('Service: dropboxService', function () {
       expect(dropboxService.clientInitOptions.key).to.equal('pbqyznysf6jffyl');
     });
 
-    // this test is really slow, about 2s, it should be rather an E2E test
+    // this test is really slow (about 2s), it should be rather an E2E test
     // it('should be called with the right app key', function (done) {
     //   dropboxService.client.appInfo(function (error, info) {
     //     if (error) {
@@ -45,6 +45,15 @@ describe('Service: dropboxService', function () {
     //     done();
     //   })
     // });
+  });
+
+  describe('Error handling', function () {
+    it('should have INVALID_TOKEN handler', function () {
+      expect(dropboxService.errorHandlers[Dropbox.ApiError.INVALID_TOKEN]
+        .tokenNumber).to.equal(Dropbox.ApiError.INVALID_TOKEN);
+      expect(dropboxService.errorHandlers[Dropbox.ApiError.INVALID_TOKEN]
+        .errorHandler).to.be.a('function');
+    });
   });
 });
 
