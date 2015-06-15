@@ -8,6 +8,7 @@ describe('Directive: saveToDropbox', function () {
   var element;
   var isolated;
   var dropboxService;
+  var $q;
 
   beforeEach(module('markdownNote'));
 
@@ -18,6 +19,7 @@ describe('Directive: saveToDropbox', function () {
       $compile = $injector.get('$compile');
       scope = $injector.get('$rootScope').$new();
       dropboxService = $injector.get('dropboxService');
+      $q = $injector.get('$q');
     });
 
     element = $compile('<save-to-dropbox></save-to-dropbox>')(scope);
@@ -68,8 +70,7 @@ describe('Directive: saveToDropbox', function () {
     });
 
     // it('should call INVALID_TOKEN errorhandler', function () {
-    //   var stub = sinon.stub(dropboxService.dropErrorHandlers,
-    //     Dropbox.ApiError.INVALID_TOKEN.toString());
+    //   var stub = sinon.stub(dropboxService.client,'authenticate');
     //   var error = {
     //     status: Dropbox.ApiError.INVALID_TOKEN,
     //     authenticated: false
@@ -78,9 +79,33 @@ describe('Directive: saveToDropbox', function () {
     //     authenticated: true
     //   };
     //   stub.yields(error, client);
+    //   var spy = sinon.spy(dropboxService
+    //     .errorHandlers[Dropbox.ApiError.INVALID_TOKEN],'errorHandler');
 
+    //   isolated.ctrl.authentication();
+    //   expect(spy.called).to.equal(true);
     //   stub.restore();
+    //   spy.restore();
     // });
+
+    it.only('should simulate promise', function (done) {
+      var stub = sinon.stub(dropboxService.client,'authenticate');
+      var error = {
+        status: Dropbox.ApiError.INVALID_TOKEN,
+        authenticated: false
+      };
+      var client = null;
+      stub.yields(error, client); // will call callback from stub with these args
+
+
+      var promise = isolated.ctrl.authentication();
+      promise.catch(function (error) {
+        expect(error.status).to.equal(Dropbox.ApiError.INVALID_TOKEN);
+        stub.restore();
+        done();
+      });
+
+    });
   });
 });
 

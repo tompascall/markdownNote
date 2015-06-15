@@ -2,7 +2,7 @@
 
 'use strict';
 
-function saveToDropbox (dropboxService) {
+function saveToDropbox (dropboxService, $q) {
 
   function saveToDropboxController () {
 
@@ -17,8 +17,17 @@ function saveToDropbox (dropboxService) {
     //   });
     // };
     controller.authentication = function () {
-      dropboxService.client.authenticate(function (error, client) {
-
+      return $q(function (resolve, reject) {
+        dropboxService.client.authenticate(function (error, client) {
+          if (error) {
+            reject(error.status);
+            console.log(error.status);
+          }
+          else {
+            resolve(client);
+            console.log(client);
+          }
+        });
       });
     };
 
