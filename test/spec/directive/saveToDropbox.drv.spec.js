@@ -69,42 +69,38 @@ describe('Directive: saveToDropbox', function () {
       dropboxService.client.authenticate.restore();
     });
 
-    // it('should call INVALID_TOKEN errorhandler', function () {
-    //   var stub = sinon.stub(dropboxService.client,'authenticate');
-    //   var error = {
-    //     status: Dropbox.ApiError.INVALID_TOKEN,
-    //     authenticated: false
-    //   };
-    //   var client = {
-    //     authenticated: true
-    //   };
-    //   stub.yields(error, client);
-    //   var spy = sinon.spy(dropboxService
-    //     .errorHandlers[Dropbox.ApiError.INVALID_TOKEN],'errorHandler');
-
-    //   isolated.ctrl.authentication();
-    //   expect(spy.called).to.equal(true);
-    //   stub.restore();
-    //   spy.restore();
-    // });
-
-    it.only('should simulate promise', function (done) {
+    it('should call INVALID_TOKEN errorhandler', function () {
       var stub = sinon.stub(dropboxService.client,'authenticate');
       var error = {
         status: Dropbox.ApiError.INVALID_TOKEN,
-        authenticated: false
       };
       var client = null;
       stub.yields(error, client); // will call callback from stub with these args
-
+      var spy = sinon.spy(dropboxService
+        .errorHandlers[Dropbox.ApiError.INVALID_TOKEN],'errorHandler');
 
       var promise = isolated.ctrl.authentication();
       promise.catch(function (error) {
         expect(error.status).to.equal(Dropbox.ApiError.INVALID_TOKEN);
+        expect(spy.called).to.equal(true);
         stub.restore();
-        done();
+        spy.restore();
       });
+    });
 
+    it('should update client', function () {
+      var stub = sinon.stub(dropboxService.client,'authenticate');
+      var error = null;
+      var client = {
+        status: 'updated'
+      };
+      stub.yields(error, client); // will call callback from stub with these args
+
+      var promise = isolated.ctrl.authentication();
+      promise.then(function (dropClient) {
+        expect(dropClient.status).to.equal('updated');
+        stub.restore();
+      });
     });
   });
 });

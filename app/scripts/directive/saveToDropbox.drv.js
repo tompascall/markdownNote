@@ -21,11 +21,9 @@ function saveToDropbox (dropboxService, $q) {
         dropboxService.client.authenticate(function (error, client) {
           if (error) {
             reject(error.status);
-            console.log(error.status);
           }
           else {
             resolve(client);
-            console.log(client);
           }
         });
       });
@@ -35,13 +33,20 @@ function saveToDropbox (dropboxService, $q) {
       return dropboxService.client.isAuthenticated();
     };
 
+    controller.dropErrorHandler = function (error) {
+      dropboxService.errorHandlers[error.status].errorHandler();
+    };
+
     controller.save = function () {
       // if (fileService.deviceReady) {
 
       //   controller.onDeviceReady(fileService.rootDirectory);
       // }
       if (!controller.isAuthenticated()) {
-        controller.authentication();
+        controller.authentication()
+          .catch(function (error) {
+            controller.dropErrorHandler(error);
+          });
       }
     };
   }
