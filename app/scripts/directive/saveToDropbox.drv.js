@@ -2,27 +2,28 @@
 
 'use strict';
 
-function saveToDropbox (dropboxService, $q) {
+function saveToDropbox (dropboxService, $q, messageService) {
 
-  function saveToDropboxController () {
+  function saveToDropboxController ($scope) {
 
    /*jshint validthis: true */
     var controller = this;
-    //controller.messageService = messageService;
+    controller.messageService = messageService;
 
-    // controller.setMessage = function (message) {
-    //   $scope.$apply(function () {
-    //     controller.messageService.saveMessage = message;
-    //     controller.messageService.loadMessage = false;
-    //   });
-    // };
+    controller.setMessage = function (message) {
+      //$scope.$apply(function () {
+        controller.messageService.dropBoxMessage = message;
+      //});
+    };
+
     controller.authentication = function () {
       return $q(function (resolve, reject) {
         dropboxService.client.authenticate(function (error, client) {
           if (error) {
-            reject(error.status);
+            reject(error);
           }
           else {
+            console.log('from promise, succeeded');
             resolve(client);
           }
         });
@@ -38,15 +39,20 @@ function saveToDropbox (dropboxService, $q) {
     };
 
     controller.save = function () {
-      // if (fileService.deviceReady) {
-
-      //   controller.onDeviceReady(fileService.rootDirectory);
-      // }
       if (!controller.isAuthenticated()) {
         controller.authentication()
+          .then(function (client) {
+            console.log('authentication succeeded');
+            controller.setMessage('authentication succeeded');
+            client.signOut();
+          })
           .catch(function (error) {
+            controller.setMessage(error.status);
             controller.dropErrorHandler(error);
           });
+      }
+      else {
+        console.log('already authenticated');
       }
     };
   }

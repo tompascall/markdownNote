@@ -88,7 +88,7 @@ describe('Directive: saveToDropbox', function () {
       });
     });
 
-    it('should update client', function () {
+    it.only('should update client', function () {
       var stub = sinon.stub(dropboxService.client,'authenticate');
       var error = null;
       var client = {
@@ -99,6 +99,7 @@ describe('Directive: saveToDropbox', function () {
       var promise = isolated.ctrl.authentication();
       promise.then(function (dropClient) {
         expect(dropClient.status).to.equal('updated');
+        expect(dropClient).to.deep.equal(dropboxService.client);
         stub.restore();
       });
     });
