@@ -19,6 +19,8 @@ function dropboxService () {
     tokenNumber: Dropbox.ApiError.INVALID_TOKEN,
     errorHandler: function () {
       console.log('INVALID_TOKEN');
+      var message = 'The authentication has been expired. Please try to authenticate yourself again.';
+      return message;
     }
   };
 
@@ -28,6 +30,9 @@ function dropboxService () {
     tokenNumber: Dropbox.ApiError.NOT_FOUND,
     errorHandler: function () {
       console.log('NOT_FOUND');
+      var message = 'Bad news. The file or folder you tried to access is not in the user\'s Dropbox.' +
+      ' You are welcome to connect to the developer, tell him something is messed up';
+      return message;
     }
   };
 
@@ -37,6 +42,8 @@ function dropboxService () {
     tokenNumber: Dropbox.ApiError.OVER_QUOTA,
     errorHandler: function () {
       console.log('OVER_QUOTA');
+      var message = 'Your Dropbox quota is over. Please try to free some space and try again.';
+      return message;
     }
   };
 
@@ -46,6 +53,8 @@ function dropboxService () {
     tokenNumber: Dropbox.ApiError.RATE_LIMITED,
     errorHandler: function () {
       console.log('RATE_LIMITED');
+      var message = 'Too many API requests, please try again later.';
+      return message;
     }
   };
 
@@ -56,6 +65,8 @@ function dropboxService () {
     tokenNumber: Dropbox.ApiError.NETWORK_ERROR,
     errorHandler: function () {
       console.log('NETWORK_ERROR');
+      var message = 'Your network connection may be down. Please try your connection.';
+      return message;
     }
   };
 
@@ -63,6 +74,8 @@ function dropboxService () {
     tokenNumber: Dropbox.ApiError.INVALID_PARAM,
     errorHandler: function () {
       console.log('INVALID_PARAM');
+      var message = 'Invalid parameter. It\'s bad news for you and the developer';
+      return message;
     }
   };
 
@@ -70,6 +83,9 @@ function dropboxService () {
     tokenNumber: Dropbox.ApiError.OAUTH_ERROR,
     errorHandler: function () {
       console.log('OAUTH_ERROR');
+      var message = 'This indicates a bug in dropbox.js and should never occur under normal circumstances.' +
+      ' So this is not normal circumstances.';
+      return message;
     }
   };
 
@@ -77,6 +93,9 @@ function dropboxService () {
     tokenNumber: Dropbox.ApiError.INVALID_METHOD,
     errorHandler: function () {
       console.log('INVALID_METHOD');
+      var message = 'This indicates a bug in dropbox.js and should never occur under normal circumstances.' +
+      ' So this is not normal circumstances.';
+      return message;
     }
   };
 

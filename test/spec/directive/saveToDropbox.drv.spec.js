@@ -9,6 +9,7 @@ describe('Directive: saveToDropbox', function () {
   var isolated;
   var dropboxService;
   var $q;
+  var messageService
 
   beforeEach(module('markdownNote'));
 
@@ -20,6 +21,7 @@ describe('Directive: saveToDropbox', function () {
       scope = $injector.get('$rootScope').$new();
       dropboxService = $injector.get('dropboxService');
       $q = $injector.get('$q');
+      messageService = $injector.get('messageService');
     });
 
     element = $compile('<save-to-dropbox></save-to-dropbox>')(scope);
@@ -69,6 +71,23 @@ describe('Directive: saveToDropbox', function () {
       dropboxService.client.authenticate.restore();
     });
 
+    it('should call dropErrorHandler if authentication fails', function () {
+      var stub = sinon.stub(dropboxService.client,'authenticate');
+      var error = {
+        status: Dropbox.ApiError.INVALID_TOKEN,
+      };
+      var client = null;
+      stub.yields(error, client); // will call callback from stub with these args
+      var spy = sinon.spy(isolated.ctrl,'dropErrorHandler');
+
+      var promise = isolated.ctrl.authentication();
+      promise.catch(function (error) {
+        expect(spy.called).to.equal(true);
+        stub.restore();
+        spy.restore();
+      });
+    });
+
     it('should call INVALID_TOKEN errorhandler', function () {
       var stub = sinon.stub(dropboxService.client,'authenticate');
       var error = {
@@ -88,7 +107,7 @@ describe('Directive: saveToDropbox', function () {
       });
     });
 
-    it.only('should update client', function () {
+    it('should update client', function () {
       var stub = sinon.stub(dropboxService.client,'authenticate');
       var error = null;
       var client = {
@@ -103,6 +122,15 @@ describe('Directive: saveToDropbox', function () {
         stub.restore();
       });
     });
+
+    it('dropErrorHandler should set dropbox message for informing the user', function () {
+      var tempDropboxMessage = messageService.dropboxMessage;
+      messageService.dropboxMessage = '';
+      isolated.ctrl.dropErrorHandler({status: Dropbox.ApiError.INVALID_TOKEN});
+      expect(messageService.dropboxMessage).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
+      messageService.dropboxMessage = tempDropboxMessage;
+    });
+
   });
 });
 

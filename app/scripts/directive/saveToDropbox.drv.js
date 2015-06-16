@@ -11,9 +11,7 @@ function saveToDropbox (dropboxService, $q, messageService) {
     controller.messageService = messageService;
 
     controller.setMessage = function (message) {
-      //$scope.$apply(function () {
-        controller.messageService.dropBoxMessage = message;
-      //});
+      controller.messageService.dropboxMessage = message;
     };
 
     controller.authentication = function () {
@@ -35,7 +33,8 @@ function saveToDropbox (dropboxService, $q, messageService) {
     };
 
     controller.dropErrorHandler = function (error) {
-      dropboxService.errorHandlers[error.status].errorHandler();
+      var message = dropboxService.errorHandlers[error.status].errorHandler();
+      controller.setMessage(message);
     };
 
     controller.save = function () {
@@ -43,11 +42,10 @@ function saveToDropbox (dropboxService, $q, messageService) {
         controller.authentication()
           .then(function (client) {
             console.log('authentication succeeded');
-            controller.setMessage('authentication succeeded');
+            controller.setMessage('Dropbox authentication succeeded');
             client.signOut();
           })
           .catch(function (error) {
-            controller.setMessage(error.status);
             controller.dropErrorHandler(error);
           });
       }
