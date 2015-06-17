@@ -34,7 +34,7 @@ function appHeaderDirective () {
       if (modal === controller.extrasModal) {
         controller.messageService.clearExtrasModalMessages();
       }
-      if (modal === controller.newNoteModal) {
+      else if (modal === controller.newNoteModal) {
         controller.title = '';
         controller.text = '';
         controller.tags = '';

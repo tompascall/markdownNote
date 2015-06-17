@@ -73,13 +73,13 @@ describe('Directive: saveFile', function () {
     });
 
     it('onResolveSuccess should call  directoryEntry.getFile with ' +
-      'fileService.filePath, {create: true, exclusive: false}, ' +
+      'fileService.filePath + fileService.fileName, {create: true, exclusive: false}, ' +
       'controller.gotFileEntry, controller.fail', function () {
         var directoryEntry = { // mock object
           getFile: function () {}
         };
         var mock = sinon.mock(directoryEntry);
-        mock.expects('getFile').withExactArgs(fileService.filePath,
+        mock.expects('getFile').withExactArgs(fileService.filePath + fileService.fileName,
           {create: true, exclusive: false}, isolated.ctrl.gotFileEntry,
           isolated.ctrl.fail);
         isolated.ctrl.onResolveSuccess(directoryEntry);

@@ -464,7 +464,7 @@ describe('Service: noteData', function () {
         expect(displayedNotes.notes.length).to.equal(1);
         expect(displayedNotes.notes[0].title).to.equal('testTitle1 testTitle');
         done();
-      },0);
+      },10);
     });
 
     it('should recalculate number of pages when apply searching', function (done) {
@@ -476,7 +476,7 @@ describe('Service: noteData', function () {
         expect(pageService.updatePages.called).to.equal(true);
         pageService.updatePages.restore();
         done();
-      },0);
+      },10);
     });
   });
 

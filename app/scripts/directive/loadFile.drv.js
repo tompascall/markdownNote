@@ -41,7 +41,7 @@ function loadFile (fileService, noteData, messageService) {
     };
 
     controller.onResolveSuccess = function (directoryEntry) {
-      directoryEntry.getFile(fileService.filePath,
+      directoryEntry.getFile(fileService.filePath + fileService.fileName,
         null, controller.gotFileEntry, controller.fail);
     };
 

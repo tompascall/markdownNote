@@ -39,7 +39,7 @@ function saveFile (fileService, noteData, messageService) {
     };
 
     controller.onResolveSuccess = function (directoryEntry) {
-      directoryEntry.getFile(fileService.filePath,
+      directoryEntry.getFile(fileService.filePath + fileService.fileName,
         {create: true, exclusive: false}, controller.gotFileEntry, controller.fail);
     };
 

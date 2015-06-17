@@ -44,7 +44,18 @@ module.exports = function (grunt) {
           ENV: {
             name: 'development',
             apiEndpoint: '',
-            pageSize: 30
+            pageSize: 30,
+            fileName: 'markdownNote.json',
+            Android: {
+             // rootDirectory: cordova.file.externalRootDirectory,
+             // rootDirectory is set in fileService
+              filePath: 'download/'
+            },
+            iOS: {
+              //rootDirectory: cordova.file.applicationStorageDirectory,
+              // rootDirectory is set in fileService
+              filePath: 'Library/'
+            }
           }
         }
       },
@@ -53,7 +64,18 @@ module.exports = function (grunt) {
           ENV: {
             name: 'production',
             apiEndpoint: '',
-            pageSize: 50
+            pageSize: 30,
+            fileName: 'markdownNote.json',
+            Android: {
+             // rootDirectory: cordova.file.externalRootDirectory,
+             // rootDirectory is set in fileService
+              filePath: 'download/'
+            },
+            iOS: {
+              //rootDirectory: cordova.file.applicationStorageDirectory,
+              // rootDirectory is set in fileService
+              filePath: 'Library/'
+            }
           }
         }
       }

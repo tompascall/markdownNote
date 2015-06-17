@@ -11,6 +11,7 @@ cordova.file = { // mocking cordova global variables
 
 describe('Service: fileService', function () {
   var fileService;
+  var ENV;
 
   beforeEach(function () {
     module('markdownNote');
@@ -19,6 +20,7 @@ describe('Service: fileService', function () {
 
   beforeEach(inject(function ($injector) {
     fileService = $injector.get('fileService');
+    ENV = $injector.get('ENV');
   }));
 
   describe('Check fileService initialization', function () {
@@ -65,11 +67,11 @@ describe('Service: fileService', function () {
       fileService.setSupportedPlatforms();
       device.platform = 'Android';
       fileService.setFilePath();
-      expect(fileService.filePath).to.equal('download/markdownNote.json');
+      expect(fileService.filePath).to.equal(ENV.Android.filePath);
 
       device.platform = 'iOS';
       fileService.setFilePath();
-      expect(fileService.filePath).to.equal('Library/markdownNote.json');
+      expect(fileService.filePath).to.equal(ENV.iOS.filePath);
     });
 
     it('should set up fileSevice', function () {
@@ -79,6 +81,7 @@ describe('Service: fileService', function () {
       sinon.spy(fileService, 'setPlatform');
       sinon.spy(fileService, 'setRootDirectory');
       sinon.spy(fileService, 'setFilePath');
+      sinon.spy(fileService, 'setFileName');
 
       fileService.setupFileService();
 
@@ -87,12 +90,14 @@ describe('Service: fileService', function () {
       expect(fileService.setPlatform.called).to.equal(true);
       expect(fileService.setRootDirectory.called).to.equal(true);
       expect(fileService.setFilePath.called).to.equal(true);
+      expect(fileService.setFileName.called).to.equal(true);
 
       fileService.setDeviceReady.restore();
       fileService.setSupportedPlatforms.restore();
       fileService.setPlatform.restore();
       fileService.setRootDirectory.restore();
       fileService.setFilePath.restore();
+      fileService.setFileName.restore();
     });
 
     it('should call setupFileService when device is ready', function () {

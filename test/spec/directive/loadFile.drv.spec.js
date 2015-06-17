@@ -82,13 +82,13 @@ describe('Directive: loadFile', function () {
     });
 
     it('onResolveSuccess should call  directoryEntry.getFile with ' +
-      'fileService.filePath, null, ' +
+      'fileService.filePath + fileService.fileName, null, ' +
       'controller.gotFileEntry, controller.fail', function () {
         var directoryEntry = { // mock object
           getFile: function () {}
         };
         var mock = sinon.mock(directoryEntry);
-        mock.expects('getFile').withExactArgs(fileService.filePath,
+        mock.expects('getFile').withExactArgs(fileService.filePath + fileService.fileName,
           null, isolated.ctrl.gotFileEntry,
           isolated.ctrl.fail);
         isolated.ctrl.onResolveSuccess(directoryEntry);
