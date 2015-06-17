@@ -30,7 +30,16 @@
 $ ws
 ```
 
-###Add 
+###Add Redirect URI to the registered app on dropbox app console
+
+`http://localhost:8000/dropbox.html`
+
+###Copy app key from app console
+
+It will be something like this `pbqyznysf6jffyl`
+
+###Follow the instructions [here](https://github.com/dropbox/dropbox-js/blob/stable/guides/getting_started.md) for getting started using dropbox client
+
 
 ##Testing of save file to Dropbox
 
@@ -42,12 +51,21 @@ I use when library when I have to mock promises. For that
 Now we can write a test like this:
 
 ```js
-it('should call writeDataToDropbox', function () {
-  var stub = sinon.stub(isolated.ctrl, 'authentication').returns(when('authenticated'));
-  isolated.ctrl.authentication()
-  .then(function (result) {
-    expect(result).to.equal('authenticated');
-    stub.restore();
-  });
+it('should call writeDataToDropbox with client arg', function (done) {
+  var client = 'authenticated';
+
+  sinon.stub(isolated.ctrl, 'authentication')
+    .returns(when(client));
+
+  var mock = sinon.mock(isolated.ctrl);
+  mock.expects('writeDataToDropbox').withArgs(client);
+
+  isolated.ctrl.save();
+
+  setTimeout(function() {
+    expect(mock.verify()).to.equal(true);
+    isolated.ctrl.authentication.restore();
+    done();
+  }, 10);
 });
 ```

@@ -10,6 +10,7 @@ describe('Directive: saveToDropbox', function () {
   var dropboxService;
   var $q;
   var messageService;
+  var noteData;
 
   beforeEach(module('markdownNote'));
 
@@ -22,6 +23,7 @@ describe('Directive: saveToDropbox', function () {
       dropboxService = $injector.get('dropboxService');
       $q = $injector.get('$q');
       messageService = $injector.get('messageService');
+      noteData = $injector.get('noteData');
     });
 
     element = $compile('<save-to-dropbox></save-to-dropbox>')(scope);
@@ -37,6 +39,17 @@ describe('Directive: saveToDropbox', function () {
   });
 
   describe('authentication', function () {
+    var mockIsAuthenticated;
+
+    beforeEach(function () {
+      mockIsAuthenticated = sinon.stub(isolated.ctrl,'isAuthenticated');
+      mockIsAuthenticated.returns(false);
+    });
+
+    afterEach(function () {
+      mockIsAuthenticated.restore();
+    });
+
     it('should call save method if button is clicked', function () {
       sinon.spy(isolated.ctrl, 'save');
       element.find('button.saveToDropboxButton').click();
@@ -46,21 +59,17 @@ describe('Directive: saveToDropbox', function () {
     });
 
     it('should check if client can perform Dropbox API calls on behalf of a user', function () {
-      var stub = sinon.stub(dropboxService.client, 'isAuthenticated');
-      stub.returns(false);
+      mockIsAuthenticated.returns(false);
       expect(isolated.ctrl.isAuthenticated()).to.equal(false);
-      stub.returns(true);
+      mockIsAuthenticated.returns(true);
       expect(isolated.ctrl.isAuthenticated()).to.equal(true);
-      stub.restore();
     });
 
     it('should start authentication process if not authenticated', function () {
-      var stub = sinon.stub(dropboxService.client, 'isAuthenticated');
-      stub.returns(false);
+      mockIsAuthenticated.returns(false);
       sinon.spy(isolated.ctrl, 'authentication');
       isolated.ctrl.save();
       expect(isolated.ctrl.authentication.called).to.equal(true);
-      stub.restore();
       isolated.ctrl.authentication.restore();
     });
 
@@ -134,18 +143,40 @@ describe('Directive: saveToDropbox', function () {
   });
 
   describe('saving data to dropbox', function () {
-    it.only('should call writeDataToDropbox', function (done) {
-      var stub = sinon.stub(isolated.ctrl, 'authentication');
-      stub.returns(when('authenticated'));
+    var mockIsAuthenticated;
 
-      var spy = sinon.spy(isolated.ctrl, 'writeDataToDropbox');
+    beforeEach(function () {
+      mockIsAuthenticated = sinon.stub(isolated.ctrl,'isAuthenticated');
+      mockIsAuthenticated.returns(false);
+    });
+
+    afterEach(function () {
+      mockIsAuthenticated.restore();
+    });
+
+    it('should call writeDataToDropbox with client arg', function (done) {
+      var client = 'authenticated';
+
+      sinon.stub(isolated.ctrl, 'authentication')
+        .returns(when(client));
+
+      var mock = sinon.mock(isolated.ctrl);
+      mock.expects('writeDataToDropbox').withArgs(client);
+
       isolated.ctrl.save();
+
       setTimeout(function() {
-        expect(spy.called).to.equal(true);
-        stub.restore();
-        spy.restore();
+        expect(mock.verify()).to.equal(true);
+        isolated.ctrl.authentication.restore();
         done();
-      }, 0);
+      }, 10);
+    });
+
+    it('writeDataToDropbox should call noteData.loadStringNotesFromStorage', function () {
+      var spy = sinon.spy(noteData, 'loadStringNotesFromStorage');
+      isolated.ctrl.writeDataToDropbox();
+      expect(spy.called).to.equal(true);
+      spy.restore();
     });
   });
 });

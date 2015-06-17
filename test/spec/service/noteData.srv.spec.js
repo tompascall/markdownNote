@@ -552,4 +552,17 @@ describe('Service: noteData', function () {
       searchNote.searchTerm = tempSearchTerm;
     });
   });
+
+  describe('get data to save notes to dropbox', function () {
+    var tempStorage;
+
+    beforeEach(function () {
+      tempStorage = window.localStorage.markdownNote;
+      window.localStorage.markdownNote = angular.toJson(['test data']);
+    });
+
+    afterEach(function () {
+       window.localStorage.markdownNote = tempStorage;
+    });
+  });
 });

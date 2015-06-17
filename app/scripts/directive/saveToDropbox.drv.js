@@ -2,7 +2,7 @@
 
 'use strict';
 
-function saveToDropbox (dropboxService, $q, messageService) {
+function saveToDropbox (dropboxService, $q, messageService, noteData) {
 
   function saveToDropboxController ($scope) {
 
@@ -27,8 +27,8 @@ function saveToDropbox (dropboxService, $q, messageService) {
       });
     };
 
-    controller.writeDataToDropbox = function () {
-      console.log('write data');
+    controller.writeDataToDropbox = function (client) {
+      var localData = noteData.loadStringNotesFromStorage();
     };
 
     controller.isAuthenticated = function () {
@@ -49,7 +49,6 @@ function saveToDropbox (dropboxService, $q, messageService) {
           })
           .then(function (client) {
             controller.writeDataToDropbox(client);
-            client.signOut();
           })
           .catch(function (error) {
             controller.dropErrorHandler(error);
