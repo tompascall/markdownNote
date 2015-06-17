@@ -9,7 +9,7 @@ describe('Directive: saveToDropbox', function () {
   var isolated;
   var dropboxService;
   var $q;
-  var messageService
+  var messageService;
 
   beforeEach(module('markdownNote'));
 
@@ -131,6 +131,22 @@ describe('Directive: saveToDropbox', function () {
       messageService.dropboxMessage = tempDropboxMessage;
     });
 
+  });
+
+  describe('saving data to dropbox', function () {
+    it.only('should call writeDataToDropbox', function (done) {
+      var stub = sinon.stub(isolated.ctrl, 'authentication');
+      stub.returns(when('authenticated'));
+
+      var spy = sinon.spy(isolated.ctrl, 'writeDataToDropbox');
+      isolated.ctrl.save();
+      setTimeout(function() {
+        expect(spy.called).to.equal(true);
+        stub.restore();
+        spy.restore();
+        done();
+      }, 0);
+    });
   });
 });
 

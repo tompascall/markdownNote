@@ -21,11 +21,14 @@ function saveToDropbox (dropboxService, $q, messageService) {
             reject(error);
           }
           else {
-            console.log('from promise, succeeded');
             resolve(client);
           }
         });
       });
+    };
+
+    controller.writeDataToDropbox = function () {
+      console.log('write data');
     };
 
     controller.isAuthenticated = function () {
@@ -41,8 +44,11 @@ function saveToDropbox (dropboxService, $q, messageService) {
       if (!controller.isAuthenticated()) {
         controller.authentication()
           .then(function (client) {
-            console.log('authentication succeeded');
             controller.setMessage('Dropbox authentication succeeded');
+            return client;
+          })
+          .then(function (client) {
+            controller.writeDataToDropbox(client);
             client.signOut();
           })
           .catch(function (error) {
