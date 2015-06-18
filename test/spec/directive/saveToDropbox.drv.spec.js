@@ -11,6 +11,7 @@ describe('Directive: saveToDropbox', function () {
   var $q;
   var messageService;
   var noteData;
+  var ENV;
 
   beforeEach(module('markdownNote'));
 
@@ -24,6 +25,7 @@ describe('Directive: saveToDropbox', function () {
       $q = $injector.get('$q');
       messageService = $injector.get('messageService');
       noteData = $injector.get('noteData');
+      ENV = $injector.get('ENV');
     });
 
     element = $compile('<save-to-dropbox></save-to-dropbox>')(scope);
@@ -116,7 +118,7 @@ describe('Directive: saveToDropbox', function () {
       });
     });
 
-    it('should update client', function () {
+    it.only('should update client', function () {
       var stub = sinon.stub(dropboxService.client,'authenticate');
       var error = null;
       var client = {
@@ -124,12 +126,15 @@ describe('Directive: saveToDropbox', function () {
       };
       stub.yields(error, client); // will call callback from stub with these args
 
-      var promise = isolated.ctrl.authentication();
-      promise.then(function (dropClient) {
+      return isolated.ctrl.authentication()
+      .then(function (dropClient) {
         expect(dropClient.status).to.equal('updated');
         expect(dropClient).to.deep.equal(dropboxService.client);
+        console.log('heeeeeeeey');
         stub.restore();
-      });
+
+      })
+      .catch();
     });
 
     it('dropErrorHandler should set dropbox message for informing the user', function () {
@@ -177,6 +182,39 @@ describe('Directive: saveToDropbox', function () {
       isolated.ctrl.writeDataToDropbox();
       expect(spy.called).to.equal(true);
       spy.restore();
+    });
+
+    it('should call client.writeFile with filename and storage data', function () {
+      var tempStorage;
+      tempStorage = window.localStorage.markdownNote;
+      window.localStorage.markdownNote = angular.toJson(['test data']);
+
+      var stub = sinon.stub(dropboxService.client, 'writeFile');
+      stub.withArgs(ENV.fileName, tempStorage);
+
+      isolated.ctrl.writeDataToDropbox(dropboxService.client);
+      expect(stub.called).to.equal(true);
+      stub.restore();
+      window.localStorage.markdownNote = tempStorage;
+    });
+
+    it('should set dropbox message after writing data to dropbox', function () {
+      var stub = sinon.stub(dropboxService.client,'writeFile');
+      var error = null;
+      var stat = {
+        path: 'filePath'
+      };
+      stub.yields(error, stat); // will call callback from stub with these args
+
+      var promise = isolated.ctrl.writeDataToDropbox(dropboxService.client);
+      promise.then(function (stat) {
+        expect(stat.path).to.equal('filePath');
+        stub.restore();
+        console.log('hey');
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     });
   });
 });

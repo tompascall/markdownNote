@@ -2,7 +2,7 @@
 
 'use strict';
 
-function saveToDropbox (dropboxService, $q, messageService, noteData) {
+function saveToDropbox (dropboxService, $q, messageService, noteData, ENV) {
 
   function saveToDropboxController ($scope) {
 
@@ -22,6 +22,7 @@ function saveToDropbox (dropboxService, $q, messageService, noteData) {
           }
           else {
             resolve(client);
+            console.log('resolve authentication');
           }
         });
       });
@@ -29,6 +30,18 @@ function saveToDropbox (dropboxService, $q, messageService, noteData) {
 
     controller.writeDataToDropbox = function (client) {
       var localData = noteData.loadStringNotesFromStorage();
+      if (client) {
+        return $q(function (resolve, reject) {
+          client.writeFile(ENV.fileName, localData, function (error, stat) {
+            if (error) {
+              reject(error);
+            }
+            else {
+              resolve(stat);
+            }
+          });
+        });
+      }
     };
 
     controller.isAuthenticated = function () {

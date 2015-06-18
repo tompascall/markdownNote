@@ -553,16 +553,16 @@ describe('Service: noteData', function () {
     });
   });
 
-  describe('get data to save notes to dropbox', function () {
-    var tempStorage;
+  // describe('get data to save notes to dropbox', function () {
+  //   var tempStorage;
 
-    beforeEach(function () {
-      tempStorage = window.localStorage.markdownNote;
-      window.localStorage.markdownNote = angular.toJson(['test data']);
-    });
+  //   beforeEach(function () {
+  //     tempStorage = window.localStorage.markdownNote;
+  //     window.localStorage.markdownNote = angular.toJson(['test data']);
+  //   });
 
-    afterEach(function () {
-       window.localStorage.markdownNote = tempStorage;
-    });
-  });
+  //   afterEach(function () {
+  //      window.localStorage.markdownNote = tempStorage;
+  //   });
+  // });
 });
