@@ -15,13 +15,14 @@ function saveToDropbox (dropboxService, $q, messageService, noteData, ENV) {
     };
 
     controller.authentication = function () {
-      return $q(function (resolve, reject) {
+      return new Promise(function (resolve, reject) {
         dropboxService.client.authenticate(function (error, client) {
           if (error) {
             reject(error);
           }
           else {
             resolve(client);
+            dropboxService.client = client;
             console.log('resolve authentication');
           }
         });
@@ -31,13 +32,14 @@ function saveToDropbox (dropboxService, $q, messageService, noteData, ENV) {
     controller.writeDataToDropbox = function (client) {
       var localData = noteData.loadStringNotesFromStorage();
       if (client) {
-        return $q(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
           client.writeFile(ENV.fileName, localData, function (error, stat) {
             if (error) {
               reject(error);
             }
             else {
               resolve(stat);
+              controller.setMessage('Writing data to Dropbox has succeeded.');
             }
           });
         });
@@ -68,6 +70,7 @@ function saveToDropbox (dropboxService, $q, messageService, noteData, ENV) {
           });
       }
       else {
+        controller.writeDataToDropbox(dropboxService.client);
         console.log('already authenticated');
       }
     };

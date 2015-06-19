@@ -364,6 +364,7 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/bower_components/dropbox/lib/dropbox.js',
           '<%= yeoman.app %>/bower_components/marked/lib/marked.js',
           '<%= yeoman.app %>/bower_components/ngCordova/dist/ng-cordova.js',
+          '<%= yeoman.app %>/bower_components/bluebird/js/browser/bluebird.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/app.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/configuration.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',

@@ -118,7 +118,7 @@ describe('Directive: saveToDropbox', function () {
       });
     });
 
-    it.only('should update client', function () {
+    it('should update client', function () {
       var stub = sinon.stub(dropboxService.client,'authenticate');
       var error = null;
       var client = {
@@ -130,11 +130,8 @@ describe('Directive: saveToDropbox', function () {
       .then(function (dropClient) {
         expect(dropClient.status).to.equal('updated');
         expect(dropClient).to.deep.equal(dropboxService.client);
-        console.log('heeeeeeeey');
         stub.restore();
-
-      })
-      .catch();
+      });
     });
 
     it('dropErrorHandler should set dropbox message for informing the user', function () {
@@ -198,7 +195,7 @@ describe('Directive: saveToDropbox', function () {
       window.localStorage.markdownNote = tempStorage;
     });
 
-    it('should set dropbox message after writing data to dropbox', function () {
+    it('should handle data writing via promise', function () {
       var stub = sinon.stub(dropboxService.client,'writeFile');
       var error = null;
       var stat = {
@@ -207,14 +204,32 @@ describe('Directive: saveToDropbox', function () {
       stub.yields(error, stat); // will call callback from stub with these args
 
       var promise = isolated.ctrl.writeDataToDropbox(dropboxService.client);
-      promise.then(function (stat) {
+      return promise.then(function (stat) {
         expect(stat.path).to.equal('filePath');
         stub.restore();
-        console.log('hey');
-      })
-      .catch(function (error) {
-        console.log(error);
       });
+    });
+
+    it('should set dropbox message after trying to write data to dropbox', function () {
+      var stub = sinon.stub(dropboxService.client,'writeFile');
+      var error = null;
+      var stat = {
+        path: 'filePath'
+      };
+      stub.yields(error, stat); // will call callback from stub with these args
+
+      var messageStub = sinon.stub(isolated.ctrl, 'setMessage');
+
+      var promise = isolated.ctrl.writeDataToDropbox(dropboxService.client);
+      return promise.then(function (stat) {
+        expect(messageStub.called).to.equal(true);
+        stub.restore();
+        messageStub.restore();
+      });
+    });
+
+    it('should call writeDataToDropbox if controller.isAuthenticated()', function () {
+
     });
   });
 });
