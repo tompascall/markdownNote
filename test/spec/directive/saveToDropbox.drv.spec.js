@@ -228,8 +228,11 @@ describe('Directive: saveToDropbox', function () {
       });
     });
 
-    it('should call writeDataToDropbox if controller.isAuthenticated()', function () {
-
+    it.only('should call writeDataToDropbox if controller.isAuthenticated()', function () {
+      mockIsAuthenticated.returns(true);
+      var stub = sinon.stub(isolated.ctrl,'writeDataToDropbox');
+      isolated.ctrl.save();
+      expect(stub.called).to.equal(true);
     });
   });
 });
