@@ -22,6 +22,7 @@ describe('Service: messageService', function () {
       expect(messageService.messages['loadLocalFileMessage']).to.equal(false);
       expect(messageService.messages['saveLocalFileMessage']).to.equal(false);
       expect(messageService.messages['dropboxSaveMessage']).to.equal(false);
+      expect(messageService.messages['dropboxLoadMessage']).to.equal(false);
     });
   });
 
@@ -47,6 +48,7 @@ describe('Service: messageService', function () {
       expect(messageService.messages['loadLocalFileMessage']).to.equal(false);
       expect(messageService.messages['saveLocalFileMessage']).to.equal(false);
       expect(messageService.messages['dropboxSaveMessage']).to.equal(false);
+      expect(messageService.messages['dropboxLoadMessage']).to.equal(false);
     });
   });
 });

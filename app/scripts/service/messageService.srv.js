@@ -9,6 +9,8 @@ function messageService () {
       loadLocalFileMessage: false,
       saveLocalFileMessage: false,
       dropboxSaveMessage: false,
+      dropboxLoadMessage: false,
+
     },
 
     clearExtrasModalMessages: function () {
@@ -16,6 +18,7 @@ function messageService () {
       this.messages.loadLocalFileMessage = false;
       this.messages.saveLocalFileMessage = false;
       this.messages.dropboxSaveMessage = false;
+      this.messages.dropboxLoadMessage = false;
     }
   };
 }
