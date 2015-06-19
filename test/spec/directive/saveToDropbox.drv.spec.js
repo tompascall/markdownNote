@@ -135,11 +135,11 @@ describe('Directive: saveToDropbox', function () {
     });
 
     it('dropErrorHandler should set dropbox message for informing the user', function () {
-      var tempDropboxMessage = messageService.dropboxMessage;
-      messageService.dropboxMessage = '';
+      var tempDropboxMessage = messageService.messages.dropboxSaveMessage;
+      messageService.messages.dropboxSaveMessage = '';
       isolated.ctrl.dropErrorHandler({status: Dropbox.ApiError.INVALID_TOKEN});
-      expect(messageService.dropboxMessage).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
-      messageService.dropboxMessage = tempDropboxMessage;
+      expect(messageService.messages.dropboxSaveMessage).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
+      messageService.messages.dropboxSaveMessage = tempDropboxMessage;
     });
 
   });
@@ -228,7 +228,7 @@ describe('Directive: saveToDropbox', function () {
       });
     });
 
-    it.only('should call writeDataToDropbox if controller.isAuthenticated()', function () {
+    it('should call writeDataToDropbox if controller.isAuthenticated()', function () {
       mockIsAuthenticated.returns(true);
       var stub = sinon.stub(isolated.ctrl,'writeDataToDropbox');
       isolated.ctrl.save();

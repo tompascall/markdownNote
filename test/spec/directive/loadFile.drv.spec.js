@@ -147,12 +147,12 @@ describe('Directive: loadFile', function () {
       window.FileReader = undefined;
     });
 
-    it('setMessage should set fileService.loadMessage', function () {
-      var temp = isolated.ctrl.messageService.loadMessage;
+    it('setMessage should set fileService.messages.loadLocalFileMessage', function () {
+      var temp = isolated.ctrl.messageService.messages.loadLocalFileMessage;
       var message = 'Hey there!';
       isolated.ctrl.setMessage(message);
-      expect(isolated.ctrl.messageService.loadMessage).to.equal(message);
-      isolated.ctrl.messageService.loadMessage = temp;
+      expect(isolated.ctrl.messageService.messages.loadLocalFileMessage).to.equal(message);
+      isolated.ctrl.messageService.messages.loadLocalFileMessage = temp;
     });
 
     it('controller.fail should log error', function () {

@@ -2,7 +2,7 @@
 
 'use strict';
 
-function saveToDropbox (dropboxService, $q, messageService, noteData, ENV) {
+function saveToDropbox (dropboxService, messageService, noteData, ENV) {
 
   function saveToDropboxController ($scope) {
 
@@ -11,7 +11,10 @@ function saveToDropbox (dropboxService, $q, messageService, noteData, ENV) {
     controller.messageService = messageService;
 
     controller.setMessage = function (message) {
-      controller.messageService.dropboxMessage = message;
+      $scope.$apply(function () {
+        controller.messageService.clearExtrasModalMessages();
+        controller.messageService.messages.dropboxSaveMessage = message;
+      });
     };
 
     controller.authentication = function () {
@@ -35,11 +38,13 @@ function saveToDropbox (dropboxService, $q, messageService, noteData, ENV) {
         return new Promise(function (resolve, reject) {
           client.writeFile(ENV.fileName, localData, function (error, stat) {
             if (error) {
+              console.log(error.toString());
               reject(error);
             }
             else {
-              resolve(stat);
+              console.log('Writing data to Dropbox has succeeded.');
               controller.setMessage('Writing data to Dropbox has succeeded.');
+              resolve(stat);
             }
           });
         });

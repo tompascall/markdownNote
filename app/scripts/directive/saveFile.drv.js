@@ -15,8 +15,8 @@ function saveFile (fileService, noteData, messageService) {
 
     controller.setMessage = function (message) {
       $scope.$apply(function () {
-        controller.messageService.saveMessage = message;
-        controller.messageService.loadMessage = false;
+        controller.messageService.clearExtrasModalMessages();
+        controller.messageService.messages.saveLocalFileMessage = message;
       });
     };
 

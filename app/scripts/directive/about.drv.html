@@ -1,7 +1,7 @@
 <!-- about.drv.html -->
 
 <button class="item aboutButton button button-full button-royal" ng-click="ctrl.toggleAboutMessage()">About Markdown Note</button>
-<div class="aboutMessage card" ng-show="ctrl.messageService.showAboutMessage">
+<div class="aboutMessage card" ng-show="ctrl.messageService.messages.showAboutMessage">
   <div class="item item-text-wrap" ng-click="ctrl.externalLinkService.handleLinkClicked($event)">
     <h3>Markdown Note v0.1.0</h3>
     <p>This is a sample project, using <a href="http://ionicframework.com/">Ionic framework</a>, developing in test driven way.</p>

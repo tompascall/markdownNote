@@ -4,13 +4,18 @@
 
 function messageService () {
   return {
-    showAboutMessage: false,
-    loadMessage: false,
-    saveMessage: false,
+    messages: {
+      showAboutMessage: false,
+      loadLocalFileMessage: false,
+      saveLocalFileMessage: false,
+      dropboxSaveMessage: false,
+    },
+
     clearExtrasModalMessages: function () {
-      this.showAboutMessage = false;
-      this.loadMessage = false;
-      this.saveMessage = false;
+      this.messages.showAboutMessage = false;
+      this.messages.loadLocalFileMessage = false;
+      this.messages.saveLocalFileMessage = false;
+      this.messages.dropboxSaveMessage = false;
     }
   };
 }
