@@ -48,6 +48,22 @@ function dropboxService () {
     });
   };
 
+  dropboxService.readFile = function (fileName) {
+    var message;
+    return new Promise(function (resolve, reject) {
+      dropboxService.client.readFile(fileName, function (error, data) {
+        if (error) {
+          message = dropboxService.errorHandlers[error.status].errorHandler();
+          reject(message);
+        }
+        else {
+          console.log('Fetching data from Dropbox has succeeded.');
+          resolve(data);
+        }
+      });
+    });
+  };
+
   dropboxService.errorHandlers = {};
 
   dropboxService.errorHandlers[Dropbox.ApiError.INVALID_TOKEN] = {

@@ -9,6 +9,7 @@ describe('Directive: loadFromDropbox', function () {
   var isolated;
   var messageService;
   var dropboxService;
+  var ENV;
 
   beforeEach(module('markdownNote'));
 
@@ -20,6 +21,7 @@ describe('Directive: loadFromDropbox', function () {
       scope = $injector.get('$rootScope').$new();
       messageService = $injector.get('messageService');
       dropboxService = $injector.get('dropboxService');
+      ENV = $injector.get('ENV');
     });
 
     element = $compile('<load-from-dropbox></load-from-dropbox>')(scope);
@@ -36,18 +38,13 @@ describe('Directive: loadFromDropbox', function () {
   });
 
   describe('authentication', function () {
-    var mockIsAuthenticated;
     var mockConfirmation;
 
     beforeEach(function () {
-      // mockIsAuthenticated = sinon.stub(isolated.ctrl,'isAuthenticated');
-      // mockIsAuthenticated.returns(false);
-
       mockConfirmation = sinon.stub(isolated.ctrl, 'confirmLoadFromDropbox').returns(true);
     });
 
     afterEach(function () {
-      //mockIsAuthenticated.restore();
       mockConfirmation.restore();
     });
 
@@ -59,7 +56,7 @@ describe('Directive: loadFromDropbox', function () {
       isolated.ctrl.load.restore();
     });
 
-    it('should be true if it is confirmed', function () {
+    it.skip('should be true if it is confirmed', function () {
       var stub = sinon.stub(window, 'confirm').returns(true);
       var result = isolated.ctrl.confirmLoadFromDropbox();
       expect(result).to.equal(true);
@@ -91,6 +88,47 @@ describe('Directive: loadFromDropbox', function () {
         messageService.messages.dropboxLoadMessage = tempDropboxMessage;
         done();
       }, 10);
+    });
+  });
+
+  describe('reading data from Dropbox', function () {
+
+   var mockConfirmation;
+
+    beforeEach(function () {
+      mockConfirmation = sinon.stub(isolated.ctrl, 'confirmLoadFromDropbox').returns(true);
+    });
+
+    afterEach(function () {
+      mockConfirmation.restore();
+    });
+
+    it('should call readDataFromDropbox', function (done) {
+      sinon.stub(dropboxService, 'authentication')
+      .returns(when(true));
+
+      var stub = sinon.stub(isolated.ctrl, 'readDataFromDropbox')
+      .returns(when(true));
+
+      isolated.ctrl.load();
+
+      setTimeout(function() {
+        expect(stub.called).to.equal(true);
+        dropboxService.authentication.restore();
+        stub.restore();
+        done();
+      }, 10);
+    });
+
+    it('should call dropboxService.readFile with filename', function () {
+      var stub = sinon.stub(dropboxService, 'readFile');
+      stub.withArgs(ENV.fileName).returns(when(true));
+
+      return isolated.ctrl.readDataFromDropbox()
+      .then(function () {
+        expect(stub.called).to.equal(true);
+        stub.restore();
+      });
     });
   });
 });

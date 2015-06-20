@@ -178,5 +178,42 @@ describe('Service: dropboxService', function () {
       });
     });
   });
+
+  describe.only('read file from Dropbox', function () {
+    it('should call client.readFile with fileName', function () {
+      var stub = sinon.stub(dropboxService.client, 'readFile');
+      stub.withArgs('fileName');
+      dropboxService.readFile('fileName');
+      expect(stub.called).to.equal(true);
+      stub.restore();
+    });
+
+    it('should handle data reading via promise', function () {
+      var stub = sinon.stub(dropboxService.client,'readFile');
+      var error = null;
+      var data = '{test: data}';
+      stub.yields(error, data); // will call callback from stub with these args
+
+      var promise = dropboxService.readFile('fileName');
+      return promise.then(function (data) {
+        expect(data).to.equal('{test: data}');
+        stub.restore();
+      });
+    });
+
+    it('should return error message if writing fails', function () {
+      var stub = sinon.stub(dropboxService.client,'readFile');
+       var error = {
+        status: Dropbox.ApiError.INVALID_TOKEN
+      };
+      var data = null;
+      stub.yields(error, data); // will call callback from stub with these args
+      var promise = dropboxService.readFile('fileName');
+      return promise.catch(function (message) {
+        expect(message).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
+        stub.restore();
+      });
+    });
+  });
 });
 

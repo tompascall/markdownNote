@@ -2,7 +2,7 @@
 
 'use strict';
 
-function loadFromDropbox (dropboxService, messageService) {
+function loadFromDropbox (dropboxService, messageService, ENV) {
 
   function loadFromDropboxController ($scope) {
 
@@ -23,9 +23,19 @@ function loadFromDropbox (dropboxService, messageService) {
         'than the data in the backup file. Are you sure you want to load data?');
     };
 
+    controller.readDataFromDropbox = function () {
+      return dropboxService.readFile(ENV.fileName);
+    };
+
     controller.load = function () {
       if (controller.confirmLoadFromDropbox()) {
         dropboxService.authentication()
+        .then(function () {
+          return controller.readDataFromDropbox();
+        })
+        .then(function (data) {
+          controller.setMessage('Fetching data from Dropbox has succeeded.');
+        })
         .catch(function (errorMessage) {
           controller.setMessage(errorMessage);
         });

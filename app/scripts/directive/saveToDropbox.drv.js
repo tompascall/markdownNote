@@ -25,7 +25,9 @@ function saveToDropbox (dropboxService, messageService, noteData, ENV) {
     controller.save = function () {
       dropboxService.authentication()
       .then(function () {
-        controller.writeDataToDropbox();
+        return controller.writeDataToDropbox();
+      })
+      .then(function (message) {
         controller.setMessage('Writing data to Dropbox has succeeded.');
       })
       .catch(function (errorMessage) {
