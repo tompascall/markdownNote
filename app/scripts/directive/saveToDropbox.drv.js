@@ -17,67 +17,23 @@ function saveToDropbox (dropboxService, messageService, noteData, ENV) {
       });
     };
 
-    controller.authentication = function () {
-      return new Promise(function (resolve, reject) {
-        dropboxService.client.authenticate(function (error, client) {
-          if (error) {
-            reject(error);
-          }
-          else {
-            resolve(client);
-            dropboxService.client = client;
-            console.log('resolve authentication');
-          }
-        });
-      });
-    };
-
     controller.writeDataToDropbox = function (client) {
       var localData = noteData.loadStringNotesFromStorage();
-      if (client) {
-        return new Promise(function (resolve, reject) {
-          client.writeFile(ENV.fileName, localData, function (error, stat) {
-            if (error) {
-              console.log(error.toString());
-              reject(error);
-            }
-            else {
-              console.log('Writing data to Dropbox has succeeded.');
-              controller.setMessage('Writing data to Dropbox has succeeded.');
-              resolve(stat);
-            }
-          });
-        });
-      }
-    };
-
-    controller.isAuthenticated = function () {
-      return dropboxService.client.isAuthenticated();
-    };
-
-    controller.dropErrorHandler = function (error) {
-      var message = dropboxService.errorHandlers[error.status].errorHandler();
-      controller.setMessage(message);
+      return dropboxService.writeFile(ENV.fileName, localData);
     };
 
     controller.save = function () {
-      if (!controller.isAuthenticated()) {
-        controller.authentication()
-          .then(function (client) {
-            controller.setMessage('Dropbox authentication succeeded');
-            return client;
-          })
-          .then(function (client) {
-            controller.writeDataToDropbox(client);
-          })
-          .catch(function (error) {
-            controller.dropErrorHandler(error);
-          });
-      }
-      else {
-        controller.writeDataToDropbox(dropboxService.client);
-        console.log('already authenticated');
-      }
+      dropboxService.authentication()
+      .then(function (client) {
+        controller.setMessage('Dropbox authentication succeeded');
+      })
+      .then(function (stat) {
+        controller.writeDataToDropbox();
+        controller.setMessage('Writing data to Dropbox has succeeded.');
+      })
+      .catch(function (errorMessage) {
+        controller.setMessage(errorMessage);
+      });
     };
   }
 

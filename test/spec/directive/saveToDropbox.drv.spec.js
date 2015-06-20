@@ -39,198 +39,75 @@ describe('Directive: saveToDropbox', function () {
   });
 
   describe('authentication', function () {
-    var mockIsAuthenticated;
-
-    beforeEach(function () {
-      mockIsAuthenticated = sinon.stub(isolated.ctrl,'isAuthenticated');
-      mockIsAuthenticated.returns(false);
-    });
-
-    afterEach(function () {
-      mockIsAuthenticated.restore();
-    });
 
     it('should call save method if button is clicked', function () {
-      sinon.spy(isolated.ctrl, 'save');
+      sinon.stub(isolated.ctrl, 'save');
       element.find('button.saveToDropboxButton').click();
       scope.$digest();
       expect(isolated.ctrl.save.called).to.equal(true);
       isolated.ctrl.save.restore();
     });
 
-    it('should check if client can perform Dropbox API calls on behalf of a user', function () {
-      mockIsAuthenticated.returns(false);
-      expect(isolated.ctrl.isAuthenticated()).to.equal(false);
-      mockIsAuthenticated.returns(true);
-      expect(isolated.ctrl.isAuthenticated()).to.equal(true);
-    });
-
-    it('should start authentication process if not authenticated', function () {
-      mockIsAuthenticated.returns(false);
-      sinon.spy(isolated.ctrl, 'authentication');
-      isolated.ctrl.save();
-      expect(isolated.ctrl.authentication.called).to.equal(true);
-      isolated.ctrl.authentication.restore();
-    });
-
-    it('should call client.authenticate()', function () {
-      sinon.stub(dropboxService.client, 'authenticate');
-      isolated.ctrl.authentication();
-      expect(dropboxService.client.authenticate.called).to.equal(true);
-      dropboxService.client.authenticate.restore();
-    });
-
-    it('should call dropErrorHandler if authentication fails', function () {
-      var stub = sinon.stub(dropboxService.client,'authenticate');
-      var error = {
-        status: Dropbox.ApiError.INVALID_TOKEN,
-      };
-      var client = null;
-      stub.yields(error, client); // will call callback from stub with these args
-      var spy = sinon.spy(isolated.ctrl,'dropErrorHandler');
-
-      var promise = isolated.ctrl.authentication();
-      promise.catch(function (error) {
-        expect(spy.called).to.equal(true);
-        stub.restore();
-        spy.restore();
-      });
-    });
-
-    it('should call INVALID_TOKEN errorhandler', function () {
-      var stub = sinon.stub(dropboxService.client,'authenticate');
-      var error = {
-        status: Dropbox.ApiError.INVALID_TOKEN,
-      };
-      var client = null;
-      stub.yields(error, client); // will call callback from stub with these args
-      var spy = sinon.spy(dropboxService
-        .errorHandlers[Dropbox.ApiError.INVALID_TOKEN],'errorHandler');
-
-      var promise = isolated.ctrl.authentication();
-      promise.catch(function (error) {
-        expect(error.status).to.equal(Dropbox.ApiError.INVALID_TOKEN);
-        expect(spy.called).to.equal(true);
-        stub.restore();
-        spy.restore();
-      });
-    });
-
-    it('should update client', function () {
-      var stub = sinon.stub(dropboxService.client,'authenticate');
-      var error = null;
-      var client = {
-        status: 'updated'
-      };
-      stub.yields(error, client); // will call callback from stub with these args
-
-      return isolated.ctrl.authentication()
-      .then(function (dropClient) {
-        expect(dropClient.status).to.equal('updated');
-        expect(dropClient).to.deep.equal(dropboxService.client);
-        stub.restore();
-      });
-    });
-
-    it('dropErrorHandler should set dropbox message for informing the user', function () {
+    it('should set dropbox message for informing the user', function (done) {
       var tempDropboxMessage = messageService.messages.dropboxSaveMessage;
       messageService.messages.dropboxSaveMessage = '';
-      isolated.ctrl.dropErrorHandler({status: Dropbox.ApiError.INVALID_TOKEN});
-      expect(messageService.messages.dropboxSaveMessage).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
-      messageService.messages.dropboxSaveMessage = tempDropboxMessage;
+
+      var stub = sinon.stub(dropboxService.client,'authenticate');
+      var error = {
+        status: Dropbox.ApiError.INVALID_TOKEN,
+      };
+      var client = null;
+      stub.yields(error, client); // will call callback from stub with these args
+
+      isolated.ctrl.save();
+      setTimeout(function() {
+        expect(messageService.messages.dropboxSaveMessage).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
+        messageService.messages.dropboxSaveMessage = tempDropboxMessage;
+        done();
+      }, 10);
     });
 
   });
 
   describe('saving data to dropbox', function () {
-    var mockIsAuthenticated;
 
-    beforeEach(function () {
-      mockIsAuthenticated = sinon.stub(isolated.ctrl,'isAuthenticated');
-      mockIsAuthenticated.returns(false);
-    });
+    it('should call writeDataToDropbox', function (done) {
 
-    afterEach(function () {
-      mockIsAuthenticated.restore();
-    });
+      sinon.stub(dropboxService, 'authentication')
+        .returns(when(true));
 
-    it('should call writeDataToDropbox with client arg', function (done) {
-      var client = 'authenticated';
-
-      sinon.stub(isolated.ctrl, 'authentication')
-        .returns(when(client));
-
-      var mock = sinon.mock(isolated.ctrl);
-      mock.expects('writeDataToDropbox').withArgs(client);
-
+      var stub = sinon.stub(isolated.ctrl, 'writeDataToDropbox');
       isolated.ctrl.save();
 
       setTimeout(function() {
-        expect(mock.verify()).to.equal(true);
-        isolated.ctrl.authentication.restore();
+        expect(stub.called).to.equal(true);
+        dropboxService.authentication.restore();
+        stub.restore();
         done();
       }, 10);
     });
 
     it('writeDataToDropbox should call noteData.loadStringNotesFromStorage', function () {
-      var spy = sinon.spy(noteData, 'loadStringNotesFromStorage');
+      var stub = sinon.stub(noteData, 'loadStringNotesFromStorage');
+      var stubWriteFile = sinon.stub(dropboxService, 'writeFile').returns(when(true));
       isolated.ctrl.writeDataToDropbox();
-      expect(spy.called).to.equal(true);
-      spy.restore();
-    });
-
-    it('should call client.writeFile with filename and storage data', function () {
-      var tempStorage;
-      tempStorage = window.localStorage.markdownNote;
-      window.localStorage.markdownNote = angular.toJson(['test data']);
-
-      var stub = sinon.stub(dropboxService.client, 'writeFile');
-      stub.withArgs(ENV.fileName, tempStorage);
-
-      isolated.ctrl.writeDataToDropbox(dropboxService.client);
       expect(stub.called).to.equal(true);
       stub.restore();
-      window.localStorage.markdownNote = tempStorage;
+      stubWriteFile.restore();
     });
 
-    it('should handle data writing via promise', function () {
-      var stub = sinon.stub(dropboxService.client,'writeFile');
-      var error = null;
-      var stat = {
-        path: 'filePath'
-      };
-      stub.yields(error, stat); // will call callback from stub with these args
+    it('should call dropboxService.writeFile with filename and storage data', function () {
+        var tempStorage;
+        tempStorage = window.localStorage.markdownNote;
+        window.localStorage.markdownNote = angular.toJson(['test data']);
 
-      var promise = isolated.ctrl.writeDataToDropbox(dropboxService.client);
-      return promise.then(function (stat) {
-        expect(stat.path).to.equal('filePath');
+        var stub = sinon.stub(dropboxService, 'writeFile');
+        stub.withArgs(ENV.fileName, window.localStorage.markdownNote);
+
+        isolated.ctrl.writeDataToDropbox();
+        expect(stub.called).to.equal(true);
         stub.restore();
-      });
-    });
-
-    it('should set dropbox message after trying to write data to dropbox', function () {
-      var stub = sinon.stub(dropboxService.client,'writeFile');
-      var error = null;
-      var stat = {
-        path: 'filePath'
-      };
-      stub.yields(error, stat); // will call callback from stub with these args
-
-      var messageStub = sinon.stub(isolated.ctrl, 'setMessage');
-
-      var promise = isolated.ctrl.writeDataToDropbox(dropboxService.client);
-      return promise.then(function (stat) {
-        expect(messageStub.called).to.equal(true);
-        stub.restore();
-        messageStub.restore();
-      });
-    });
-
-    it('should call writeDataToDropbox if controller.isAuthenticated()', function () {
-      mockIsAuthenticated.returns(true);
-      var stub = sinon.stub(isolated.ctrl,'writeDataToDropbox');
-      isolated.ctrl.save();
-      expect(stub.called).to.equal(true);
+        window.localStorage.markdownNote = tempStorage;
     });
   });
 });

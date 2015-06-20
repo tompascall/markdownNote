@@ -20,15 +20,31 @@ function dropboxService () {
             reject(message);
           }
           else {
-            resolve(client);
+            resolve();
             dropboxService.client = client;
             console.log('resolve authentication');
           }
         });
       }
       else {
-        resolve(dropboxService.client);
+        resolve();
       }
+    });
+  };
+
+  dropboxService.writeFile = function (fileName, data) {
+    var message;
+    return new Promise(function (resolve, reject) {
+      dropboxService.client.writeFile(fileName, data, function (error, stat) {
+        if (error) {
+          message = dropboxService.errorHandlers[error.status].errorHandler();
+          reject(message);
+        }
+        else {
+          console.log('Writing data to Dropbox has succeeded.');
+          resolve(stat);
+        }
+      });
     });
   };
 

@@ -2,7 +2,7 @@
 
 'use strict';
 
-describe.only('Service: dropboxService', function () {
+describe('Service: dropboxService', function () {
   var dropboxService;
 
   beforeEach(function () {
@@ -104,14 +104,6 @@ describe.only('Service: dropboxService', function () {
       stubIsAuthenicated.restore();
     });
 
-    it('should give back dropboxService.client if use is already authenticated', function () {
-      var stubIsAuthenicated = sinon.stub(dropboxService.client, 'isAuthenticated').returns(true);
-      return dropboxService.authentication().then(function (client) {
-        expect(client).to.equal(dropboxService.client);
-      });
-      stubIsAuthenicated.restore();
-    });
-
     it('should call errorHandler if authentication fails', function () {
       var stub = sinon.stub(dropboxService.client,'authenticate');
       var error = {
@@ -140,9 +132,48 @@ describe.only('Service: dropboxService', function () {
       stub.yields(error, client); // will call callback from stub with these args
 
       return dropboxService.authentication()
-      .then(function (dropClient) {
-        expect(dropClient.status).to.equal('updated');
-        expect(dropClient).to.deep.equal(dropboxService.client);
+      .then(function () {
+        expect(dropboxService.client.status).to.equal('updated');
+        stub.restore();
+      });
+    });
+  });
+
+  describe('Write file to Dropbox', function () {
+
+    it('should call client.writeFile with filename and data', function () {
+      var stub = sinon.stub(dropboxService.client, 'writeFile');
+      stub.withArgs('fileName', '{test: data}');
+      dropboxService.writeFile('fileName', '{test: data}')
+      expect(stub.called).to.equal(true);
+      stub.restore();
+    });
+
+    it('should handle data writing via promise', function () {
+      var stub = sinon.stub(dropboxService.client,'writeFile');
+      var error = null;
+      var stat = {
+        path: 'filePath'
+      };
+      stub.yields(error, stat); // will call callback from stub with these args
+
+      var promise = dropboxService.writeFile('fileName', '{test: data}');
+      return promise.then(function (stat) {
+        expect(stat.path).to.equal('filePath');
+        stub.restore();
+      });
+    });
+
+    it('should return error message if writing fails', function () {
+      var stub = sinon.stub(dropboxService.client,'writeFile');
+       var error = {
+        status: Dropbox.ApiError.INVALID_TOKEN
+      };
+      var stat = null;
+      stub.yields(error, stat); // will call callback from stub with these args
+      var promise = dropboxService.writeFile('fileName', '{test: data}');
+      return promise.catch(function (message) {
+        expect(message).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
         stub.restore();
       });
     });
