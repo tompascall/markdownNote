@@ -2,16 +2,19 @@
 
 'use strict';
 
-function loadFromDropbox (dropboxService) {
+function loadFromDropbox (dropboxService, messageService) {
 
-  function loadFromDropboxController () {
+  function loadFromDropboxController ($scope) {
 
    /*jshint validthis: true */
     var controller = this;
-    //controller.messageService = messageService;
+    controller.messageService = messageService;
 
-    controller.isAuthenticated = function () {
-      return dropboxService.client.isAuthenticated();
+    controller.setMessage = function (message) {
+      $scope.$apply(function () {
+        controller.messageService.clearExtrasModalMessages();
+        controller.messageService.messages.dropboxLoadMessage = message;
+      });
     };
 
     controller.confirmLoadFromDropbox = function () {
@@ -20,15 +23,12 @@ function loadFromDropbox (dropboxService) {
         'than the data in the backup file. Are you sure you want to load data?');
     };
 
-    controller.authentication = function () {
-      console.log('hey');
-    };
-
     controller.load = function () {
       if (controller.confirmLoadFromDropbox()) {
-        if (!controller.isAuthenticated()) {
-          controller.authentication();
-        }
+        dropboxService.authentication()
+        .catch(function (errorMessage) {
+          controller.setMessage(errorMessage);
+        });
       }
     };
   }

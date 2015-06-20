@@ -7,6 +7,8 @@ describe('Directive: loadFromDropbox', function () {
   var scope;
   var element;
   var isolated;
+  var messageService;
+  var dropboxService;
 
   beforeEach(module('markdownNote'));
 
@@ -16,6 +18,8 @@ describe('Directive: loadFromDropbox', function () {
     inject(function ($injector) {
       $compile = $injector.get('$compile');
       scope = $injector.get('$rootScope').$new();
+      messageService = $injector.get('messageService');
+      dropboxService = $injector.get('dropboxService');
     });
 
     element = $compile('<load-from-dropbox></load-from-dropbox>')(scope);
@@ -36,14 +40,14 @@ describe('Directive: loadFromDropbox', function () {
     var mockConfirmation;
 
     beforeEach(function () {
-      mockIsAuthenticated = sinon.stub(isolated.ctrl,'isAuthenticated');
-      mockIsAuthenticated.returns(false);
+      // mockIsAuthenticated = sinon.stub(isolated.ctrl,'isAuthenticated');
+      // mockIsAuthenticated.returns(false);
 
       mockConfirmation = sinon.stub(isolated.ctrl, 'confirmLoadFromDropbox').returns(true);
     });
 
     afterEach(function () {
-      mockIsAuthenticated.restore();
+      //mockIsAuthenticated.restore();
       mockConfirmation.restore();
     });
 
@@ -63,13 +67,31 @@ describe('Directive: loadFromDropbox', function () {
     });
 
     it('should start authentication process if not authenticated', function () {
-      sinon.stub(isolated.ctrl, 'authentication');
+      var stub = sinon.stub(dropboxService, 'authentication');
+      stub.returns(when(true));
       isolated.ctrl.load();
-      expect(isolated.ctrl.authentication.called).to.equal(true);
-      isolated.ctrl.authentication.restore();
+      expect(stub.called).to.equal(true);
+      stub.restore();
     });
 
+    it('should set dropbox message for informing the user', function (done) {
+      var tempDropboxMessage = messageService.messages.dropboxLoadMessage;
+      messageService.messages.dropboxLoadMessage = '';
 
+      var stub = sinon.stub(dropboxService.client,'authenticate');
+      var error = {
+        status: Dropbox.ApiError.INVALID_TOKEN,
+      };
+      var client = null;
+      stub.yields(error, client); // will call callback from stub with these args
+
+      isolated.ctrl.load();
+      setTimeout(function() {
+        expect(messageService.messages.dropboxLoadMessage).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
+        messageService.messages.dropboxLoadMessage = tempDropboxMessage;
+        done();
+      }, 10);
+    });
   });
 });
 
