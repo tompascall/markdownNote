@@ -2,8 +2,8 @@
 
 'use strict';
 
-describe('Service: dropboxService', function () {
-  var fileService;
+describe.only('Service: dropboxService', function () {
+  var dropboxService;
 
   beforeEach(function () {
     module('markdownNote');
@@ -92,9 +92,60 @@ describe('Service: dropboxService', function () {
       expect(dropboxService.errorHandlers[Dropbox.ApiError.INVALID_METHOD]
         .errorHandler).to.be.a('function');
     });
+  });
 
+  describe('Authentication', function () {
+    it('should start authentication process if not authenticated', function () {
+      var stubAuthenticate = sinon.stub(dropboxService.client, 'authenticate');
+      var stubIsAuthenicated = sinon.stub(dropboxService.client, 'isAuthenticated').returns(false);
+      dropboxService.authentication();
+      expect(stubAuthenticate.called).to.equal(true);
+      stubAuthenticate.restore();
+      stubIsAuthenicated.restore();
+    });
 
+    it('should give back dropboxService.client if use is already authenticated', function () {
+      var stubIsAuthenicated = sinon.stub(dropboxService.client, 'isAuthenticated').returns(true);
+      return dropboxService.authentication().then(function (client) {
+        expect(client).to.equal(dropboxService.client);
+      });
+      stubIsAuthenicated.restore();
+    });
 
+    it('should call errorHandler if authentication fails', function () {
+      var stub = sinon.stub(dropboxService.client,'authenticate');
+      var error = {
+        status: Dropbox.ApiError.INVALID_TOKEN,
+      };
+      var client = null;
+      stub.yields(error, client); // will call callback from stub with these args
+      var spy = sinon.spy(dropboxService.errorHandlers[error.status],
+        'errorHandler');
+
+      var promise = dropboxService.authentication();
+      return promise.catch(function (message) {
+        expect(spy.called).to.equal(true);
+        expect(message).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
+        stub.restore();
+        spy.restore();
+      });
+    });
+
+    it('should update client', function () {
+      var stub = sinon.stub(dropboxService.client,'authenticate');
+      var error = null;
+      var client = {
+        status: 'updated'
+      };
+      stub.yields(error, client); // will call callback from stub with these args
+
+      return dropboxService.authentication()
+      .then(function (dropClient) {
+        expect(dropClient.status).to.equal('updated');
+        expect(dropClient).to.deep.equal(dropboxService.client);
+        stub.restore();
+      });
+    });
   });
 });
 

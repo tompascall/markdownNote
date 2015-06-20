@@ -2,7 +2,7 @@
 
 'use strict';
 
-function loadFromDropbox () {
+function loadFromDropbox (dropboxService) {
 
   function loadFromDropboxController () {
 
@@ -10,18 +10,26 @@ function loadFromDropbox () {
     var controller = this;
     //controller.messageService = messageService;
 
-    // controller.setMessage = function (message) {
-    //   $scope.$apply(function () {
-    //     controller.messageService.saveMessage = message;
-    //     controller.messageService.loadMessage = false;
-    //   });
-    // };
+    controller.isAuthenticated = function () {
+      return dropboxService.client.isAuthenticated();
+    };
 
-    controller.saveText = function () {
-      // if (fileService.deviceReady) {
+    controller.confirmLoadFromDropbox = function () {
+      return confirm('You are about to update your notes from your Dropbox. ' +
+        'It can result in losing some data if local data are newer ' +
+        'than the data in the backup file. Are you sure you want to load data?');
+    };
 
-      //   controller.onDeviceReady(fileService.rootDirectory);
-      // }
+    controller.authentication = function () {
+      console.log('hey');
+    };
+
+    controller.load = function () {
+      if (controller.confirmLoadFromDropbox()) {
+        if (!controller.isAuthenticated()) {
+          controller.authentication();
+        }
+      }
     };
   }
 

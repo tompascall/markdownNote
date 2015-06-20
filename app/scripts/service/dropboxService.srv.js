@@ -10,6 +10,28 @@ function dropboxService () {
 
   dropboxService.client = new Dropbox.Client(dropboxService.clientInitOptions);
 
+  dropboxService.authentication = function () {
+    var message;
+    return new Promise(function (resolve, reject) {
+      if (!dropboxService.client.isAuthenticated()) {
+        dropboxService.client.authenticate(function (error, client) {
+          if (error) {
+            message = dropboxService.errorHandlers[error.status].errorHandler();
+            reject(message);
+          }
+          else {
+            resolve(client);
+            dropboxService.client = client;
+            console.log('resolve authentication');
+          }
+        });
+      }
+      else {
+        resolve(dropboxService.client);
+      }
+    });
+  };
+
   dropboxService.errorHandlers = {};
 
   dropboxService.errorHandlers[Dropbox.ApiError.INVALID_TOKEN] = {
@@ -25,8 +47,8 @@ function dropboxService () {
   };
 
   dropboxService.errorHandlers[Dropbox.ApiError.NOT_FOUND] = {
-      // The file or folder you tried to access is not in the user's Dropbox.
-      // Handling this error is specific to your application.
+    // The file or folder you tried to access is not in the user's Dropbox.
+    // Handling this error is specific to your application.
     tokenNumber: Dropbox.ApiError.NOT_FOUND,
     errorHandler: function () {
       console.log('NOT_FOUND');
@@ -37,8 +59,8 @@ function dropboxService () {
   };
 
   dropboxService.errorHandlers[Dropbox.ApiError.OVER_QUOTA] = {
-      // The user is over their Dropbox quota.
-      // Tell them their Dropbox is full. Refreshing the page won't help.
+    // The user is over their Dropbox quota.
+    // Tell them their Dropbox is full. Refreshing the page won't help.
     tokenNumber: Dropbox.ApiError.OVER_QUOTA,
     errorHandler: function () {
       console.log('OVER_QUOTA');
@@ -48,8 +70,8 @@ function dropboxService () {
   };
 
   dropboxService.errorHandlers[Dropbox.ApiError.RATE_LIMITED] = {
-      // Too many API requests. Tell the user to try again later.
-      // Long-term, optimize your code to use fewer API calls.
+    // Too many API requests. Tell the user to try again later.
+    // Long-term, optimize your code to use fewer API calls.
     tokenNumber: Dropbox.ApiError.RATE_LIMITED,
     errorHandler: function () {
       console.log('RATE_LIMITED');
@@ -59,9 +81,9 @@ function dropboxService () {
   };
 
   dropboxService.errorHandlers[Dropbox.ApiError.NETWORK_ERROR] = {
-      // An error occurred at the XMLHttpRequest layer.
-      // Most likely, the user's network connection is down.
-      // API calls will not succeed until the user gets back online.
+    // An error occurred at the XMLHttpRequest layer.
+    // Most likely, the user's network connection is down.
+    // API calls will not succeed until the user gets back online.
     tokenNumber: Dropbox.ApiError.NETWORK_ERROR,
     errorHandler: function () {
       console.log('NETWORK_ERROR');

@@ -6,7 +6,7 @@ function loadFile (fileService, noteData, messageService) {
 
   function loadFileController ($scope) {
 
-    // only testing purpose to trigger deviceready event, must be delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // only for testing purpose to trigger deviceready event, must be delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //$(document).trigger('deviceready');
 
    /*jshint validthis: true */

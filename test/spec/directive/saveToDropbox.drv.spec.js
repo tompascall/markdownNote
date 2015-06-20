@@ -8,7 +8,6 @@ describe('Directive: saveToDropbox', function () {
   var element;
   var isolated;
   var dropboxService;
-  var $q;
   var messageService;
   var noteData;
   var ENV;
@@ -22,7 +21,6 @@ describe('Directive: saveToDropbox', function () {
       $compile = $injector.get('$compile');
       scope = $injector.get('$rootScope').$new();
       dropboxService = $injector.get('dropboxService');
-      $q = $injector.get('$q');
       messageService = $injector.get('messageService');
       noteData = $injector.get('noteData');
       ENV = $injector.get('ENV');

@@ -457,26 +457,26 @@ describe('Service: noteData', function () {
       pageService.currentPage = tempCurrentPage;
     });
 
-    it('applySearchNotes should update displayedNotes', function (done) {
+    it('applySearchNotes should update displayedNotes', function () {
 
       noteData.applySearchNotes('testTitle1');
-      setTimeout(function () {
+      //setTimeout(function () {
         expect(displayedNotes.notes.length).to.equal(1);
         expect(displayedNotes.notes[0].title).to.equal('testTitle1 testTitle');
-        done();
-      },10);
+      //  done();
+      //},10);
     });
 
-    it('should recalculate number of pages when apply searching', function (done) {
+    it('should recalculate number of pages when apply searching', function () {
       pageService.currentPage = 12;
       sinon.spy(pageService, 'updatePages');
       noteData.applySearchNotes('testTitle1');
-      setTimeout(function () {
+      //setTimeout(function () {
         expect(pageService.currentPage).to.equal(1);
         expect(pageService.updatePages.called).to.equal(true);
         pageService.updatePages.restore();
-        done();
-      },10);
+        //  done();
+      //},10);
     });
   });
 
