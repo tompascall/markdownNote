@@ -93,7 +93,7 @@ describe('Directive: loadFromDropbox', function () {
     });
   });
 
-  describe.only('reading data from Dropbox', function () {
+  describe('reading data from Dropbox', function () {
 
    var mockConfirmation;
    var stubUpdateLocalData;
@@ -145,7 +145,7 @@ describe('Directive: loadFromDropbox', function () {
       stub.restore();
     });
 
-    it('should call updateLocalData after fetching data', function () {
+    it('should call updateLocalData after fetching data', function (done) {
       sinon.stub(dropboxService, 'authentication')
       .returns(when(true));
 
