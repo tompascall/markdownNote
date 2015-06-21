@@ -84,8 +84,7 @@ function dropboxService () {
     tokenNumber: Dropbox.ApiError.NOT_FOUND,
     errorHandler: function () {
       console.log('NOT_FOUND');
-      var message = 'Bad news. The file or folder you tried to access is not in the user\'s Dropbox.' +
-      ' You are welcome to connect to the developer, tell him something is messed up';
+      var message = 'You can only read data from your Dropbox if you performed a saving before.';
       return message;
     }
   };
@@ -119,7 +118,7 @@ function dropboxService () {
     tokenNumber: Dropbox.ApiError.NETWORK_ERROR,
     errorHandler: function () {
       console.log('NETWORK_ERROR');
-      var message = 'Your network connection may be down. Please try your connection.';
+      var message = 'Your network connection may be down. Please try to reconnect.';
       return message;
     }
   };

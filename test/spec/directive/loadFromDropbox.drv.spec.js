@@ -35,7 +35,7 @@ describe('Directive: loadFromDropbox', function () {
   describe('Test element components', function () {
 
     it('should have a button', function () {
-      expect(element.find('button.loadFromDropboxButton').html()).to.contain('Load notes from Dropbox');
+      expect(element.find('button.loadFromDropboxButton').html()).to.contain('Load notes from your Dropbox');
     });
   });
 

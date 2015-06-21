@@ -34,7 +34,7 @@ describe('Directive: saveToDropbox', function () {
 
   describe('Test element components', function () {
     it('should have a button', function () {
-      expect(element.find('button.saveToDropboxButton').html()).to.contain('Save notes to Dropbox');
+      expect(element.find('button.saveToDropboxButton').html()).to.contain('Save notes to your Dropbox');
     });
   });
 

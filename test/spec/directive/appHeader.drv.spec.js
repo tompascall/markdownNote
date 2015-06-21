@@ -33,7 +33,7 @@ describe('Directive: appHeader', function () {
   describe('Create header and add button', function () {
 
     it('should have a h1 with a notes-header id', function () {
-      expect(element.find('h1#notes-header'))
+      expect(element.find('h1'))
         .to.have.class('title');
     });
 
@@ -345,7 +345,7 @@ describe('Directive: appHeader', function () {
 
     describe('Add tap handler to header title', function () {
       it('should show the modal', function () {
-        element.find('h1#notes-header').click();
+        element.find('#notes-header').click();
           expect(extrasModal.isShown()).to.equal(true);
           extrasModal.remove();
       });
@@ -353,7 +353,7 @@ describe('Directive: appHeader', function () {
 
     describe('Add tap handler to Cancel button', function () {
       it('should hide the modal', function () {
-        element.find('h1#notes-header').click();
+        element.find('#notes-header').click();
         expect(extrasModal.isShown()).to.equal(true);
         modalElement.find('#extras-modal-cancel-button').click();
         expect(extrasModal.isShown()).to.equal(false);

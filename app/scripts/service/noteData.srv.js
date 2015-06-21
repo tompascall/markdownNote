@@ -152,13 +152,14 @@ angular.module('markdownNote')
         'This is a lightweight, simple app ' +
         'to manage your notes.\n\n' +
         'You can \n\n' +
+        '- **sync** your notes to your Dropbox\n' +
         '- **store** your notes locally\n' +
         '- easily **tag** your notes\n' +
         '- **filter** them by any keyword.\n\n' +
         'You can also use **markdown language** to style' +
         ' and structure the body of your notes.\n\n' +
         'If you **tap on Markdown Note** in the header, you can **save your notes** ' +
-        'to your file system and you can **backup your data** or sync with another device.\n\n' +
+        'to your file system or to your Dropbox and you can **backup your data** or sync with another device.\n\n' +
         'Enjoy it!',
       tags: ['Welcome note', 'enjoy']
     },
