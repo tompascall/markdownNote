@@ -179,7 +179,7 @@ describe('Service: dropboxService', function () {
     });
   });
 
-  describe.only('read file from Dropbox', function () {
+  describe('read file from Dropbox', function () {
     it('should call client.readFile with fileName', function () {
       var stub = sinon.stub(dropboxService.client, 'readFile');
       stub.withArgs('fileName');

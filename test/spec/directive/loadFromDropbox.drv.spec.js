@@ -10,6 +10,7 @@ describe('Directive: loadFromDropbox', function () {
   var messageService;
   var dropboxService;
   var ENV;
+  var noteData;
 
   beforeEach(module('markdownNote'));
 
@@ -22,6 +23,7 @@ describe('Directive: loadFromDropbox', function () {
       messageService = $injector.get('messageService');
       dropboxService = $injector.get('dropboxService');
       ENV = $injector.get('ENV');
+      noteData = $injector.get('noteData');
     });
 
     element = $compile('<load-from-dropbox></load-from-dropbox>')(scope);
@@ -56,7 +58,7 @@ describe('Directive: loadFromDropbox', function () {
       isolated.ctrl.load.restore();
     });
 
-    it.skip('should be true if it is confirmed', function () {
+    it('should be true if it is confirmed', function () {
       var stub = sinon.stub(window, 'confirm').returns(true);
       var result = isolated.ctrl.confirmLoadFromDropbox();
       expect(result).to.equal(true);
@@ -91,16 +93,19 @@ describe('Directive: loadFromDropbox', function () {
     });
   });
 
-  describe('reading data from Dropbox', function () {
+  describe.only('reading data from Dropbox', function () {
 
    var mockConfirmation;
+   var stubUpdateLocalData;
 
     beforeEach(function () {
       mockConfirmation = sinon.stub(isolated.ctrl, 'confirmLoadFromDropbox').returns(true);
+      stubUpdateLocalData = sinon.stub(isolated.ctrl, 'updateLocalData');
     });
 
     afterEach(function () {
       mockConfirmation.restore();
+      stubUpdateLocalData.restore();
     });
 
     it('should call readDataFromDropbox', function (done) {
@@ -129,6 +134,34 @@ describe('Directive: loadFromDropbox', function () {
         expect(stub.called).to.equal(true);
         stub.restore();
       });
+    });
+
+    it('should update local data', function () {
+      stubUpdateLocalData.restore();
+      var stub = sinon.stub(noteData, 'backupNotesFromBackupData');
+      stub.withArgs('{test: data}');
+      isolated.ctrl.updateLocalData('{test: data}');
+      expect(stub.called).to.equal(true);
+      stub.restore();
+    });
+
+    it('should call updateLocalData after fetching data', function () {
+      sinon.stub(dropboxService, 'authentication')
+      .returns(when(true));
+
+      var stub = sinon.stub(isolated.ctrl, 'readDataFromDropbox')
+      .returns(when('{test: data}'));
+
+      stubUpdateLocalData.withArgs('{test: data}');
+
+      isolated.ctrl.load();
+
+      setTimeout(function() {
+        expect(stubUpdateLocalData.called).to.equal(true);
+        dropboxService.authentication.restore();
+        stub.restore();
+        done();
+      }, 10);
     });
   });
 });
