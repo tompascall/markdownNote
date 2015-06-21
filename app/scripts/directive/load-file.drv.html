@@ -1,8 +1,8 @@
 <!-- load-file.drv.html -->
 
 <button class="item backupFromDeviceButton button button-full button-assertive" ng-click="ctrl.loadText()">Backup notes from markdownNote.json</button>
-<div class="card" ng-show="ctrl.messageService.loadMessage">
+<div class="card" ng-show="ctrl.messageService.messages.loadLocalFileMessage">
   <div class="item item-text-wrap">
-    <h3 ng-bind="ctrl.messageService.loadMessage"></h3>
+    <h3 ng-bind="ctrl.messageService.messages.loadLocalFileMessage"></h3>
   </div>
 </div>

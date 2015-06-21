@@ -1,0 +1,10 @@
+<!-- save-to-dropbox.drv.html -->
+
+<button class="item saveToDropboxButton button button-full button-positive" ng-click="ctrl.save()">Save notes to Dropbox</button>
+
+<div class="card" ng-show="ctrl.messageService.messages.dropboxSaveMessage">
+  <div class="item item-text-wrap">
+    <h3 ng-bind="ctrl.messageService.messages.dropboxSaveMessage"></h3>
+  </div>
+</div>
+

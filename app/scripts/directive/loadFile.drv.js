@@ -6,7 +6,7 @@ function loadFile (fileService, noteData, messageService) {
 
   function loadFileController ($scope) {
 
-    // only testing purpose to trigger deviceready event, must be delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // only for testing purpose to trigger deviceready event, must be delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //$(document).trigger('deviceready');
 
    /*jshint validthis: true */
@@ -16,8 +16,8 @@ function loadFile (fileService, noteData, messageService) {
 
     controller.setMessage = function (message) {
       $scope.$apply(function () {
-        controller.messageService.loadMessage = message;
-        controller.messageService.saveMessage = false;
+        controller.messageService.clearExtrasModalMessages();
+        controller.messageService.messages.loadLocalFileMessage = message;
       });
     };
 
@@ -41,7 +41,7 @@ function loadFile (fileService, noteData, messageService) {
     };
 
     controller.onResolveSuccess = function (directoryEntry) {
-      directoryEntry.getFile(fileService.filePath,
+      directoryEntry.getFile(fileService.filePath + fileService.fileName,
         null, controller.gotFileEntry, controller.fail);
     };
 

@@ -143,7 +143,7 @@ client.authenticate(function(error, client) {
   // client is a Dropbox.Client instance that you can use to make API calls.
 
   console.log('client is ready');
-  doSomethingCool(client);
+  //doSomethingCool(client);
 
 });
 

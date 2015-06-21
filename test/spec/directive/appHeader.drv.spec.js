@@ -326,7 +326,17 @@ describe('Directive: appHeader', function () {
         expect(aboutButton.text()).to.equal('About Markdown Note');
       });
 
-      it('should have a done button', function () {
+      it('should have a Save to Dropbox button', function () {
+        var button = modalElement.find('ion-content form div button.saveToDropboxButton');
+        expect(button).to.exist;
+      });
+
+      it('should have a Load from Dropbox button', function () {
+        var button = modalElement.find('ion-content form div button.loadFromDropboxButton');
+        expect(button).to.exist;
+      });
+
+      it('should have a Back button', function () {
         var button = modalElement.find('ion-content form div button#doneExtrasButton');
         expect(button).to.have.attr('type', 'submit');
         expect(button.text()).to.contain('Back');

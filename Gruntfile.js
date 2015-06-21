@@ -44,7 +44,18 @@ module.exports = function (grunt) {
           ENV: {
             name: 'development',
             apiEndpoint: '',
-            pageSize: 30
+            pageSize: 30,
+            fileName: 'markdownNote.json',
+            Android: {
+             // rootDirectory: cordova.file.externalRootDirectory,
+             // rootDirectory is set in fileService
+              filePath: 'download/'
+            },
+            iOS: {
+              //rootDirectory: cordova.file.applicationStorageDirectory,
+              // rootDirectory is set in fileService
+              filePath: 'Library/'
+            }
           }
         }
       },
@@ -53,7 +64,18 @@ module.exports = function (grunt) {
           ENV: {
             name: 'production',
             apiEndpoint: '',
-            pageSize: 50
+            pageSize: 30,
+            fileName: 'markdownNote.json',
+            Android: {
+             // rootDirectory: cordova.file.externalRootDirectory,
+             // rootDirectory is set in fileService
+              filePath: 'download/'
+            },
+            iOS: {
+              //rootDirectory: cordova.file.applicationStorageDirectory,
+              // rootDirectory is set in fileService
+              filePath: 'Library/'
+            }
           }
         }
       }
@@ -339,11 +361,14 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/bower_components/angular-ui-router/release/angular-ui-router.js',
           '<%= yeoman.app %>/bower_components/ionic/release/js/ionic.js',
           '<%= yeoman.app %>/bower_components/ionic/release/js/ionic-angular.js',
+          '<%= yeoman.app %>/bower_components/dropbox/lib/dropbox.js',
           '<%= yeoman.app %>/bower_components/marked/lib/marked.js',
           '<%= yeoman.app %>/bower_components/ngCordova/dist/ng-cordova.js',
+          '<%= yeoman.app %>/bower_components/bluebird/js/browser/bluebird.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/app.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/configuration.js',
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
+          '<%= yeoman.test %>/when-browserified/when/build/when.js',
           '<%= yeoman.test %>/spec/testConfig.spec.js',
           '<%= yeoman.test %>/mock/**/*.js',
           '<%= yeoman.test %>/spec/**/*.js',

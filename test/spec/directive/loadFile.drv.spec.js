@@ -82,13 +82,13 @@ describe('Directive: loadFile', function () {
     });
 
     it('onResolveSuccess should call  directoryEntry.getFile with ' +
-      'fileService.filePath, null, ' +
+      'fileService.filePath + fileService.fileName, null, ' +
       'controller.gotFileEntry, controller.fail', function () {
         var directoryEntry = { // mock object
           getFile: function () {}
         };
         var mock = sinon.mock(directoryEntry);
-        mock.expects('getFile').withExactArgs(fileService.filePath,
+        mock.expects('getFile').withExactArgs(fileService.filePath + fileService.fileName,
           null, isolated.ctrl.gotFileEntry,
           isolated.ctrl.fail);
         isolated.ctrl.onResolveSuccess(directoryEntry);
@@ -147,12 +147,12 @@ describe('Directive: loadFile', function () {
       window.FileReader = undefined;
     });
 
-    it('setMessage should set fileService.loadMessage', function () {
-      var temp = isolated.ctrl.messageService.loadMessage;
+    it('setMessage should set fileService.messages.loadLocalFileMessage', function () {
+      var temp = isolated.ctrl.messageService.messages.loadLocalFileMessage;
       var message = 'Hey there!';
       isolated.ctrl.setMessage(message);
-      expect(isolated.ctrl.messageService.loadMessage).to.equal(message);
-      isolated.ctrl.messageService.loadMessage = temp;
+      expect(isolated.ctrl.messageService.messages.loadLocalFileMessage).to.equal(message);
+      isolated.ctrl.messageService.messages.loadLocalFileMessage = temp;
     });
 
     it('controller.fail should log error', function () {

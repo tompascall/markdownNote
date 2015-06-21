@@ -457,26 +457,26 @@ describe('Service: noteData', function () {
       pageService.currentPage = tempCurrentPage;
     });
 
-    it('applySearchNotes should update displayedNotes', function (done) {
+    it('applySearchNotes should update displayedNotes', function () {
 
       noteData.applySearchNotes('testTitle1');
-      setTimeout(function () {
+      //setTimeout(function () {
         expect(displayedNotes.notes.length).to.equal(1);
         expect(displayedNotes.notes[0].title).to.equal('testTitle1 testTitle');
-        done();
-      },0);
+      //  done();
+      //},10);
     });
 
-    it('should recalculate number of pages when apply searching', function (done) {
+    it('should recalculate number of pages when apply searching', function () {
       pageService.currentPage = 12;
       sinon.spy(pageService, 'updatePages');
       noteData.applySearchNotes('testTitle1');
-      setTimeout(function () {
+      //setTimeout(function () {
         expect(pageService.currentPage).to.equal(1);
         expect(pageService.updatePages.called).to.equal(true);
         pageService.updatePages.restore();
-        done();
-      },0);
+        //  done();
+      //},10);
     });
   });
 
@@ -552,4 +552,17 @@ describe('Service: noteData', function () {
       searchNote.searchTerm = tempSearchTerm;
     });
   });
+
+  // describe('get data to save notes to dropbox', function () {
+  //   var tempStorage;
+
+  //   beforeEach(function () {
+  //     tempStorage = window.localStorage.markdownNote;
+  //     window.localStorage.markdownNote = angular.toJson(['test data']);
+  //   });
+
+  //   afterEach(function () {
+  //      window.localStorage.markdownNote = tempStorage;
+  //   });
+  // });
 });

@@ -2,7 +2,7 @@
 
 'use strict';
 
-function fileService () {
+function fileService (ENV) {
   /*jshint -W004 */  // to skip 'fileService is already defined' jshint message
   var fileService = {
     deviceReady: false,
@@ -16,11 +16,13 @@ function fileService () {
     fileService.supportedPlatforms = {
       'Android' : {
         rootDirectory: cordova.file.externalRootDirectory,
-        filePath: 'download/markdownNote.json'
+        fileName: ENV.fileName,
+        filePath: ENV.Android.filePath
       },
       'iOS': {
         rootDirectory: cordova.file.applicationStorageDirectory,
-        filePath: 'Library/markdownNote.json'
+        fileName: ENV.fileName,
+        filePath: ENV.iOS.filePath
       }
     };
   };
@@ -52,16 +54,27 @@ function fileService () {
     throw new Error(device.platform + ' platform is not supported');
   };
 
+  fileService.setFileName = function () {
+    var platform = fileService.supportedPlatforms[device.platform];
+    if (platform) {
+      fileService.fileName = platform.fileName;
+      return;
+    }
+    throw new Error(device.platform + ' platform is not supported');
+  };
+
   fileService.setupFileService = function () {
     fileService.setDeviceReady();
     fileService.setSupportedPlatforms();
     fileService.setPlatform();
     fileService.setRootDirectory();
     fileService.setFilePath();
+    fileService.setFileName();
     // console.log('deviceready: ' + fileService.deviceReady);
     // console.log('platform: ' + fileService.platform);
     // console.log('root: ' + fileService.rootDirectory);
     // console.log('filePath: ' + fileService.filePath);
+    // console.log('fileName: ' + fileService.fileName);
   };
 
   $(document).on('deviceready', fileService.setupFileService);

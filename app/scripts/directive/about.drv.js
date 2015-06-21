@@ -11,7 +11,10 @@ function aboutDirective (messageService, externalLinkService) {
     controller.externalLinkService = externalLinkService;
 
     controller.toggleAboutMessage = function () {
-      controller.messageService.showAboutMessage = !controller.messageService.showAboutMessage;
+      if (!controller.messageService.messages.showAboutMessage) {
+        controller.messageService.clearExtrasModalMessages();
+      }
+      controller.messageService.messages.showAboutMessage = !controller.messageService.messages.showAboutMessage;
     };
   }
 

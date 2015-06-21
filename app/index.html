@@ -28,6 +28,8 @@
     <script src="bower_components/ionic/release/js/ionic-angular.js"></script>
     <script src="bower_components/ngCordova/dist/ng-cordova.js"></script>
     <script src="bower_components/marked/lib/marked.js"></script>
+    <script src="bower_components/dropbox/lib/dropbox.js"></script>
+    <script src="bower_components/bluebird/js/browser/bluebird.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -59,6 +61,9 @@
     <script type="text/javascript" src="scripts/service/displayedNotes.srv.js"></script>
     <script type="text/javascript" src="scripts/service/searchNotesFilter.srv.js"></script>
     <script type="text/javascript" src="scripts/directive/addSearchNote.drv.js"></script>
+    <script type="text/javascript" src="scripts/directive/saveToDropbox.drv.js"></script>
+    <script type="text/javascript" src="scripts/directive/loadFromDropbox.drv.js"></script>
+    <script type="text/javascript" src="scripts/service/dropboxService.srv.js"></script>
     <!-- endbuild -->
   </head>
   <body ng-app="markdownNote">

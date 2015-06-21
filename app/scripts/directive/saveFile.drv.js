@@ -15,8 +15,8 @@ function saveFile (fileService, noteData, messageService) {
 
     controller.setMessage = function (message) {
       $scope.$apply(function () {
-        controller.messageService.saveMessage = message;
-        controller.messageService.loadMessage = false;
+        controller.messageService.clearExtrasModalMessages();
+        controller.messageService.messages.saveLocalFileMessage = message;
       });
     };
 
@@ -39,7 +39,7 @@ function saveFile (fileService, noteData, messageService) {
     };
 
     controller.onResolveSuccess = function (directoryEntry) {
-      directoryEntry.getFile(fileService.filePath,
+      directoryEntry.getFile(fileService.filePath + fileService.fileName,
         {create: true, exclusive: false}, controller.gotFileEntry, controller.fail);
     };
 
