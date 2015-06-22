@@ -2,7 +2,7 @@
 
 In this project we'll develop a hybrid mobile app, using test-driven development approach, developing in [Ionic Framework](ionicframework.com).
 
-The app is a note manager. You can **store** your notes locally, you can **update** the content of notes and you can **filter** them by any keyword. You can also use **markdown language** to style and structure the body of your notes. As regards markdown editing we use the [Pagedown](https://code.google.com/p/pagedown/wiki/PageDown) library and [Pagedown-Extra plugin](https://github.com/jmcmanus/pagedown-extra).
+The app is a note manager. You can **store** your notes locally or sync to your Dropbox, you can **update** the content of notes and you can **filter** them by any keyword. You can also use **markdown language** to style and structure the body of your notes. As regards markdown editing we use the [Pagedown](https://code.google.com/p/pagedown/wiki/PageDown) library and [Pagedown-Extra plugin](https://github.com/jmcmanus/pagedown-extra).
 
 If you are curious about setting up the development framework, just check out the [**development.log.md**](https://github.com/tompascall/markdownNote/blob/master/development.log.md) file for the details.
 
@@ -24,6 +24,24 @@ If you are curious about setting up the development framework, just check out th
 - Build the project from the project library: ```$ grunt build```
 
 As regards android platform you can find your built `.apk` in the `app/platforms/android/ant-build` folder.
+
+For release:
+
+```$ grunt build:<platform> --release```
+
+If you didn’t have a key then you have to generate one:
+
+```$ keytool -genkey -v -keystore my-release-key.keystore -alias <your alias name> -keyalg RSA -keysize 2048 -validity 10000```
+
+(You will need this key later so save it watchfully)
+
+Then you can sign your unsigned apk with `jarsigner`:
+
+```$ jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore MarkdownNote-release-unsigned.apk <your alias name>```
+
+Finally you have to `zipalign`:
+
+```$ zipalign -v 4 MarkdownNote-release-unsigned.apk MarkdownNote.apk```
 
 ##Run the app
 
