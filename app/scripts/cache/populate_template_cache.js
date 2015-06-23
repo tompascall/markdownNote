@@ -6,7 +6,7 @@ angular.module('markdownNote.templates', []).run(['$templateCache', function($te
     '<button class="item aboutButton button button-full button-royal" ng-click="ctrl.toggleAboutMessage()">About Markdown Note</button>\n' +
     '<div class="aboutMessage card" ng-show="ctrl.messageService.messages.showAboutMessage">\n' +
     '  <div class="item item-text-wrap" ng-click="ctrl.externalLinkService.handleLinkClicked($event)">\n' +
-    '    <h3>Markdown Note v0.1.0</h3>\n' +
+    '    <h3>Markdown Note v0.1.3</h3>\n' +
     '    <p>This is a sample project, using <a href="http://ionicframework.com/">Ionic framework</a>, developing in test driven way.</p>\n' +
     '    <p>On Android platform you can save your notes to the sdcard/download folder. On iOS platform you can save your notes to the application folder, and they will be synced on iCloud.</p>\n' +
     '    <p>You can check the project in my github: <a href="https://github.com/tompascall/markdownNote">https://github.com/tompascall/markdownNote</a>.</p>\n' +
