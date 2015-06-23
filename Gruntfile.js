@@ -186,7 +186,28 @@ module.exports = function (grunt) {
       }
     },
 
-
+    html2js: {
+      options: {
+        base: 'app',
+        module: 'markdownNote.templates',
+        singleModule: true,
+        useStrict: true,
+        htmlmin: {
+          collapseBooleanAttributes: true,
+          collapseWhitespace: true,
+          removeAttributeQuotes: true,
+          removeComments: true,
+          removeEmptyAttributes: true,
+          removeRedundantAttributes: true,
+          removeScriptTypeAttributes: true,
+          removeStyleLinkTypeAttributes: true
+        }
+      },
+      main: {
+        src: ['app/scripts/**/*.html'],
+        dest: 'app/scripts/cache/populate_template_cache.js'
+      }
+    },
 
     // Reads HTML for usemin blocks to enable smart builds that automatically
     // concat, minify and revision files. Creates configurations in memory so
@@ -540,8 +561,9 @@ module.exports = function (grunt) {
     'wiredep',
     'concurrent:server',
     'autoprefixer',
+    'html2js:main',
     'newer:copy:app',
-    'newer:copy:tmp'
+    'newer:copy:tmp',
   ]);
 
 
