@@ -265,7 +265,7 @@ module.exports = function (grunt) {
             '<%= yeoman.images %>/**/*.{png,jpg,jpeg,gif,webp,svg}',
             '*.html',
             'templates/**/*.html',
-            'fonts/*'
+            'fonts/**/*'
           ]
         }, {
           expand: true,
@@ -282,9 +282,9 @@ module.exports = function (grunt) {
       },
       fonts: {
         expand: true,
-        cwd: 'app/lib/ionic/release/fonts/',
+        cwd: 'app/bower_components/ionic/release/fonts/',
         dest: '<%= yeoman.app %>/fonts/',
-        src: '*'
+        src: ['*']
       },
       vendor: {
         expand: true,

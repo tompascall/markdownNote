@@ -1,0 +1,198 @@
+
+@font-face {
+    font-family: Khadija;
+    src: url(../fonts/khadija/khadija/Khadija.ttf);
+}
+
+@font-face {
+    font-family: Bitstream;
+    src: url(../fonts/bitstream-vera-sans-mono/Bitstream_Vera_Sans_Mono_Roman.ttf);
+}
+
+#notes-header {
+  font-family: Khadija, cursive;
+  font-size: 24px;
+
+  border: 1px solid #888;
+  background-color: #555;
+  border-radius: 5px;
+  padding: 5px 40px;
+
+}
+
+code {
+  font-family: Bitstream, Courier;
+}
+
+a {
+  text-decoration: none;
+  color: red;
+}
+
+.note-title-container {
+  display: box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+      align-items: center;
+}
+
+.note-title {
+  color: rgb(255, 0, 0);
+  font-weight: 300;
+  margin: 0;
+}
+
+.note-item {
+  /*border-bottom: 20px solid #ccc; */
+  border-bottom: 4px #ccc groove;
+}
+.note-item h2 {
+  font-size: 18px
+}
+
+.wordwrap {
+  white-space: normal;
+  line-height: 25px;
+}
+
+.text-title-wordwrap {
+  white-space: normal;
+}
+
+.text-title {
+  background-color: #eee;
+  padding: 10px;
+  width: 100%;
+}
+
+div.text-title p, div.text-title li, div.text-title code, div.text-title dt, div.text-title dd {
+  font-size: 18px;
+  line-height: 22px;
+}
+
+div.text-title p, div.text-title li {
+  margin-top: 10px;
+}
+
+div.text-title h2 {
+  font-size: 28px;
+}
+
+div.text-title em {
+  font-style: italic;
+}
+
+div.text-title table {
+    border-collapse: collapse;
+    border: 1px solid green;
+}
+
+div.text-title td, div.text-title th {
+  border: 1px solid #98bf21;
+  padding: 3px 7px 2px 7px;
+  font-size: 18px;
+}
+
+div.text-title th {
+    background-color: green;
+    color: white;
+}
+
+div.text-title ul {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+div.text-title ul ul {
+  list-style-type: circle;
+}
+
+div.text-title ul ul ul {
+  list-style-type: square;
+}
+
+div.text-title ul > li {
+  margin-left: 10px;
+}
+
+div.text-title ol > li {
+  margin-left: 10px;
+}
+
+div.text-title ol {
+  list-style-type: decimal;
+  list-style-position: inside;
+}
+
+div.text-title ol ol {
+  list-style-type: lower-latin;
+  list-style-position: inside;
+}
+
+div.text-title ol ol ol {
+  list-style-type: lower-roman;
+  list-style-position: inside;
+}
+
+.text-title-container, .note-close-container, .note-edit-container {
+  display: box;
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.note-close, .note-edit {
+  margin-left: auto;
+}
+
+.note-close {
+  font-size: 26px;
+}
+
+#tag-container {
+  display: box;
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex;
+
+  -webkit-align-items: center;
+  align-items: center;
+
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.tag-title {
+  background-color: rgb(153, 153, 153);
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  margin: 2px 3px 2px 3px;
+  padding: 0 5px 0 5px;
+  border-radius: 3px;
+  line-height: 25px;
+  white-space: normal;
+}
+
+ion-header-bar.bar-subheader {
+    padding: 0;
+}
+
+.scroll-bar-indicator {
+  display: none;
+}
+
+textarea#edit-note-modal-text {
+  resize: vertical;
+  min-height: 10em;
+}
+
+@media only screen
+and (orientation: portrait)
+and (min-device-height: 20em) {
+  textarea#edit-note-modal-text {
+    min-height: 20em;
+  }
+}
+
