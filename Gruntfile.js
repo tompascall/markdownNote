@@ -192,16 +192,7 @@ module.exports = function (grunt) {
         module: 'markdownNote.templates',
         singleModule: true,
         useStrict: true,
-        htmlmin: {
-          collapseBooleanAttributes: true,
-          collapseWhitespace: true,
-          removeAttributeQuotes: true,
-          removeComments: true,
-          removeEmptyAttributes: true,
-          removeRedundantAttributes: true,
-          removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true
-        }
+        quoteChar: '\''
       },
       main: {
         src: ['app/scripts/**/*.html'],
@@ -507,8 +498,11 @@ module.exports = function (grunt) {
   // we don't have to run the karma test server as part of `grunt serve`
   grunt.registerTask('watch:karma', function () {
     var karma = {
-      files: ['<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js', '<%= yeoman.test %>/spec/**/*.js'],
-      tasks: ['newer:jshint:test', 'karma:unit:run']
+      files: ['<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
+              '<%= yeoman.test %>/spec/**/*.js',
+              '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.html'
+      ],
+      tasks: ['newer:jshint:test', 'newer:html2js', 'karma:unit:run']
     };
     grunt.config.set('watch', karma);
     return grunt.task.run(['watch']);

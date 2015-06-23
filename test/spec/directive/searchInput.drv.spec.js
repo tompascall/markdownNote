@@ -40,7 +40,7 @@ describe('Directive: searchInput', function () {
     });
 
     it('should have item item-input class', function () {
-      expect(element.find('label')).to.have.class('item item-input-wrapper')
+      expect(element.find('label')).to.have.class('item-input-wrapper')
     });
 
     it('should have input field', function () {
