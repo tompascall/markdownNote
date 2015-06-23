@@ -186,7 +186,19 @@ module.exports = function (grunt) {
       }
     },
 
-
+    html2js: {
+      options: {
+        base: 'app',
+        module: 'markdownNote.templates',
+        singleModule: true,
+        useStrict: true,
+        quoteChar: '\''
+      },
+      main: {
+        src: ['app/scripts/**/*.html'],
+        dest: 'app/scripts/cache/populate_template_cache.js'
+      }
+    },
 
     // Reads HTML for usemin blocks to enable smart builds that automatically
     // concat, minify and revision files. Creates configurations in memory so
@@ -253,7 +265,7 @@ module.exports = function (grunt) {
             '<%= yeoman.images %>/**/*.{png,jpg,jpeg,gif,webp,svg}',
             '*.html',
             'templates/**/*.html',
-            'fonts/*'
+            'fonts/**/*'
           ]
         }, {
           expand: true,
@@ -270,9 +282,9 @@ module.exports = function (grunt) {
       },
       fonts: {
         expand: true,
-        cwd: 'app/lib/ionic/release/fonts/',
+        cwd: 'app/bower_components/ionic/release/fonts/',
         dest: '<%= yeoman.app %>/fonts/',
-        src: '*'
+        src: ['*']
       },
       vendor: {
         expand: true,
@@ -486,8 +498,11 @@ module.exports = function (grunt) {
   // we don't have to run the karma test server as part of `grunt serve`
   grunt.registerTask('watch:karma', function () {
     var karma = {
-      files: ['<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js', '<%= yeoman.test %>/spec/**/*.js'],
-      tasks: ['newer:jshint:test', 'karma:unit:run']
+      files: ['<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js',
+              '<%= yeoman.test %>/spec/**/*.js',
+              '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.html'
+      ],
+      tasks: ['newer:jshint:test', 'newer:html2js', 'karma:unit:run']
     };
     grunt.config.set('watch', karma);
     return grunt.task.run(['watch']);
@@ -540,8 +555,9 @@ module.exports = function (grunt) {
     'wiredep',
     'concurrent:server',
     'autoprefixer',
+    'html2js:main',
     'newer:copy:app',
-    'newer:copy:tmp'
+    'newer:copy:tmp',
   ]);
 
 
