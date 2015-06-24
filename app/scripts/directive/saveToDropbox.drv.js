@@ -13,7 +13,7 @@ function saveToDropbox (dropboxService, messageService, noteData, ENV) {
     controller.setMessage = function (message) {
       $scope.$apply(function () {
         controller.messageService.clearExtrasModalMessages();
-        controller.messageService.messages.dropboxSaveMessage = message;
+        controller.messageService.messages.dropboxWriteMessage = message;
       });
     };
 

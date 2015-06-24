@@ -8,8 +8,8 @@ function messageService () {
       showAboutMessage: false,
       loadLocalFileMessage: false,
       saveLocalFileMessage: false,
-      dropboxSaveMessage: false,
-      dropboxLoadMessage: false,
+      dropboxWriteMessage: false,
+      dropboxReadMessage: false,
 
     },
 
@@ -17,8 +17,8 @@ function messageService () {
       this.messages.showAboutMessage = false;
       this.messages.loadLocalFileMessage = false;
       this.messages.saveLocalFileMessage = false;
-      this.messages.dropboxSaveMessage = false;
-      this.messages.dropboxLoadMessage = false;
+      this.messages.dropboxWriteMessage = false;
+      this.messages.dropboxReadMessage = false;
     }
   };
 }

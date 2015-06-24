@@ -2,13 +2,28 @@
 
 'use strict';
 
-function dropboxService () {
+function dropboxService (messageService) {
   /*jshint -W004 */  // to skip 'dropboxService is already defined' jshint message
   var dropboxService = {
     clientInitOptions: {key: 'pbqyznysf6jffyl'}
   };
 
   dropboxService.client = new Dropbox.Client(dropboxService.clientInitOptions);
+
+  dropboxService.initProgressIndicator = function (action) {
+      messageService.clearExtrasModalMessages();
+    switch (action) {
+      case 'read':
+        messageService.messages.dropboxReadMessage = '';
+      break;
+      case 'write':
+        messageService.messages.dropboxWriteMessage = '';
+      break;
+      default:
+        throw new Error('wrong action type for init progress indicator');
+    }
+
+  };
 
   dropboxService.authentication = function () {
     var message;

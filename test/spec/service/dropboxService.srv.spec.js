@@ -4,6 +4,7 @@
 
 describe('Service: dropboxService', function () {
   var dropboxService;
+  var messageService;
 
   beforeEach(function () {
     module('markdownNote');
@@ -12,6 +13,7 @@ describe('Service: dropboxService', function () {
 
   beforeEach(inject(function ($injector) {
     dropboxService = $injector.get('dropboxService');
+    messageService = $injector.get('messageService');
   }));
 
   describe('Check dropboxService initialization', function () {
@@ -213,6 +215,36 @@ describe('Service: dropboxService', function () {
         expect(message).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
         stub.restore();
       });
+    });
+  });
+
+  describe.only('Progress indicator', function () {
+    var stub;
+    var tempDropboxMessage;
+
+    it('should call clearExtrasModalMessages', function () {
+      stub = sinon.stub(messageService, 'clearExtrasModalMessages');
+      dropboxService.initProgressIndicator('read');
+      expect(stub.called).to.equal(true);
+      stub.restore();
+    });
+
+    it('should init dropboxReadMessage', function () {
+      tempDropboxMessage = messageService.messages.dropboxReadMessage;
+      dropboxService.initProgressIndicator('read');
+      expect(messageService.messages.dropboxReadMessage).to.equal('');
+      messageService.messages.dropboxReadMessage = tempDropboxMessage;
+    });
+
+    it('should init dropboxWriteMessage', function () {
+      tempDropboxMessage = messageService.messages.dropboxWriteMessage;
+      dropboxService.initProgressIndicator('write');
+      expect(messageService.messages.dropboxWriteMessage).to.equal('');
+      messageService.messages.dropboxWriteMessage = tempDropboxMessage;
+    });
+
+    it('should call dropboxService.getXhrDownloadListener', function () {
+
     });
   });
 });

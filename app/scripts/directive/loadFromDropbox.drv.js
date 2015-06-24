@@ -13,7 +13,7 @@ function loadFromDropbox (dropboxService, messageService, ENV, noteData) {
     controller.setMessage = function (message) {
       $scope.$apply(function () {
         controller.messageService.clearExtrasModalMessages();
-        controller.messageService.messages.dropboxLoadMessage = message;
+        controller.messageService.messages.dropboxReadMessage = message;
       });
     };
 
