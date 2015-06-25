@@ -96,7 +96,7 @@ function doSomethingCool () {
     }
     else {
       var mockData = JSON.stringify({mockData: 'mockData'});
-      writeFile({fileName: 'markdownNote.json'}, mockData);
+      writeFile({fileName: 'testData.json'}, mockData);
       window.alert('Hello, ' + accountInfo.name + '!');
       client.signOut();
     }
@@ -111,7 +111,7 @@ function writeFile (options, data) {
       return dropErrorHandlers[error.status].errorHandler();
     }
     console.log('The ' + fileName + ' file has been succesfully written');
-    readFile({fileName: 'markdownNote.json'});
+    readFile({fileName: 'testData.json'});
   });
 }
 
@@ -128,13 +128,16 @@ function readFile (options) {
 }
 
 client.authenticate(function(error, client) {
+  console.log('in callback');
   if (error) {
     // Replace with a call to your own error-handling code.
     //
     // Don't forget to return from the callback, so you don't execute the code
     // that assumes everything went well.
-    console.log('authentication error');
-    return  dropErrorHandlers[error.status].errorHandler();
+    console.log('authentication error', error.status);
+    if (dropErrorHandlers[error.status]) {
+      return  dropErrorHandlers[error.status].errorHandler();
+    }
   }
 
   // Replace with a call to your own application code.

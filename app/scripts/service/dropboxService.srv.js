@@ -14,19 +14,22 @@ function dropboxService () {
     var message;
     return new Promise(function (resolve, reject) {
       if (!dropboxService.client.isAuthenticated()) {
-        dropboxService.client.authenticate(function (error, client) {
+        dropboxService.client.authenticate({interactive: true}, function (error, client) {
+         alert('after authentication');
           if (error) {
             message = dropboxService.errorHandlers[error.status].errorHandler();
+            alert(message);
             reject(message);
           }
           else {
-            resolve();
             dropboxService.client = client;
-            console.log('resolve authentication');
+            resolve();
           }
         });
       }
       else {
+        console.log('already authenticated');
+        console.log(dropboxService.client);
         resolve();
       }
     });
