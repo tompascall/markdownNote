@@ -220,7 +220,19 @@ describe('Service: dropboxService', function () {
 
   describe.only('Progress indicator', function () {
     var stub;
-    var tempDropboxMessage;
+    var tempDropboxReadMessage;
+    var tempDropboxWriteMessage;
+
+    beforeEach(function () {
+      tempDropboxReadMessage = messageService.messages.dropboxReadMessage;
+      tempDropboxWriteMessage = messageService.messages.dropboxWriteMessage;
+    });
+
+    afterEach(function () {
+      messageService.messages.dropboxReadMessage = tempDropboxReadMessage;
+      messageService.messages.dropboxWriteMessage = tempDropboxWriteMessage;
+    });
+
 
     it('should call clearExtrasModalMessages', function () {
       stub = sinon.stub(messageService, 'clearExtrasModalMessages');
@@ -230,21 +242,31 @@ describe('Service: dropboxService', function () {
     });
 
     it('should init dropboxReadMessage', function () {
-      tempDropboxMessage = messageService.messages.dropboxReadMessage;
       dropboxService.initProgressIndicator('read');
-      expect(messageService.messages.dropboxReadMessage).to.equal('');
-      messageService.messages.dropboxReadMessage = tempDropboxMessage;
+      expect(messageService.messages.dropboxReadMessage).to.equal('Reading data from Dropbox');
     });
 
     it('should init dropboxWriteMessage', function () {
-      tempDropboxMessage = messageService.messages.dropboxWriteMessage;
       dropboxService.initProgressIndicator('write');
-      expect(messageService.messages.dropboxWriteMessage).to.equal('');
-      messageService.messages.dropboxWriteMessage = tempDropboxMessage;
+      expect(messageService.messages.dropboxWriteMessage).to.equal('Writing data to Dropbox');
     });
 
-    it('should call dropboxService.getXhrDownloadListener', function () {
+    it('should report data process via setting dropbox read message', function () {
+      dropboxService.initProgressIndicator('read');
+      for (var i = 0; i < 5; i++) {
+        dropboxService.reportProgress('read');
+      }
+      expect(messageService.messages.dropboxReadMessage)
+        .to.equal('Reading data from Dropbox.....');
+    });
 
+    it('should report data process via setting dropbox write message', function () {
+      dropboxService.initProgressIndicator('write');
+      for (var i = 0; i < 5; i++) {
+        dropboxService.reportProgress('write');
+      }
+      expect(messageService.messages.dropboxWriteMessage)
+        .to.equal('Writing data to Dropbox.....');
     });
   });
 });

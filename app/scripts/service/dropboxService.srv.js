@@ -10,14 +10,27 @@ function dropboxService (messageService) {
 
   dropboxService.client = new Dropbox.Client(dropboxService.clientInitOptions);
 
+  dropboxService.reportProgress = function (action) {
+    switch (action) {
+      case 'read':
+        messageService.messages.dropboxReadMessage += '.';
+      break;
+      case 'write':
+        messageService.messages.dropboxWriteMessage += '.';
+      break;
+      default:
+        throw new Error('wrong action type for init progress indicator');
+    }
+  };
+
   dropboxService.initProgressIndicator = function (action) {
       messageService.clearExtrasModalMessages();
     switch (action) {
       case 'read':
-        messageService.messages.dropboxReadMessage = '';
+        messageService.messages.dropboxReadMessage = 'Reading data from Dropbox';
       break;
       case 'write':
-        messageService.messages.dropboxWriteMessage = '';
+        messageService.messages.dropboxWriteMessage = 'Writing data to Dropbox';
       break;
       default:
         throw new Error('wrong action type for init progress indicator');
