@@ -84,7 +84,7 @@ angular.module('markdownNote.templates', []).run(['$templateCache', function($te
     '\n' +
     '<button class="item loadFromDropboxButton button button-full button-positive" ng-click="ctrl.load()">Load notes from your Dropbox</button>\n' +
     '\n' +
-    '<div class="card" ng-show="ctrl.messageService.messages.dropboxReadMessage">\n' +
+    '<div class="card" id="dropboxReadMessageCard" ng-show="ctrl.messageService.messages.dropboxReadMessage">\n' +
     '  <div class="item item-text-wrap">\n' +
     '    <h3 ng-bind="ctrl.messageService.messages.dropboxReadMessage"></h3>\n' +
     '  </div>\n' +

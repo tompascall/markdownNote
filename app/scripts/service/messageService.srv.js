@@ -2,7 +2,7 @@
 
 'use strict';
 
-function messageService () {
+function messageService ($rootScope) {
   return {
     messages: {
       showAboutMessage: false,
@@ -19,6 +19,21 @@ function messageService () {
       this.messages.saveLocalFileMessage = false;
       this.messages.dropboxWriteMessage = false;
       this.messages.dropboxReadMessage = false;
+    },
+
+    applyMessage: function (options) {
+      var self = this;
+      $rootScope.$apply(function () {
+        self.messages[options.messageType] = options.message;
+      });
+    },
+
+    getMessage: function (options) {
+      return this.messages[options.messageType];
+    },
+
+    setMessage: function (options) {
+      this.messages[options.messageType] = options.message;
     }
   };
 }
