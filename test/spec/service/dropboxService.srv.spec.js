@@ -268,6 +268,66 @@ describe('Service: dropboxService', function () {
       expect(messageService.messages.dropboxWriteMessage)
         .to.equal('Writing data to Dropbox.....');
     });
+
+    it('should give back a XhrDownloadListener function that' +
+      ' adds an event listener to xhr listening to `progress` event', function () {
+      var xhrDownloadListener = dropboxService.getXhrDownloadListener();
+      var mockDropboxXhr = {
+        xhr: {
+          addEventListener: function () {}
+        }
+      };
+      var mockXhr = sinon.mock(mockDropboxXhr.xhr);
+      mockXhr.expects('addEventListener').withArgs('progress');
+
+        expect(xhrDownloadListener(mockDropboxXhr)).to.equal(true); // otherwise, the XMLHttpRequest is canceled
+        expect(mockXhr.verify()).to.equal(true);
+    });
+
+    it('should call dropboxService.reportProgress', function () {
+      var XhrDownloadListener = dropboxService.getXhrDownloadListener();
+      var mockDropboxXhr = {
+        xhr: {
+          addEventListener: function (eventType, callback) {
+            var mockEvent = {
+              loaded: '100',
+              total: '1000'
+            };
+            callback(mockEvent);
+          }
+        }
+      };
+      stub = sinon.stub(dropboxService, 'reportProgress');
+      stub.withArgs('read','100','1000');
+
+      XhrDownloadListener(mockDropboxXhr);
+      expect(stub.called).to.equal(true);
+      stub.restore();
+    });
+
+    it('should call dropboxService.getXhrDownloadListener when read file', function () {
+      var spyListenerFactory = sinon.spy(dropboxService, 'getXhrDownloadListener');
+      stub = sinon.stub(dropboxService.client,'readFile');
+      var error = null;
+      var data = '{test: data}';
+      stub.yields(error, data); // will call callback from stub with these args
+
+      return dropboxService.readFile().then(function () {
+        expect(spyListenerFactory.called).to.equal(true);
+      });
+    });
+
+    it('should call initProgressIndicator("read") when read file', function () {
+      var spy = sinon.spy(dropboxService, 'initProgressIndicator');
+      stub = sinon.stub(dropboxService.client,'readFile');
+      var error = null;
+      var data = '{test: data}';
+      stub.yields(error, data); // will call callback from stub with these args
+
+      return dropboxService.readFile().then(function () {
+        expect(spy.called).to.equal(true);
+      });
+    });
   });
 });
 
