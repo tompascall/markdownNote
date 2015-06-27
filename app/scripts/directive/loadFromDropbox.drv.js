@@ -35,7 +35,6 @@ function loadFromDropbox (dropboxService, messageService, ENV, noteData) {
       if (controller.confirmLoadFromDropbox()) {
         dropboxService.authentication()
         .then(function () {
-          alert('after authentication, reading data from dropbox');
           return controller.readDataFromDropbox();
         })
         .then(function (data) {

@@ -79,10 +79,8 @@ function dropboxService (messageService) {
     return new Promise(function (resolve, reject) {
       if (!dropboxService.client.isAuthenticated()) {
         dropboxService.client.authenticate({interactive: true}, function (error, client) {
-         alert('after authentication');
           if (error) {
             message = dropboxService.errorHandlers[error.status].errorHandler();
-            alert(message);
             reject(message);
           }
           else {

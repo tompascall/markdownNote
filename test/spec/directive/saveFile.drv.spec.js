@@ -120,16 +120,6 @@ describe('Directive: saveFile', function () {
       expect(mock.verify()).to.equal(true);
       window.localStorage.markdownNote = temp;
     });
-
-    it('controller.fail should log error', function () {
-      var error = {
-        code: 42
-      };
-      var mock = sinon.mock(window.console);
-      mock.expects('log').withArgs('ERROR: ' + error.code);
-      isolated.ctrl.fail(error);
-      expect(mock.verify()).to.equal(true);
-    });
   });
 });
 
