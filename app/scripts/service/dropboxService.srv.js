@@ -20,6 +20,16 @@ function dropboxService (messageService) {
     };
   };
 
+  dropboxService.getXhrUploadListener = function () {
+    return function (dbXhr) {
+      dbXhr.xhr.upload.addEventListener('progress', function(event) {
+        // event.loaded bytes received, event.total bytes must be received
+        dropboxService.reportProgress('write', event.loaded, event.total);
+      });
+      return true;  // otherwise, the XMLHttpRequest is canceled
+    };
+  };
+
   dropboxService.reportProgress = function (action) {
     var message;
 
@@ -34,7 +44,6 @@ function dropboxService (messageService) {
     switch (action) {
       case 'read':
         applyReportMessage('dropboxReadMessage');
-        console.log(messageService.messages.dropboxReadMessage);
         break;
       case 'write':
         applyReportMessage('dropboxWriteMessage');
@@ -77,7 +86,6 @@ function dropboxService (messageService) {
           else {
             resolve();
             dropboxService.client = client;
-            console.log('resolve authentication');
           }
         });
       }
@@ -89,16 +97,20 @@ function dropboxService (messageService) {
 
   dropboxService.writeFile = function (fileName, data) {
     var message;
+    dropboxService.initProgressIndicator('write');
+    var xhrListener = dropboxService.getXhrUploadListener();
+
     return new Promise(function (resolve, reject) {
+      dropboxService.client.onXhr.addListener(xhrListener);
       dropboxService.client.writeFile(fileName, data, function (error, stat) {
         if (error) {
           message = dropboxService.errorHandlers[error.status].errorHandler();
           reject(message);
         }
         else {
-          console.log('Writing data to Dropbox has succeeded.');
           resolve(stat);
         }
+        dropboxService.client.onXhr.removeListener(xhrListener);
       });
     });
   };
