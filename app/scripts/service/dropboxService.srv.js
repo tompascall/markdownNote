@@ -87,10 +87,7 @@ function dropboxService (messageService) {
           }
           else {
             dropboxService.client = client;
-<<<<<<< HEAD
-=======
             resolve();
->>>>>>> master
           }
         });
       }
