@@ -74,8 +74,8 @@ describe('Directive: loadFromDropbox', function () {
     });
 
     it('should set dropbox message for informing the user', function (done) {
-      var tempDropboxMessage = messageService.messages.dropboxLoadMessage;
-      messageService.messages.dropboxLoadMessage = '';
+      var tempDropboxMessage = messageService.messages.dropboxReadMessage;
+      messageService.messages.dropboxReadMessage = '';
 
       var stub = sinon.stub(dropboxService.client,'authenticate');
       var error = {
@@ -86,8 +86,8 @@ describe('Directive: loadFromDropbox', function () {
 
       isolated.ctrl.load();
       setTimeout(function() {
-        expect(messageService.messages.dropboxLoadMessage).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
-        messageService.messages.dropboxLoadMessage = tempDropboxMessage;
+        expect(messageService.messages.dropboxReadMessage).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
+        messageService.messages.dropboxReadMessage = tempDropboxMessage;
         done();
       }, 10);
     });

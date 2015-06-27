@@ -2,13 +2,77 @@
 
 'use strict';
 
-function dropboxService () {
+function dropboxService (messageService) {
   /*jshint -W004 */  // to skip 'dropboxService is already defined' jshint message
   var dropboxService = {
     clientInitOptions: {key: 'pbqyznysf6jffyl'}
   };
 
   dropboxService.client = new Dropbox.Client(dropboxService.clientInitOptions);
+
+  dropboxService.getXhrDownloadListener = function () {
+    return function(dbXhr) {
+      dbXhr.xhr.addEventListener('progress', function(event) {
+        // event.loaded bytes received, event.total bytes must be received
+        dropboxService.reportProgress('read', event.loaded, event.total);
+      });
+      return true;  // otherwise, the XMLHttpRequest is canceled
+    };
+  };
+
+  dropboxService.getXhrUploadListener = function () {
+    return function (dbXhr) {
+      dbXhr.xhr.upload.addEventListener('progress', function(event) {
+        // event.loaded bytes received, event.total bytes must be received
+        dropboxService.reportProgress('write', event.loaded, event.total);
+      });
+      return true;  // otherwise, the XMLHttpRequest is canceled
+    };
+  };
+
+  dropboxService.reportProgress = function (action) {
+    var message;
+
+    function applyReportMessage (messageType) {
+      message = messageService.getMessage({messageType: messageType});
+      messageService.applyMessage({
+        messageType: messageType,
+        message: message + '.'
+      });
+    }
+
+    switch (action) {
+      case 'read':
+        applyReportMessage('dropboxReadMessage');
+        break;
+      case 'write':
+        applyReportMessage('dropboxWriteMessage');
+        break;
+      default:
+        throw new Error('wrong action type for init progress indicator');
+    }
+  };
+
+  dropboxService.initProgressIndicator = function (action) {
+    messageService.clearExtrasModalMessages();
+    switch (action) {
+      case 'read':
+        messageService.setMessage({
+          messageType: 'dropboxReadMessage',
+          message: 'Reading data from Dropbox'
+        });
+        break;
+      case 'write':
+        messageService.setMessage({
+          messageType: 'dropboxWriteMessage',
+          message: 'Writing data to Dropbox'
+        });
+        break;
+      default:
+        throw new Error('wrong action type for init progress indicator');
+    }
+
+  };
 
   dropboxService.authentication = function () {
     var message;
@@ -23,7 +87,10 @@ function dropboxService () {
           }
           else {
             dropboxService.client = client;
+<<<<<<< HEAD
+=======
             resolve();
+>>>>>>> master
           }
         });
       }
@@ -37,32 +104,40 @@ function dropboxService () {
 
   dropboxService.writeFile = function (fileName, data) {
     var message;
+    dropboxService.initProgressIndicator('write');
+    var xhrListener = dropboxService.getXhrUploadListener();
+
     return new Promise(function (resolve, reject) {
+      dropboxService.client.onXhr.addListener(xhrListener);
       dropboxService.client.writeFile(fileName, data, function (error, stat) {
         if (error) {
           message = dropboxService.errorHandlers[error.status].errorHandler();
           reject(message);
         }
         else {
-          console.log('Writing data to Dropbox has succeeded.');
           resolve(stat);
         }
+        dropboxService.client.onXhr.removeListener(xhrListener);
       });
     });
   };
 
   dropboxService.readFile = function (fileName) {
     var message;
+    var xhrListener = dropboxService.getXhrDownloadListener();
+    dropboxService.initProgressIndicator('read');
+
     return new Promise(function (resolve, reject) {
+      dropboxService.client.onXhr.addListener(xhrListener);
       dropboxService.client.readFile(fileName, function (error, data) {
         if (error) {
           message = dropboxService.errorHandlers[error.status].errorHandler();
           reject(message);
         }
         else {
-          console.log('Fetching data from Dropbox has succeeded.');
           resolve(data);
         }
+        dropboxService.client.onXhr.removeListener(xhrListener);
       });
     });
   };

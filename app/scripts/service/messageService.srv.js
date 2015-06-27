@@ -2,14 +2,14 @@
 
 'use strict';
 
-function messageService () {
+function messageService ($rootScope) {
   return {
     messages: {
       showAboutMessage: false,
       loadLocalFileMessage: false,
       saveLocalFileMessage: false,
-      dropboxSaveMessage: false,
-      dropboxLoadMessage: false,
+      dropboxWriteMessage: false,
+      dropboxReadMessage: false,
 
     },
 
@@ -17,8 +17,23 @@ function messageService () {
       this.messages.showAboutMessage = false;
       this.messages.loadLocalFileMessage = false;
       this.messages.saveLocalFileMessage = false;
-      this.messages.dropboxSaveMessage = false;
-      this.messages.dropboxLoadMessage = false;
+      this.messages.dropboxWriteMessage = false;
+      this.messages.dropboxReadMessage = false;
+    },
+
+    applyMessage: function (options) {
+      var self = this;
+      $rootScope.$apply(function () {
+        self.messages[options.messageType] = options.message;
+      });
+    },
+
+    getMessage: function (options) {
+      return this.messages[options.messageType];
+    },
+
+    setMessage: function (options) {
+      this.messages[options.messageType] = options.message;
     }
   };
 }

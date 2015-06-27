@@ -2,9 +2,9 @@
 
 <button class="item loadFromDropboxButton button button-full button-positive" ng-click="ctrl.load()">Load notes from your Dropbox</button>
 
-<div class="card" ng-show="ctrl.messageService.messages.dropboxLoadMessage">
+<div class="card" id="dropboxReadMessageCard" ng-show="ctrl.messageService.messages.dropboxReadMessage">
   <div class="item item-text-wrap">
-    <h3 ng-bind="ctrl.messageService.messages.dropboxLoadMessage"></h3>
+    <h3 ng-bind="ctrl.messageService.messages.dropboxReadMessage"></h3>
   </div>
 </div>
 

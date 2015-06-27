@@ -4,6 +4,7 @@
 
 describe('Service: dropboxService', function () {
   var dropboxService;
+  var messageService;
 
   beforeEach(function () {
     module('markdownNote');
@@ -12,6 +13,7 @@ describe('Service: dropboxService', function () {
 
   beforeEach(inject(function ($injector) {
     dropboxService = $injector.get('dropboxService');
+    messageService = $injector.get('messageService');
   }));
 
   describe('Check dropboxService initialization', function () {
@@ -212,6 +214,239 @@ describe('Service: dropboxService', function () {
       return promise.catch(function (message) {
         expect(message).to.equal('The authentication has been expired. Please try to authenticate yourself again.');
         stub.restore();
+      });
+    });
+  });
+
+  describe('Progress indicator', function () {
+
+    describe('Init progress indicator', function () {
+      var stub;
+      var tempDropboxReadMessage;
+      var tempDropboxWriteMessage;
+
+      beforeEach(function () {
+        tempDropboxReadMessage = messageService.messages.dropboxReadMessage;
+        tempDropboxWriteMessage = messageService.messages.dropboxWriteMessage;
+      });
+
+      afterEach(function () {
+        messageService.messages.dropboxReadMessage = tempDropboxReadMessage;
+        messageService.messages.dropboxWriteMessage = tempDropboxWriteMessage;
+      });
+
+      it('should call clearExtrasModalMessages', function () {
+        stub = sinon.stub(messageService, 'clearExtrasModalMessages');
+        dropboxService.initProgressIndicator('read');
+        expect(stub.called).to.equal(true);
+        stub.restore();
+      });
+
+      it('should init dropboxReadMessage', function () {
+        dropboxService.initProgressIndicator('read');
+        expect(messageService.messages.dropboxReadMessage).to.equal('Reading data from Dropbox');
+      });
+
+      it('should init dropboxWriteMessage', function () {
+        dropboxService.initProgressIndicator('write');
+        expect(messageService.messages.dropboxWriteMessage).to.equal('Writing data to Dropbox');
+      });
+
+      it('should report data process via setting dropbox read message', function () {
+        dropboxService.initProgressIndicator('read');
+        for (var i = 0; i < 5; i++) {
+          dropboxService.reportProgress('read');
+        }
+        expect(messageService.messages.dropboxReadMessage)
+          .to.equal('Reading data from Dropbox.....');
+      });
+
+      it('should report data process via setting dropbox write message', function () {
+        dropboxService.initProgressIndicator('write');
+        for (var i = 0; i < 5; i++) {
+          dropboxService.reportProgress('write');
+        }
+        expect(messageService.messages.dropboxWriteMessage)
+          .to.equal('Writing data to Dropbox.....');
+      });
+
+      it('should call initProgressIndicator with `read` when read file', function () {
+        var spy = sinon.spy(dropboxService, 'initProgressIndicator');
+        spy.withArgs('read');
+        stub = sinon.stub(dropboxService.client, 'readFile');
+        var error = null;
+        var data = '{test: data}';
+        stub.yields(error, data); // will call callback from stub with these args
+
+        return dropboxService.readFile().then(function () {
+          expect(spy.called).to.equal(true);
+          stub.restore();
+          spy.restore();
+        });
+      });
+
+      it('should call initProgressIndicator with `write` when write file', function () {
+        var spy = sinon.spy(dropboxService, 'initProgressIndicator');
+        spy.withArgs('write');
+        stub = sinon.stub(dropboxService.client, 'writeFile');
+        var error = null;
+        var stat = {
+          path: 'filePath'
+        };
+        stub.yields(error, stat); // will call callback from stub with these args
+
+        var promise = dropboxService.writeFile();
+        return promise.then(function (stat) {
+          expect(spy.called).to.equal(true);
+          stub.restore();
+          spy.restore();
+        });
+      });
+    });
+
+    describe('Indicate read progress', function () {
+
+      it('should give back a XhrDownloadListener function that' +
+        ' adds an event listener to xhr listening to `progress` event', function () {
+        var xhrDownloadListener = dropboxService.getXhrDownloadListener();
+        var mockDropboxXhr = {
+          xhr: {
+            addEventListener: function () {}
+          }
+        };
+        var mockXhr = sinon.mock(mockDropboxXhr.xhr);
+        mockXhr.expects('addEventListener').withArgs('progress');
+
+          expect(xhrDownloadListener(mockDropboxXhr)).to.equal(true); // otherwise, the XMLHttpRequest is canceled
+          expect(mockXhr.verify()).to.equal(true);
+      });
+
+      it('should call dropboxService.reportProgress', function () {
+        var XhrDownloadListener = dropboxService.getXhrDownloadListener();
+        var mockDropboxXhr = {
+          xhr: {
+            addEventListener: function (eventType, callback) {
+              var mockEvent = {
+                loaded: '100',
+                total: '1000'
+              };
+              callback(mockEvent);
+            }
+          }
+        };
+        var stub = sinon.stub(dropboxService, 'reportProgress');
+        stub.withArgs('read','100','1000');
+
+        XhrDownloadListener(mockDropboxXhr);
+        expect(stub.called).to.equal(true);
+        stub.restore();
+      });
+
+      it('should call dropboxService.getXhrDownloadListener when read file', function () {
+        var spyListenerFactory = sinon.spy(dropboxService, 'getXhrDownloadListener');
+        var stub = sinon.stub(dropboxService.client,'readFile');
+        var error = null;
+        var data = '{test: data}';
+        stub.yields(error, data); // will call callback from stub with these args
+
+        return dropboxService.readFile().then(function () {
+          expect(spyListenerFactory.called).to.equal(true);
+          spyListenerFactory.restore();
+          stub.restore();
+        });
+      });
+
+      it('should add and remove event listener', function () {
+        var stub = sinon.stub(dropboxService.client,'readFile');
+        var error = null;
+        var data = '{test: data}';
+        stub.yields(error, data); // will call callback from stub with these args
+        var stubAddListener = sinon.stub(dropboxService.client.onXhr, 'addListener');
+        var stubRemoveListener = sinon.stub(dropboxService.client.onXhr, 'removeListener');
+        return dropboxService.readFile().then(function () {
+          expect(stubAddListener.called).to.equal(true);
+          expect(stubRemoveListener.called).to.equal(true);
+          stub.restore();
+          stubAddListener.restore();
+          stubRemoveListener.restore();
+        });
+      });
+    });
+
+    describe('Indicate write progress', function () {
+      it('should give back a XhrUploadListener function that' +
+        ' adds an event listener to xhr listening to `progress` event', function () {
+        var xhrUploadListener = dropboxService.getXhrUploadListener();
+        var mockDropboxXhr = {
+          xhr: {
+            upload: {
+              addEventListener: function () {}
+            }
+          }
+        };
+        var mockXhr = sinon.mock(mockDropboxXhr.xhr.upload);
+        mockXhr.expects('addEventListener').withArgs('progress');
+
+        expect(xhrUploadListener(mockDropboxXhr)).to.equal(true); // otherwise, the XMLHttpRequest is canceled
+        expect(mockXhr.verify()).to.equal(true);
+      });
+
+      it('should call dropboxService.reportProgress', function () {
+        var XhrUploadListener = dropboxService.getXhrUploadListener();
+        var mockDropboxXhr = {
+          xhr: {
+            upload: {
+              addEventListener: function (eventType, callback) {
+                var mockEvent = {
+                  loaded: '100',
+                  total: '1000'
+                };
+                callback(mockEvent);
+              }
+            }
+          }
+        };
+
+        var stub = sinon.stub(dropboxService, 'reportProgress');
+        stub.withArgs('write','100','1000');
+
+        XhrUploadListener(mockDropboxXhr);
+        expect(stub.called).to.equal(true);
+        stub.restore();
+      });
+
+      it('should call dropboxService.getXhrUploadListener when write file', function () {
+        var spyListenerFactory = sinon.spy(dropboxService, 'getXhrUploadListener');
+        var stub = sinon.stub(dropboxService.client,'writeFile');
+        var error = null;
+        var stat = {
+          path: 'filePath'
+        };
+        stub.yields(error, stat); // will call callback from stub with these args
+
+        return dropboxService.writeFile().then(function () {
+          expect(spyListenerFactory.called).to.equal(true);
+          spyListenerFactory.restore();
+          stub.restore();
+        });
+      });
+
+      it('should add and remove event listener', function () {
+        var stub = sinon.stub(dropboxService.client,'writeFile');
+        var error = null;
+        var stat = {
+          path: 'filePath'
+        };
+        stub.yields(error, stat); // will call callback from stub with these args
+        var stubAddListener = sinon.stub(dropboxService.client.onXhr, 'addListener');
+        var stubRemoveListener = sinon.stub(dropboxService.client.onXhr, 'removeListener');
+        return dropboxService.writeFile().then(function () {
+          expect(stubAddListener.called).to.equal(true);
+          expect(stubRemoveListener.called).to.equal(true);
+          stub.restore();
+          stubAddListener.restore();
+          stubRemoveListener.restore();
+        });
       });
     });
   });
