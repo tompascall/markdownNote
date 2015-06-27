@@ -92,8 +92,7 @@ function dropboxService (messageService) {
         });
       }
       else {
-        console.log('already authenticated');
-        console.log(dropboxService.client);
+        //console.log(dropboxService.client);
         resolve();
       }
     });
@@ -147,7 +146,7 @@ function dropboxService (messageService) {
     // Get the user through the authentication flow again.
     tokenNumber: Dropbox.ApiError.INVALID_TOKEN,
     errorHandler: function () {
-      console.log('INVALID_TOKEN');
+      //console.log('INVALID_TOKEN');
       var message = 'The authentication has been expired. Please try to authenticate yourself again.';
       return message;
     }
@@ -158,7 +157,7 @@ function dropboxService (messageService) {
     // Handling this error is specific to your application.
     tokenNumber: Dropbox.ApiError.NOT_FOUND,
     errorHandler: function () {
-      console.log('NOT_FOUND');
+      //console.log('NOT_FOUND');
       var message = 'You can only read data from your Dropbox if you performed a saving before.';
       return message;
     }
@@ -169,7 +168,7 @@ function dropboxService (messageService) {
     // Tell them their Dropbox is full. Refreshing the page won't help.
     tokenNumber: Dropbox.ApiError.OVER_QUOTA,
     errorHandler: function () {
-      console.log('OVER_QUOTA');
+      //console.log('OVER_QUOTA');
       var message = 'Your Dropbox quota is over. Please try to free some space and try again.';
       return message;
     }
@@ -180,7 +179,7 @@ function dropboxService (messageService) {
     // Long-term, optimize your code to use fewer API calls.
     tokenNumber: Dropbox.ApiError.RATE_LIMITED,
     errorHandler: function () {
-      console.log('RATE_LIMITED');
+      //console.log('RATE_LIMITED');
       var message = 'Too many API requests, please try again later.';
       return message;
     }
@@ -192,7 +191,7 @@ function dropboxService (messageService) {
     // API calls will not succeed until the user gets back online.
     tokenNumber: Dropbox.ApiError.NETWORK_ERROR,
     errorHandler: function () {
-      console.log('NETWORK_ERROR');
+      //console.log('NETWORK_ERROR');
       var message = 'Your network connection may be down. Please try to reconnect.';
       return message;
     }
@@ -201,7 +200,7 @@ function dropboxService (messageService) {
   dropboxService.errorHandlers[Dropbox.ApiError.INVALID_PARAM] = {
     tokenNumber: Dropbox.ApiError.INVALID_PARAM,
     errorHandler: function () {
-      console.log('INVALID_PARAM');
+      //console.log('INVALID_PARAM');
       var message = 'Invalid parameter. It\'s bad news for you and the developer';
       return message;
     }
@@ -210,7 +209,7 @@ function dropboxService (messageService) {
   dropboxService.errorHandlers[Dropbox.ApiError.OAUTH_ERROR] = {
     tokenNumber: Dropbox.ApiError.OAUTH_ERROR,
     errorHandler: function () {
-      console.log('OAUTH_ERROR');
+      //console.log('OAUTH_ERROR');
       var message = 'This indicates a bug in dropbox.js and should never occur under normal circumstances.' +
       ' So this is not normal circumstances.';
       return message;
@@ -220,7 +219,7 @@ function dropboxService (messageService) {
   dropboxService.errorHandlers[Dropbox.ApiError.INVALID_METHOD] = {
     tokenNumber: Dropbox.ApiError.INVALID_METHOD,
     errorHandler: function () {
-      console.log('INVALID_METHOD');
+      //console.log('INVALID_METHOD');
       var message = 'This indicates a bug in dropbox.js and should never occur under normal circumstances.' +
       ' So this is not normal circumstances.';
       return message;
