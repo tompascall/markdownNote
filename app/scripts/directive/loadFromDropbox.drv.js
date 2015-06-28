@@ -18,7 +18,6 @@ function loadFromDropbox (dropboxService, messageService, ENV, noteData) {
     };
 
     controller.confirmLoadFromDropbox = function () {
-      console.log('in confirmation');
       return confirm('You are about to update your notes from your Dropbox. ' +
         'It can result in losing some data if local data are newer ' +
         'than the data in the backup file. Are you sure you want to load data?');

@@ -22,7 +22,7 @@ function saveFile (fileService, noteData, messageService) {
 
     controller.fail = function (error) {
       controller.setMessage('ERROR: ' + error.code);
-      console.log('ERROR: ' + error.code);
+      //console.log('ERROR: ' + error.code);
     };
 
     controller.gotFileWriter = function (writer) {
@@ -30,7 +30,7 @@ function saveFile (fileService, noteData, messageService) {
 
       writer.onwrite = function(evt) {
         controller.setMessage('Write succeeded');
-        console.log('write succeeded: ' + evt.toString());
+        //console.log('write succeeded: ' + evt.toString());
       };
     };
 
