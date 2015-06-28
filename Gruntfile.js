@@ -530,40 +530,54 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('serve', function (target) {
-    if (target === 'compress') {
-      return grunt.task.run(['compress', 'ionic:serve']);
+    if (target === 'production') {
+      return grunt.task.run(['init:production','compress', 'ionic:serve']);
     }
 
     grunt.config('concurrent.ionic.tasks', ['ionic:serve', 'watch']);
     grunt.task.run(['wiredep', 'init', 'concurrent:ionic']);
   });
+
   grunt.registerTask('emulate', function() {
     grunt.config('concurrent.ionic.tasks', ['ionic:emulate:' + this.args.join(), 'watch']);
     return grunt.task.run(['init', 'concurrent:ionic']);
   });
+
   grunt.registerTask('run', function() {
     grunt.config('concurrent.ionic.tasks', ['ionic:run:' + this.args.join(), 'watch']);
     return grunt.task.run(['init', 'concurrent:ionic']);
   });
-  grunt.registerTask('build', function() {
-    return grunt.task.run(['init', 'compress', 'ionic:build:' + this.args.join()]);
+
+  grunt.registerTask('build', function () {
+    return grunt.task.run(['init:production', 'compress', 'ionic:build:' + this.args.join()]);
   });
 
-  grunt.registerTask('init', [
-    'clean',
-    'ngconstant:development',
-    'wiredep',
-    'concurrent:server',
-    'autoprefixer',
-    'html2js:main',
-    'newer:copy:app',
-    'newer:copy:tmp',
-  ]);
+  grunt.registerTask('build-dev', function () {
+    return grunt.task.run(['init:development', 'compress', 'ionic:build:' + this.args.join()]);
+  });
+
+  grunt.registerTask('init', function (target) {
+    if (target === 'production') {
+      grunt.task.run(['ngconstant:production']);
+    }
+    else {
+      grunt.task.run(['ngconstant:development']);
+    }
+
+    return grunt.task.run([
+      'clean',
+      'wiredep',
+      'concurrent:server',
+      'autoprefixer',
+      'html2js:main',
+      'newer:copy:app',
+      'newer:copy:tmp'
+    ]);
+  });
 
 
   grunt.registerTask('compress', [
     'clean',
-    'ngconstant:production',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',

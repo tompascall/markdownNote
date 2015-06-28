@@ -90,7 +90,6 @@ function dropboxService (messageService) {
         });
       }
       else {
-        //console.log(dropboxService.client);
         resolve();
       }
     });

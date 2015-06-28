@@ -1,8 +1,8 @@
 #Markdown Note - a Simple Note Manager
 
-In this project we'll develop a hybrid mobile app, using test-driven development approach, developing in [Ionic Framework](ionicframework.com).
+This project is about developing a hybrid mobile app, using test-driven development approach, in [Ionic Framework](ionicframework.com).
 
-The app is a note manager. You can **store** your notes locally or sync to your Dropbox, you can **update** the content of notes and you can **filter** them by any keyword. You can also use **markdown language** to style and structure the body of your notes. As regards markdown editing we use the [Pagedown](https://code.google.com/p/pagedown/wiki/PageDown) library and [Pagedown-Extra plugin](https://github.com/jmcmanus/pagedown-extra).
+The app is a note manager. You can **store** your notes locally or sync them to your Dropbox, you can **update** the content of notes and you can **filter** them by any keyword. You can also use **markdown language** to style and structure the body of your notes. As regards markdown editing we use the [marked](https://github.com/chjj/marked) library.
 
 You can **download the android version** of the app from the [Google Play](https://play.google.com/store/apps/details?id=com.tompascall.MarkdownNote).
 
@@ -20,6 +20,20 @@ If you are curious about setting up the development framework, just check out th
 - Check out [Ionic Generator documentation](https://github.com/diegonetto/generator-ionic/tree/master/docs)
 - I recommend checking out [my blogpost](http://js-workout.tompascall.com/lets-create-hybrid-mobile-apps-with-ionic-framework/) about creating hybrid mobile apps with Ionic framework and [this post](http://js-workout.tompascall.com/lets-develop-hybrid-mobile-apps-with-ionic-framework-ii/) about setting up dev framework for developing ionic app with TDD.
 
+##Serve the app
+
+For running the app in browser just run 
+
+```
+$ grunt serve
+``` 
+
+For checking out the production code in your browser run 
+
+```
+$ grunt serve:production
+```
+
 ##Build the app
 
 - Add platform: ```$ grunt platform:add:<platform>``` (ios / android)
@@ -27,11 +41,15 @@ If you are curious about setting up the development framework, just check out th
 
 As regards android platform you can find your built `.apk` in the `app/platforms/android/ant-build` folder.
 
+If you want to build the app in development environment (for using some built-in dev tools, such as adding a lot of test notes immediately), you can
+
+```$ grunt build-dev[:<platform>]```
+
 For release:
 
 ```$ grunt build:<platform> --release```
 
-If you didn’t have a key then you have to generate one:
+If you didn't have a key then you have to generate one:
 
 ```$ keytool -genkey -v -keystore my-release-key.keystore -alias <your alias name> -keyalg RSA -keysize 2048 -validity 10000```
 
@@ -45,7 +63,7 @@ Finally you have to `zipalign`:
 
 ```$ zipalign -v 4 MarkdownNote-release-unsigned.apk MarkdownNote.apk```
 
-##Run the app
+##Run the app on device or emulator
 
 You can 
 

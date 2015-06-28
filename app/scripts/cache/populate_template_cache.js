@@ -215,9 +215,10 @@ angular.module('markdownNote.templates', []).run(['$templateCache', function($te
     '        <load-file></load-file>\n' +
     '        <about></about>\n' +
     '\n' +
-    '        <!-- add 100 test notes - only for testing purpose\n' +
-    '        <button id="testMuchNotes" class="item button button-full button-dark" ng-click="ctrl.addTestNotes(100)">Add 100 test notes</button>\n' +
-    '        -->\n' +
+    '        <!-- add 100 test notes - only for development -->\n' +
+    '        <div ng-if="ctrl.environment.development">\n' +
+    '          <button id="testMuchNotes" class="item button button-full button-dark" ng-click="ctrl.addTestNotes(100)">Add 100 test notes</button>\n' +
+    '        </div>\n' +
     '\n' +
     '        <button id="doneExtrasButton" type="submit" class="button button-full button-balanced" ng-click="ctrl.hideModal(ctrl.extrasModal)">Back</button>\n' +
     '      </div>\n' +
