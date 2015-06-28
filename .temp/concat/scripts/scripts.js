@@ -8,8 +8,6 @@ angular.module('markdownNote.templates', []).run(['$templateCache', function($te
     '  <div class="item item-text-wrap" ng-click="ctrl.externalLinkService.handleLinkClicked($event)">\n' +
     '    <h3>Markdown Note v0.1.3</h3>\n' +
     '    <p>This is a sample project, using <a href="http://ionicframework.com/">Ionic framework</a>, developing in test driven way.</p>\n' +
-    '    <p>You can download the Android version of the app from the <a href="https://play.google.com/store/apps/details?id=com.tompascall.MarkdownNote">Google Play</a>.</p>\n' +
-    '    <p>This is the online version of the app. The local file operations have been removed, but you can still sync your data via your Dropbox.</p>\n' +
     '    <p>On Android platform you can save your notes to the sdcard/download folder. On iOS platform you can save your notes to the application folder, and they will be synced on iCloud.</p>\n' +
     '    <p>You can check the project in my github: <a href="https://github.com/tompascall/markdownNote">https://github.com/tompascall/markdownNote</a>.</p>\n' +
     '    <p>The markdown feature is based on the\n' +
@@ -86,7 +84,7 @@ angular.module('markdownNote.templates', []).run(['$templateCache', function($te
     '\n' +
     '<button class="item loadFromDropboxButton button button-full button-positive" ng-click="ctrl.load()">Load notes from your Dropbox</button>\n' +
     '\n' +
-    '<div class="card" ng-show="ctrl.messageService.messages.dropboxReadMessage">\n' +
+    '<div class="card" id="dropboxReadMessageCard" ng-show="ctrl.messageService.messages.dropboxReadMessage">\n' +
     '  <div class="item item-text-wrap">\n' +
     '    <h3 ng-bind="ctrl.messageService.messages.dropboxReadMessage"></h3>\n' +
     '  </div>\n' +
@@ -213,17 +211,14 @@ angular.module('markdownNote.templates', []).run(['$templateCache', function($te
     '      <div class="list padding">\n' +
     '        <save-to-dropbox></save-to-dropbox>\n' +
     '        <load-from-dropbox></load-from-dropbox>\n' +
-    '\n' +
-    '        <!-- REMOVE LOCAL FILE ACTIONS FOR ONLINE VERSION\n' +
     '        <save-file></save-file>\n' +
     '        <load-file></load-file>\n' +
-    '        -->\n' +
-    '\n' +
     '        <about></about>\n' +
     '\n' +
-    '        <!-- add 100 test notes - only for testing purpose\n' +
-    '        <button id="testMuchNotes" class="item button button-full button-dark" ng-click="ctrl.addTestNotes(100)">Add 100 test notes</button>\n' +
-    '        -->\n' +
+    '        <!-- add 100 test notes - only for development -->\n' +
+    '        <div ng-if="ctrl.environment.development">\n' +
+    '          <button id="testMuchNotes" class="item button button-full button-dark" ng-click="ctrl.addTestNotes(100)">Add 100 test notes</button>\n' +
+    '        </div>\n' +
     '\n' +
     '        <button id="doneExtrasButton" type="submit" class="button button-full button-balanced" ng-click="ctrl.hideModal(ctrl.extrasModal)">Back</button>\n' +
     '      </div>\n' +
@@ -293,7 +288,7 @@ angular.module('markdownNote', ['config', 'ionic', 'ngSanitize', 'ngCordova', 'm
 
  angular.module('config', [])
 
-.constant('ENV', {name:'production',apiEndpoint:'',pageSize:30,receiverUrl:'https://markdownnote.tompascall.com/dropbox-oauth-receiver.html',fileName:'markdownNote.json',Android:{filePath:'download/'},iOS:{filePath:'Library/'}})
+.constant('ENV', {name:'production',apiEndpoint:'',pageSize:30,fileName:'markdownNote.json',Android:{filePath:'download/'},iOS:{filePath:'Library/'}})
 
 ;
 // noteData.srv.js
@@ -692,11 +687,16 @@ angular.module('markdownNote').directive('noteList', noteList);
 function appHeaderDirective () {
 
   function appHeaderController ($scope,
-    $ionicModal, noteData, searchNote, fileService, messageService) {
+    $ionicModal, noteData, searchNote, fileService, messageService, ENV) {
     /*jshint validthis: true */
     var controller = this;
     controller.fileService = fileService;
     controller.messageService = messageService;
+    if (ENV.name === 'development') {
+      controller.environment = {
+        development: true
+      };
+    }
 
     $ionicModal.fromTemplateUrl('scripts/modal/new-note-modal.html', {
         scope: $scope,
@@ -744,20 +744,22 @@ function appHeaderDirective () {
       controller.hideModal(controller.newNoteModal);
     };
 
-    /* just for testing purpose - add amount of welcomeNote to noteData
+    /* just for testing purpose - add amount of welcomeNote to noteData */
     controller.addTestNotes = function (amount) {
-      for (var i = 0; i < amount; i++) {
-       controller.noteData.addNote(controller.noteData.welcomeNote);
-      }
+      $scope.$applyAsync(function () {
+        for (var i = 0; i < amount; i++) {
+         controller.noteData.addNote(controller.noteData.welcomeNote);
+        }
+      });
     };
-    */
+
 
     $scope.$on('$destroy', function() {
       controller.newNoteModal.remove();
       controller.extrasModal.remove();
     });
   }
-  appHeaderController.$inject = ["$scope", "$ionicModal", "noteData", "searchNote", "fileService", "messageService"];
+  appHeaderController.$inject = ["$scope", "$ionicModal", "noteData", "searchNote", "fileService", "messageService", "ENV"];
 
   return {
     restrict: 'A',
@@ -1154,7 +1156,7 @@ angular.module('markdownNote').directive('about', aboutDirective);
 
 'use strict';
 
-function messageService () {
+function messageService ($rootScope) {
   return {
     messages: {
       showAboutMessage: false,
@@ -1171,9 +1173,25 @@ function messageService () {
       this.messages.saveLocalFileMessage = false;
       this.messages.dropboxWriteMessage = false;
       this.messages.dropboxReadMessage = false;
+    },
+
+    applyMessage: function (options) {
+      var self = this;
+      $rootScope.$apply(function () {
+        self.messages[options.messageType] = options.message;
+      });
+    },
+
+    getMessage: function (options) {
+      return this.messages[options.messageType];
+    },
+
+    setMessage: function (options) {
+      this.messages[options.messageType] = options.message;
     }
   };
 }
+messageService.$inject = ["$rootScope"];
 
 angular.module('markdownNote').factory('messageService', messageService);
 
@@ -1447,6 +1465,7 @@ function loadFromDropbox (dropboxService, messageService, ENV, noteData) {
     };
 
     controller.confirmLoadFromDropbox = function () {
+      console.log('in confirmation');
       return confirm('You are about to update your notes from your Dropbox. ' +
         'It can result in losing some data if local data are newer ' +
         'than the data in the backup file. Are you sure you want to load data?');
@@ -1495,7 +1514,7 @@ angular.module('markdownNote').directive('loadFromDropbox', loadFromDropbox);
 
 'use strict';
 
-function dropboxService (messageService, ENV) {
+function dropboxService (messageService) {
   /*jshint -W004 */  // to skip 'dropboxService is already defined' jshint message
   var dropboxService = {
     clientInitOptions: {key: 'pbqyznysf6jffyl'}
@@ -1503,18 +1522,64 @@ function dropboxService (messageService, ENV) {
 
   dropboxService.client = new Dropbox.Client(dropboxService.clientInitOptions);
 
-  dropboxService.client.authDriver(new Dropbox.AuthDriver.Popup({
-    receiverUrl: ENV.receiverUrl}));
+  dropboxService.getXhrDownloadListener = function () {
+    return function(dbXhr) {
+      dbXhr.xhr.addEventListener('progress', function(event) {
+        // event.loaded bytes received, event.total bytes must be received
+        dropboxService.reportProgress('read', event.loaded, event.total);
+      });
+      return true;  // otherwise, the XMLHttpRequest is canceled
+    };
+  };
 
-  dropboxService.initProgressIndicator = function (action) {
-      messageService.clearExtrasModalMessages();
+  dropboxService.getXhrUploadListener = function () {
+    return function (dbXhr) {
+      dbXhr.xhr.upload.addEventListener('progress', function(event) {
+        // event.loaded bytes received, event.total bytes must be received
+        dropboxService.reportProgress('write', event.loaded, event.total);
+      });
+      return true;  // otherwise, the XMLHttpRequest is canceled
+    };
+  };
+
+  dropboxService.reportProgress = function (action) {
+    var message;
+
+    function applyReportMessage (messageType) {
+      message = messageService.getMessage({messageType: messageType});
+      messageService.applyMessage({
+        messageType: messageType,
+        message: message + '.'
+      });
+    }
+
     switch (action) {
       case 'read':
-        messageService.messages.dropboxReadMessage = '';
-      break;
+        applyReportMessage('dropboxReadMessage');
+        break;
       case 'write':
-        messageService.messages.dropboxWriteMessage = '';
-      break;
+        applyReportMessage('dropboxWriteMessage');
+        break;
+      default:
+        throw new Error('wrong action type for init progress indicator');
+    }
+  };
+
+  dropboxService.initProgressIndicator = function (action) {
+    messageService.clearExtrasModalMessages();
+    switch (action) {
+      case 'read':
+        messageService.setMessage({
+          messageType: 'dropboxReadMessage',
+          message: 'Reading data from Dropbox'
+        });
+        break;
+      case 'write':
+        messageService.setMessage({
+          messageType: 'dropboxWriteMessage',
+          message: 'Writing data to Dropbox'
+        });
+        break;
       default:
         throw new Error('wrong action type for init progress indicator');
     }
@@ -1525,19 +1590,19 @@ function dropboxService (messageService, ENV) {
     var message;
     return new Promise(function (resolve, reject) {
       if (!dropboxService.client.isAuthenticated()) {
-        dropboxService.client.authenticate(function (error, client) {
+        dropboxService.client.authenticate({interactive: true}, function (error, client) {
           if (error) {
             message = dropboxService.errorHandlers[error.status].errorHandler();
             reject(message);
           }
           else {
-            resolve();
             dropboxService.client = client;
-            console.log('resolve authentication');
+            resolve();
           }
         });
       }
       else {
+        //console.log('already authenticated');
         resolve();
       }
     });
@@ -1545,32 +1610,40 @@ function dropboxService (messageService, ENV) {
 
   dropboxService.writeFile = function (fileName, data) {
     var message;
+    dropboxService.initProgressIndicator('write');
+    var xhrListener = dropboxService.getXhrUploadListener();
+
     return new Promise(function (resolve, reject) {
+      dropboxService.client.onXhr.addListener(xhrListener);
       dropboxService.client.writeFile(fileName, data, function (error, stat) {
         if (error) {
           message = dropboxService.errorHandlers[error.status].errorHandler();
           reject(message);
         }
         else {
-          console.log('Writing data to Dropbox has succeeded.');
           resolve(stat);
         }
+        dropboxService.client.onXhr.removeListener(xhrListener);
       });
     });
   };
 
   dropboxService.readFile = function (fileName) {
     var message;
+    var xhrListener = dropboxService.getXhrDownloadListener();
+    dropboxService.initProgressIndicator('read');
+
     return new Promise(function (resolve, reject) {
+      dropboxService.client.onXhr.addListener(xhrListener);
       dropboxService.client.readFile(fileName, function (error, data) {
         if (error) {
           message = dropboxService.errorHandlers[error.status].errorHandler();
           reject(message);
         }
         else {
-          console.log('Fetching data from Dropbox has succeeded.');
           resolve(data);
         }
+        dropboxService.client.onXhr.removeListener(xhrListener);
       });
     });
   };
@@ -1665,6 +1738,6 @@ function dropboxService (messageService, ENV) {
 
   return dropboxService;
 }
-dropboxService.$inject = ["messageService", "ENV"];
+dropboxService.$inject = ["messageService"];
 
 angular.module('markdownNote').factory('dropboxService', dropboxService);

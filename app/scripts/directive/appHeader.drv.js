@@ -5,11 +5,16 @@
 function appHeaderDirective () {
 
   function appHeaderController ($scope,
-    $ionicModal, noteData, searchNote, fileService, messageService) {
+    $ionicModal, noteData, searchNote, fileService, messageService, ENV) {
     /*jshint validthis: true */
     var controller = this;
     controller.fileService = fileService;
     controller.messageService = messageService;
+    if (ENV.name === 'development') {
+      controller.environment = {
+        development: true
+      };
+    }
 
     $ionicModal.fromTemplateUrl('scripts/modal/new-note-modal.html', {
         scope: $scope,
@@ -57,13 +62,15 @@ function appHeaderDirective () {
       controller.hideModal(controller.newNoteModal);
     };
 
-    /* just for testing purpose - add amount of welcomeNote to noteData
+    /* just for testing purpose - add amount of welcomeNote to noteData */
     controller.addTestNotes = function (amount) {
-      for (var i = 0; i < amount; i++) {
-       controller.noteData.addNote(controller.noteData.welcomeNote);
-      }
+      $scope.$applyAsync(function () {
+        for (var i = 0; i < amount; i++) {
+         controller.noteData.addNote(controller.noteData.welcomeNote);
+        }
+      });
     };
-    */
+
 
     $scope.$on('$destroy', function() {
       controller.newNoteModal.remove();
