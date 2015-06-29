@@ -16,16 +16,17 @@ function appHeaderDirective () {
         controller.environment = {
           development: true
         };
-      break;
+        break;
       case 'production':
         controller.environment = {
           production: true
         };
+        break;
       case 'productionOnline':
         controller.environment = {
           productionOnline: true
         };
-      break;
+        break;
       default:
         throw new Error('Unknown environment');
     };
