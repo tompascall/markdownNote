@@ -10,6 +10,7 @@ describe('Directive: appHeader', function () {
   var newNoteModal;
   var searchNote;
   var extrasModal;
+  var ENV;
 
   beforeEach(module('markdownNote'));
 
@@ -19,6 +20,7 @@ describe('Directive: appHeader', function () {
     inject(function ($injector) {
       $compile = $injector.get('$compile');
       scope = $injector.get('$rootScope').$new();
+      ENV = $injector.get('ENV');
     });
 
     element = $compile('<ion-header-bar app-header></ion-header-bar>')(scope);
@@ -312,12 +314,12 @@ describe('Directive: appHeader', function () {
       });
 
       it('should have Save to Device button', function () {
-        var saveToDeviceButton = modalElement.find('ion-content form div.list button.saveToDeviceButton');
+        var saveToDeviceButton = modalElement.find('button.saveToDeviceButton');
          expect(saveToDeviceButton.text()).to.equal('Save notes to markdownNote.json');
       });
 
       it('should have Backup from Device button', function () {
-        var backupFromDeviceButton = modalElement.find('ion-content form div.list button.backupFromDeviceButton');
+        var backupFromDeviceButton = modalElement.find('button.backupFromDeviceButton');
          expect(backupFromDeviceButton.text()).to.equal('Backup notes from markdownNote.json');
       });
 

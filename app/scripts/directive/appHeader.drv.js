@@ -11,16 +11,24 @@ function appHeaderDirective () {
     controller.fileService = fileService;
     controller.messageService = messageService;
 
-    if (ENV.name === 'development') {
-      controller.environment = {
-        development: true
-      };
-    }
-    else if (ENV.name === 'productionOnline') {
-      controller.environment = {
-        productionOnline: true
-      };
-    }
+    switch (ENV.name) {
+      case 'development':
+        controller.environment = {
+          development: true
+        };
+      break;
+      case 'production':
+        controller.environment = {
+          production: true
+        };
+      case 'productionOnline':
+        controller.environment = {
+          productionOnline: true
+        };
+      break;
+      default:
+        throw new Error('Unknown environment');
+    };
 
     $ionicModal.fromTemplateUrl('scripts/modal/new-note-modal.html', {
         scope: $scope,

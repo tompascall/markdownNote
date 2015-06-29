@@ -14,7 +14,7 @@
         <save-to-dropbox></save-to-dropbox>
         <load-from-dropbox></load-from-dropbox>
 
-        <div ng-if="!ctrl.environment.productionOnline">
+        <div ng-if="ctrl.environment.development || ctrl.environment.production">
           <save-file></save-file>
           <load-file></load-file>
         </div>

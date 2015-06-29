@@ -213,7 +213,7 @@ angular.module('markdownNote.templates', []).run(['$templateCache', function($te
     '        <save-to-dropbox></save-to-dropbox>\n' +
     '        <load-from-dropbox></load-from-dropbox>\n' +
     '\n' +
-    '        <div ng-if="!ctrl.environment.productionOnline">\n' +
+    '        <div ng-if="ctrl.environment.development || ctrl.environment.production">\n' +
     '          <save-file></save-file>\n' +
     '          <load-file></load-file>\n' +
     '        </div>\n' +
