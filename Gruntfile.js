@@ -78,6 +78,17 @@ module.exports = function (grunt) {
             }
           }
         }
+      },
+      productionOnline: {
+        constants: {
+          ENV: {
+            name: 'productionOnline',
+            apiEndpoint: '',
+            pageSize: 30,
+            fileName: 'markdownNote.json',
+            receiverUrl: 'https://markdownnote.tompascall.com/dropbox-oauth-receiver.html',
+          }
+        }
       }
     },
 
@@ -250,6 +261,14 @@ module.exports = function (grunt) {
           src: ['*.html', 'templates/**/*.html'],
           dest: '<%= yeoman.dist %>'
         }]
+      }
+    },
+
+    processhtml: {
+      productionOnline: {
+        files: {
+          'www/index.html': ['www/index.html']
+        }
       }
     },
 
@@ -556,15 +575,22 @@ module.exports = function (grunt) {
     return grunt.task.run(['init:development', 'compress', 'ionic:build:' + this.args.join()]);
   });
 
+  grunt.registerTask('build-online', function () {
+    return grunt.task.run(['init:productionOnline', 'compress:productionOnline']);
+  });
+
   grunt.registerTask('init', function (target) {
     if (target === 'production') {
       grunt.task.run(['ngconstant:production']);
+    }
+    else if (target === 'productionOnline') {
+      grunt.task.run(['ngconstant:productionOnline']);
     }
     else {
       grunt.task.run(['ngconstant:development']);
     }
 
-    return grunt.task.run([
+    grunt.task.run([
       'clean',
       'wiredep',
       'concurrent:server',
@@ -576,20 +602,30 @@ module.exports = function (grunt) {
   });
 
 
-  grunt.registerTask('compress', [
-    'clean',
-    'wiredep',
-    'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
-    'concat',
-    'ngAnnotate',
-    'copy:dist',
-    'cssmin',
-    'uglify',
-    'usemin',
-    'htmlmin'
-  ]);
+  grunt.registerTask('compress', function (target) {
+
+    grunt.task.run([
+      'clean',
+      'wiredep',
+      'useminPrepare',
+      'concurrent:dist',
+      'autoprefixer',
+      'concat',
+      'ngAnnotate',
+      'copy:dist'
+    ]);
+
+    if (target === 'productionOnline') {
+      grunt.task.run(['processhtml:productionOnline']);
+    }
+
+    grunt.task.run([
+      'cssmin',
+      'uglify',
+      'usemin',
+      'htmlmin'
+    ]);
+  });
 
   grunt.registerTask('coverage',
     ['karma:continuous',

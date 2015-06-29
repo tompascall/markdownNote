@@ -10,9 +10,15 @@ function appHeaderDirective () {
     var controller = this;
     controller.fileService = fileService;
     controller.messageService = messageService;
+
     if (ENV.name === 'development') {
       controller.environment = {
         development: true
+      };
+    }
+    else if (ENV.name === 'productionOnline') {
+      controller.environment = {
+        productionOnline: true
       };
     }
 

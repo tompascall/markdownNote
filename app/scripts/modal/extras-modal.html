@@ -10,10 +10,15 @@
   <ion-content>
     <form name="extrasModalForm">
       <div class="list padding">
+
         <save-to-dropbox></save-to-dropbox>
         <load-from-dropbox></load-from-dropbox>
-        <save-file></save-file>
-        <load-file></load-file>
+
+        <div ng-if="!ctrl.environment.productionOnline">
+          <save-file></save-file>
+          <load-file></load-file>
+        </div>
+
         <about></about>
 
         <!-- add 100 test notes - only for development -->
