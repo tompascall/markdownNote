@@ -10,7 +10,7 @@ function dropboxService (messageService, ENV) {
 
   dropboxService.client = new Dropbox.Client(dropboxService.clientInitOptions);
 
-  if (ENV.name === 'productionOnline') {
+  if (ENV.name === 'productionOnline' || ENV.name === 'developmentOnline') {
     dropboxService.client.authDriver(new Dropbox.AuthDriver.Popup({
     receiverUrl: ENV.receiverUrl}));
   }

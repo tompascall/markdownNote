@@ -27,6 +27,10 @@ function appHeaderDirective () {
           productionOnline: true
         };
         break;
+      case 'developmentOnline':
+        controller.environment = {
+	  developmentOnline: true
+	};	
       default:
         throw new Error('Unknown environment');
     };
