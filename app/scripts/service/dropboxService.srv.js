@@ -2,13 +2,18 @@
 
 'use strict';
 
-function dropboxService (messageService) {
+function dropboxService (messageService, ENV) {
   /*jshint -W004 */  // to skip 'dropboxService is already defined' jshint message
   var dropboxService = {
     clientInitOptions: {key: 'pbqyznysf6jffyl'}
   };
 
   dropboxService.client = new Dropbox.Client(dropboxService.clientInitOptions);
+
+  if (ENV.name === 'productionOnline') {
+    dropboxService.client.authDriver(new Dropbox.AuthDriver.Popup({
+    receiverUrl: ENV.receiverUrl}));
+  }
 
   dropboxService.getXhrDownloadListener = function () {
     return function(dbXhr) {

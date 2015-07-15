@@ -41,11 +41,19 @@ $ grunt serve:production
 
 As regards android platform you can find your built `.apk` in the `app/platforms/android/ant-build` folder.
 
+###Build for dev environment
+
 If you want to build the app in development environment (for using some built-in dev tools, such as adding a lot of test notes immediately), you can
 
 ```$ grunt build-dev[:<platform>]```
 
-For release:
+###Build online version
+
+If you want to build the online version, then run
+
+```$ grunt build-online```
+
+###Build for release:
 
 ```$ grunt build:<platform> --release```
 

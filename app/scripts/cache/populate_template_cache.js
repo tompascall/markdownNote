@@ -209,10 +209,15 @@ angular.module('markdownNote.templates', []).run(['$templateCache', function($te
     '  <ion-content>\n' +
     '    <form name="extrasModalForm">\n' +
     '      <div class="list padding">\n' +
+    '\n' +
     '        <save-to-dropbox></save-to-dropbox>\n' +
     '        <load-from-dropbox></load-from-dropbox>\n' +
-    '        <save-file></save-file>\n' +
-    '        <load-file></load-file>\n' +
+    '\n' +
+    '        <div ng-if="ctrl.environment.production">\n' +
+    '          <save-file></save-file>\n' +
+    '          <load-file></load-file>\n' +
+    '        </div>\n' +
+    '\n' +
     '        <about></about>\n' +
     '\n' +
     '        <!-- add 100 test notes - only for development -->\n' +
