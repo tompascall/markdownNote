@@ -59,6 +59,17 @@ module.exports = function (grunt) {
           }
         }
       },
+      developmentOnline: {
+        constants: {
+          ENV: {
+            name: 'developmentOnline',
+            apiEndpoint: '',
+            pageSize: 30,
+            fileName: 'markdownNote.json',
+            receiverUrl: 'http://localhost:8100/dropbox-oauth-receiver.html'
+          }
+	}
+      },
       production: {
         constants: {
           ENV: {
@@ -269,7 +280,13 @@ module.exports = function (grunt) {
         files: {
           'www/index.html': ['www/index.html']
         }
+      },
+      developmentOnline: {
+        files: {
+          'www/index.html': ['www/index.html']
+        }
       }
+ 
     },
 
     // Copies remaining files to places other tasks can use
@@ -554,7 +571,7 @@ module.exports = function (grunt) {
     }
 
     grunt.config('concurrent.ionic.tasks', ['ionic:serve', 'watch']);
-    grunt.task.run(['wiredep', 'init', 'concurrent:ionic']);
+    grunt.task.run(['wiredep', 'init:developmentOnline', 'concurrent:ionic']);
   });
 
   grunt.registerTask('emulate', function() {
@@ -575,6 +592,10 @@ module.exports = function (grunt) {
     return grunt.task.run(['init:development', 'compress', 'ionic:build:' + this.args.join()]);
   });
 
+  grunt.registerTask('build-dev-online', function () {
+    return grunt.task.run(['init:developmentOnline', 'compress']);
+  });
+
   grunt.registerTask('build-online', function () {
     return grunt.task.run(['init:productionOnline', 'compress:productionOnline']);
   });
@@ -585,6 +606,9 @@ module.exports = function (grunt) {
     }
     else if (target === 'productionOnline') {
       grunt.task.run(['ngconstant:productionOnline']);
+    }
+    else if (target === 'developmentOnline') {
+      grunt.task.run(['ngconstant:developmentOnline']);
     }
     else {
       grunt.task.run(['ngconstant:development']);
@@ -618,6 +642,11 @@ module.exports = function (grunt) {
     if (target === 'productionOnline') {
       grunt.task.run(['processhtml:productionOnline']);
     }
+    
+    if (target === 'developmentOnline') {
+      grunt.task.run(['processhtml:developmentOnline']);
+    }
+
 
     grunt.task.run([
       'cssmin',
@@ -639,3 +668,4 @@ module.exports = function (grunt) {
     'compress'
   ]);
 };
+
