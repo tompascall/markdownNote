@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- build:remove:productionOnline -->
+      <script src="bower_components/dropbox/lib/dropbox.js"></script>
+    <!-- /build -->
+    
+    <!-- build:remove:developmentOnline -->
+      <script src="scripts/vendor.js"></script>
+    <!-- /build -->
+
+    
+
+     <script type="text/javascript">
+      Dropbox.AuthDriver.Popup.oauthReceiver();
+    </script>
+  </head>
+  <body>
+    <h3>You have successfully signed in to your Dropbox.</h3>
+    <p>Please close this window.</p>
+  </body>
+</html>
+
+
+
+
+

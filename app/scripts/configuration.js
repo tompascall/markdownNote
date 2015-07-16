@@ -2,6 +2,6 @@
 
  angular.module('config', [])
 
-.constant('ENV', {name:'developmentOnline',apiEndpoint:'',pageSize:30,fileName:'markdownNote.json',receiverUrl:'http://localhost:8100/dropbox-oauth-receiver.html'})
+.constant('ENV', {name:'production',apiEndpoint:'',pageSize:30,fileName:'markdownNote.json',Android:{filePath:'download/'},iOS:{filePath:'Library/'}})
 
 ;

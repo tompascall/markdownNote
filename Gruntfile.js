@@ -278,12 +278,14 @@ module.exports = function (grunt) {
     processhtml: {
       productionOnline: {
         files: {
-          'www/index.html': ['www/index.html']
+          'www/index.html': ['www/index.html'],
+          'www/dropbox-oauth-receiver.html': ['www/dropbox-oauth-receiver.html']
         }
       },
       developmentOnline: {
         files: {
-          'www/index.html': ['www/index.html']
+          'www/index.html': ['www/index.html'],
+          'www/dropbox-oauth-receiver.html': ['www/dropbox-oauth-receiver.html']
         }
       }
  

@@ -31,7 +31,9 @@ function appHeaderDirective () {
         controller.environment = {
 	  developmentOnline: true
 	};	
+	break;
       default:
+	console.log(ENV.name);
         throw new Error('Unknown environment');
     };
 
