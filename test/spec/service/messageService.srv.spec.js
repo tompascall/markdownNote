@@ -18,11 +18,11 @@ describe('Service: messageService', function () {
   describe('Check messageService initialization', function () {
 
     it('should init all messages to empty string', function () {
-      expect(messageService.messages['showAboutMessage']).to.equal(false);
-      expect(messageService.messages['loadLocalFileMessage']).to.equal(false);
-      expect(messageService.messages['saveLocalFileMessage']).to.equal(false);
-      expect(messageService.messages['dropboxWriteMessage']).to.equal(false);
-      expect(messageService.messages['dropboxReadMessage']).to.equal(false);
+      expect(messageService.messages['showAboutMessage']).to.equal('');
+      expect(messageService.messages['loadLocalFileMessage']).to.equal('');
+      expect(messageService.messages['saveLocalFileMessage']).to.equal('');
+      expect(messageService.messages['dropboxWriteMessage']).to.equal('');
+      expect(messageService.messages['dropboxReadMessage']).to.equal('');
     });
   });
 
@@ -44,11 +44,11 @@ describe('Service: messageService', function () {
 
       messageService.clearExtrasModalMessages();
 
-      expect(messageService.messages['showAboutMessage']).to.equal(false);
-      expect(messageService.messages['loadLocalFileMessage']).to.equal(false);
-      expect(messageService.messages['saveLocalFileMessage']).to.equal(false);
-      expect(messageService.messages['dropboxWriteMessage']).to.equal(false);
-      expect(messageService.messages['dropboxReadMessage']).to.equal(false);
+      expect(messageService.messages['showAboutMessage']).to.equal('');
+      expect(messageService.messages['loadLocalFileMessage']).to.equal('');
+      expect(messageService.messages['saveLocalFileMessage']).to.equal('');
+      expect(messageService.messages['dropboxWriteMessage']).to.equal('');
+      expect(messageService.messages['dropboxReadMessage']).to.equal('');
     });
   });
 
