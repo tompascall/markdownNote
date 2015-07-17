@@ -573,8 +573,18 @@ module.exports = function (grunt) {
     }
 
     grunt.config('concurrent.ionic.tasks', ['ionic:serve', 'watch']);
+    grunt.task.run(['wiredep', 'init:development', 'concurrent:ionic']);
+  });
+
+  grunt.registerTask('serve-online', function (target) {
+    if (target === 'production') {
+      return grunt.task.run(['init:productionOnline','compress', 'ionic:serve']);
+    }
+
+    grunt.config('concurrent.ionic.tasks', ['ionic:serve', 'watch']);
     grunt.task.run(['wiredep', 'init:developmentOnline', 'concurrent:ionic']);
   });
+
 
   grunt.registerTask('emulate', function() {
     grunt.config('concurrent.ionic.tasks', ['ionic:emulate:' + this.args.join(), 'watch']);

@@ -5,20 +5,20 @@
 function messageService ($rootScope) {
   return {
     messages: {
-      showAboutMessage: false,
-      loadLocalFileMessage: false,
-      saveLocalFileMessage: false,
-      dropboxWriteMessage: false,
-      dropboxReadMessage: false,
+      showAboutMessage: '',
+      loadLocalFileMessage: '',
+      saveLocalFileMessage: '',
+      dropboxWriteMessage: '',
+      dropboxReadMessage: '',
 
     },
 
     clearExtrasModalMessages: function () {
-      this.messages.showAboutMessage = false;
-      this.messages.loadLocalFileMessage = false;
-      this.messages.saveLocalFileMessage = false;
-      this.messages.dropboxWriteMessage = false;
-      this.messages.dropboxReadMessage = false;
+      this.messages.showAboutMessage = '';
+      this.messages.loadLocalFileMessage = '';
+      this.messages.saveLocalFileMessage = '';
+      this.messages.dropboxWriteMessage = '';
+      this.messages.dropboxReadMessage = '';
     },
 
     applyMessage: function (options) {
