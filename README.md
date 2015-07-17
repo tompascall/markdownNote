@@ -16,7 +16,7 @@ If you are curious about setting up the development framework, just check out th
 - Install Node packages: ```$ npm install```
 - Install Bower packages: ```$ bower install```
 - You need [Grunt](http://gruntjs.com/) globally: ```$ npm install -g grunt```
-- Follow the [Android]() and [iOS]() platform guides to install required platform dependencies
+- Follow the [Android](http://cordova.apache.org/docs/en/3.3.0/guide_platforms_android_index.md.html#Android%20Platform%20Guide) and [iOS](http://cordova.apache.org/docs/en/3.3.0/guide_platforms_ios_index.md.html#iOS%20Platform%20Guide) platform guides to install required platform dependencies
 - Check out [Ionic Generator documentation](https://github.com/diegonetto/generator-ionic/tree/master/docs)
 - I recommend checking out [my blogpost](http://js-workout.tompascall.com/lets-create-hybrid-mobile-apps-with-ionic-framework/) about creating hybrid mobile apps with Ionic framework and [this post](http://js-workout.tompascall.com/lets-develop-hybrid-mobile-apps-with-ionic-framework-ii/) about setting up dev framework for developing ionic app with TDD.
 
@@ -25,13 +25,13 @@ If you are curious about setting up the development framework, just check out th
 For running the app in browser just run 
 
 ```
-$ grunt serve
+$ grunt serve-online
 ``` 
 
 For checking out the production code in your browser run 
 
 ```
-$ grunt serve:production
+$ grunt serve-online:production
 ```
 
 ##Build the app
@@ -85,7 +85,7 @@ For more information check out [Ionic Generator](https://github.com/diegonetto/g
 
 The test runs on [PhantomJS](http://phantomjs.org/), using the [Karma](http://karma-runner.github.io/0.12/index.html) test runner.
 
-Run your tests with ```$ grunt test```.
+First you want to build the app or run ```grunt serve-online```. Then you can run your tests with ```$ grunt test```.
 
 
 
